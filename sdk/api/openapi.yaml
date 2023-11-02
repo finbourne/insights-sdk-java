@@ -1,0 +1,2933 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: info@finbourne.com
+    name: FINBOURNE Technology
+    url: https://www.finbourne.com
+  termsOfService: https://www.finbourne.com/legal/terms-conditions
+  title: FINBOURNE Insights API
+  version: 0.0.743
+  x-logo:
+    url: https://www.lusid.com/app/assets/logo_white.png
+    backgroundColor: '#415464'
+servers:
+- url: https://fbn-ci.lusid.com/insights
+security:
+- {}
+tags:
+- description: Methods to retrieve access evaluation logs.
+  name: Access Evaluations
+- description: Metadata about the test application
+  name: Application Metadata
+- description: Methods for interacting with Auditing
+  name: Auditing
+- description: Methods to retrieve logs and content of API requests.
+  name: Requests
+- description: Methods to retrieve logs and content of requests to vendors.
+  name: Vendor Logs
+paths:
+  /api/access:
+    get:
+      operationId: ListAccessEvaluationLogs
+      parameters:
+      - description: Start date from which point to fetch logs.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+        x-nullable: true
+      - description: End date to which point to fetch logs.
+        explode: true
+        in: query
+        name: endAt
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+        x-nullable: true
+      - description: Expression to filter the result set. Read more about <see href="https://support.lusid.com/filtering-results-from-lusid">
+          filtering results from LUSID</see>.
+        explode: true
+        in: query
+        name: filter
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 0
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "Order the results by these fields. Use the '-' sign to denote\
+          \ descending order e.g. -MyFieldName. Multiple fields can be denoted by\
+          \ a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName"
+        explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 1
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "When paginating, only return this number of records. The minimum\
+          \ value is 0 and the maximum is 10000."
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          maximum: 10000
+          minimum: 1
+          type: integer
+        style: form
+        x-nullable: true
+      - description: "Encoded page string returned from a previous search result that\
+          \ will retrieve the next page of data. When this field is supplied, filter\
+          \ and sortby fields should not be supplied."
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          maxLength: 500
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
+          type: string
+        style: form
+      - description: The interval for an included histogram of the logs
+        explode: true
+        in: query
+        name: histogramInterval
+        required: false
+        schema:
+          format: date-span
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfAccessEvaluationLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfAccessEvaluationLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfAccessEvaluationLog'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] ListAccessEvaluationLogs: List the logs for access\
+        \ evaluations."
+      tags:
+      - Access Evaluations
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/access/{id}:
+    get:
+      operationId: GetAccessEvaluationLog
+      parameters:
+      - description: The identifier of the access evaluation to obtain the log for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 70
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AccessEvaluationLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessEvaluationLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AccessEvaluationLog'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific\
+        \ access evaluation.\r\nThis endpoint will be deprecated in the near future."
+      tags:
+      - Access Evaluations
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/auditing/entries:
+    get:
+      description: "This will never be `null`, though it may be empty."
+      operationId: ListEntries
+      parameters:
+      - description: The filter to be applied to the results.
+        explode: true
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The order to return the entries in.
+        explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of entries to return.
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 1000
+          format: int32
+          type: integer
+        style: form
+        x-nullable: true
+      - description: "The scrolling state, used to iterate through the data set."
+        explode: true
+        in: query
+        name: state
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScrollableCollectionOfAuditEntry'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] ListEntries: Get the audit entries."
+      tags:
+      - Auditing
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+    post:
+      operationId: CreateEntry
+      requestBody:
+        content:
+          application/json:
+            example:
+              process:
+                name: processName
+                runId: processRunId
+                startTime: 0001-01-01T00:00:00.0000000+00:00
+              data:
+                action: dataAction
+                category: dataCategory
+                userId: dataUserId
+                message: dataMessage
+                resource:
+                  type: resourceType
+                  identifier: resourceIdentifier
+                detailsType: dataDetailsType
+            schema:
+              $ref: '#/components/schemas/CreateAuditEntry'
+          application/json-patch+json:
+            example:
+              process:
+                name: processName
+                runId: processRunId
+                startTime: 0001-01-01T00:00:00.0000000+00:00
+              data:
+                action: dataAction
+                category: dataCategory
+                userId: dataUserId
+                message: dataMessage
+                resource:
+                  type: resourceType
+                  identifier: resourceIdentifier
+                detailsType: dataDetailsType
+            schema:
+              $ref: '#/components/schemas/CreateAuditEntry'
+        description: Information about the entry to be created.
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEntry'
+          description: Created
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: "There have been too many recent requests, retry later (using\
+            \ the RETRY-AFTER header value as the delay)."
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] CreateEntry: Create (persist) and audit entry.."
+      tags:
+      - Auditing
+      x-fbn-apistatus: EarlyAccess
+      x-content-type: application/json
+      x-accepts: application/json
+  /api/auditing/processes:
+    get:
+      description: "This will never be `null`, though it may be empty."
+      operationId: GetProcesses
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfAuditProcessSummary'
+          description: Success
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] GetProcesses: Get the latest audit entry for each process."
+      tags:
+      - Auditing
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/metadata/access/resources:
+    get:
+      description: Get the comprehensive set of resources that are available for access
+        control
+      operationId: ListAccessControlledResources
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfAccessControlledResource'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfAccessControlledResource'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfAccessControlledResource'
+          description: Success
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] ListAccessControlledResources: Get resources available\
+        \ for access control"
+      tags:
+      - Application Metadata
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/requests:
+    get:
+      operationId: ListRequestLogs
+      parameters:
+      - description: Expression to filter the result set. Read more about <see href="https://support.lusid.com/filtering-results-from-lusid">
+          filtering results from LUSID</see>.
+        explode: true
+        in: query
+        name: filter
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 0
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "Order the results by these fields. Use the '-' sign to denote\
+          \ descending order e.g. -MyFieldName. Multiple fields can be denoted by\
+          \ a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName"
+        explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 1
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "When paginating, only return this number of records. The minimum\
+          \ value is 0 and the maximum is 10000."
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          maximum: 10000
+          minimum: 0
+          type: integer
+        style: form
+        x-nullable: true
+      - description: "Encoded page string returned from a previous search result that\
+          \ will retrieve the next page of data. When this field is supplied, filter\
+          \ and sortby fields should not be supplied."
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          maxLength: 500
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
+          type: string
+        style: form
+      - description: "Optional interval to use in a histogram of the returned values.\
+          \ If not provided, no histogram will be generated."
+        explode: true
+        in: query
+        name: histogramInterval
+        required: false
+        schema:
+          format: date-span
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfRequestLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfRequestLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfRequestLog'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] ListRequestLogs: Get the logs for API requests."
+      tags:
+      - Requests
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/requests/{id}:
+    get:
+      operationId: GetRequestLog
+      parameters:
+      - description: The identifier of the request to obtain the log for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/RequestLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/RequestLog'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] GetRequestLog: Get the log for a specific API request."
+      tags:
+      - Requests
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/requests/{id}/request:
+    get:
+      operationId: GetRequest
+      parameters:
+      - description: The identifier of the request to obtain the content for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Request'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] GetRequest: Get the request content for a specific\
+        \ API request."
+      tags:
+      - Requests
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/requests/{id}/response:
+    get:
+      operationId: GetResponse
+      parameters:
+      - description: The identifier of the request to obtain the response for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Response'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] GetResponse: Get the response for a specific API request."
+      tags:
+      - Requests
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/vendor:
+    get:
+      operationId: ListVendorLogs
+      parameters:
+      - description: Expression to filter the result set. Read more about <see href="https://support.lusid.com/filtering-results-from-lusid">
+          filtering results from LUSID</see>.
+        explode: true
+        in: query
+        name: filter
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 0
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "Order the results by these fields. Use the '-' sign to denote\
+          \ descending order e.g. -MyFieldName. Multiple fields can be denoted by\
+          \ a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName"
+        explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 1
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "When paginating, only return this number of records. The minimum\
+          \ value is 0 and the maximum is 10000."
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          maximum: 10000
+          minimum: 0
+          type: integer
+        style: form
+        x-nullable: true
+      - description: "Encoded page string returned from a previous search result that\
+          \ will retrieve the next page of data. When this field is supplied, filter\
+          \ and sortby fields should not be supplied."
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          maxLength: 500
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
+          type: string
+        style: form
+      - description: "Optional interval to use in a histogram of the returned values.\
+          \ If not provided, no histogram will be generated."
+        explode: true
+        in: query
+        name: histogramInterval
+        required: false
+        schema:
+          format: date-span
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfVendorLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfVendorLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListWithHistogramOfVendorLog'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] ListVendorLogs: List the logs for vendor requests."
+      tags:
+      - Vendor Logs
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+  /api/vendor/{id}:
+    get:
+      operationId: GetVendorLog
+      parameters:
+      - description: The identifier of the request to obtain the log for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/VendorLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/VendorLog'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] GetVendorLog: Get the log for a specific vendor request."
+      tags:
+      - Vendor Logs
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+  /api/vendor/{id}/request:
+    get:
+      operationId: GetVendorRequest
+      parameters:
+      - description: The identifier of the request to obtain the content for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/VendorRequest'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorRequest'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/VendorRequest'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] GetVendorRequest: Get the request body for a vendor\
+        \ request."
+      tags:
+      - Vendor Logs
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+  /api/vendor/{id}/response:
+    get:
+      operationId: GetVendorResponse
+      parameters:
+      - description: The identifier of the request to obtain the response for.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/VendorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/VendorResponse'
+          description: Success
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] GetVendorResponse: Get the response from a vendor request."
+      tags:
+      - Vendor Logs
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+components:
+  schemas:
+    AccessControlledAction:
+      additionalProperties: false
+      example:
+        limitedSet:
+        - identifier:
+            key: identifier
+          name: name
+          description: description
+          actions:
+          - activity: activity
+            scope: scope
+            entity: entity
+          - activity: activity
+            scope: scope
+            entity: entity
+        - identifier:
+            key: identifier
+          name: name
+          description: description
+          actions:
+          - activity: activity
+            scope: scope
+            entity: entity
+          - activity: activity
+            scope: scope
+            entity: entity
+        description: description
+        action:
+          activity: activity
+          scope: scope
+          entity: entity
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+      properties:
+        description:
+          minLength: 1
+          type: string
+        action:
+          $ref: '#/components/schemas/ActionId'
+        limitedSet:
+          items:
+            $ref: '#/components/schemas/IdSelectorDefinition'
+          nullable: true
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - action
+      - description
+      type: object
+    AccessControlledResource:
+      additionalProperties: false
+      example:
+        application: application
+        name: name
+        description: description
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        actions:
+        - limitedSet:
+          - identifier:
+              key: identifier
+            name: name
+            description: description
+            actions:
+            - activity: activity
+              scope: scope
+              entity: entity
+            - activity: activity
+              scope: scope
+              entity: entity
+          - identifier:
+              key: identifier
+            name: name
+            description: description
+            actions:
+            - activity: activity
+              scope: scope
+              entity: entity
+            - activity: activity
+              scope: scope
+              entity: entity
+          description: description
+          action:
+            activity: activity
+            scope: scope
+            entity: entity
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+        - limitedSet:
+          - identifier:
+              key: identifier
+            name: name
+            description: description
+            actions:
+            - activity: activity
+              scope: scope
+              entity: entity
+            - activity: activity
+              scope: scope
+              entity: entity
+          - identifier:
+              key: identifier
+            name: name
+            description: description
+            actions:
+            - activity: activity
+              scope: scope
+              entity: entity
+            - activity: activity
+              scope: scope
+              entity: entity
+          description: description
+          action:
+            activity: activity
+            scope: scope
+            entity: entity
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+        identifierParts:
+        - displayName: displayName
+          name: name
+          index: 0
+          description: description
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          required: true
+        - displayName: displayName
+          name: name
+          index: 0
+          description: description
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          required: true
+      properties:
+        application:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        description:
+          minLength: 1
+          type: string
+        actions:
+          items:
+            $ref: '#/components/schemas/AccessControlledAction'
+          type: array
+        identifierParts:
+          items:
+            $ref: '#/components/schemas/IdentifierPartSchema'
+          nullable: true
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - actions
+      - description
+      type: object
+    AccessEvaluationLog:
+      additionalProperties: false
+      description: Holds logged information about an access check performed on an
+        API.
+      example:
+        authoritativePolicyId: authoritativePolicyId
+        authoritativeSelector: authoritativeSelector
+        resource:
+          key: resource
+        sessionId: sessionId
+        resourceToEffectiveDate: resourceToEffectiveDate
+        resourceFromEffectiveDate: resourceFromEffectiveDate
+        duration: 6.027456183070403
+        result: result
+        application: application
+        requestId: requestId
+        authoritativeRoleId: authoritativeRoleId
+        requiredLicencePolicyId: requiredLicencePolicyId
+        action: action
+        resourceFromAsAt: resourceFromAsAt
+        accessAsAtTime: accessAsAtTime
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        id: id
+        userType: userType
+        resourceToAsAt: resourceToAsAt
+        accessExecutionTime: accessExecutionTime
+        user: user
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        resourceType: resourceType
+      properties:
+        timestamp:
+          description: The timestamp of the access evaluation.
+          format: date-time
+          type: string
+        application:
+          description: The name of the application that the request was made from.
+          minLength: 1
+          type: string
+        id:
+          description: The ID of the access evaluation.
+          minLength: 1
+          type: string
+        requestId:
+          description: The identifier of the request.
+          nullable: true
+          type: string
+        sessionId:
+          description: The identifier of the session that the request was made in.
+          nullable: true
+          type: string
+        user:
+          description: The user who made the request.
+          minLength: 1
+          type: string
+        userType:
+          description: The type of the user who made the request.
+          nullable: true
+          type: string
+        duration:
+          description: The duration of the access evaluation.
+          format: double
+          type: number
+        result:
+          description: The result of the access evaluation.
+          nullable: true
+          type: string
+        authoritativeRoleId:
+          description: The role that matched the access evaluation to provide a result.
+          nullable: true
+          type: string
+        authoritativePolicyId:
+          description: The policy that matched the access evaluation to provide a
+            result.
+          nullable: true
+          type: string
+        authoritativeSelector:
+          description: The selector that matched the access evaluation to provide
+            a result.
+          nullable: true
+          type: string
+        resourceType:
+          description: The type of the resource that the access evaluation is for.
+          nullable: true
+          type: string
+        action:
+          description: The action key of the access evaluation.
+          nullable: true
+          type: string
+        resource:
+          additionalProperties:
+            nullable: true
+            type: string
+          description: "The ID of the resource that the access evaluation is for.\
+            \ If the ResourceID could not be converted to a dictionary, it will return\
+            \ a single-value dictionary with the key \"resourceId\"."
+          nullable: true
+          type: object
+        resourceFromEffectiveDate:
+          description: The From effective date of the resource.
+          nullable: true
+          type: string
+        resourceToEffectiveDate:
+          description: The To effective date of the resource.
+          nullable: true
+          type: string
+        resourceFromAsAt:
+          description: The From AsAt date of the resource.
+          nullable: true
+          type: string
+        resourceToAsAt:
+          description: The To AsAt date of the resource.
+          nullable: true
+          type: string
+        accessExecutionTime:
+          description: The execution time of the entitlement.
+          nullable: true
+          type: string
+        accessAsAtTime:
+          description: The AsAt time of the entitlement.
+          nullable: true
+          type: string
+        requiredLicencePolicyId:
+          description: ID of the required licence policy.
+          maxLength: 64
+          minLength: 1
+          nullable: true
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - application
+      - duration
+      - id
+      - timestamp
+      - user
+      type: object
+    ActionId:
+      additionalProperties: false
+      example:
+        activity: activity
+        scope: scope
+        entity: entity
+      properties:
+        scope:
+          maxLength: 100
+          minLength: 3
+          type: string
+        activity:
+          maxLength: 25
+          minLength: 3
+          type: string
+        entity:
+          maxLength: 25
+          minLength: 3
+          type: string
+      required:
+      - activity
+      - entity
+      - scope
+      type: object
+    AuditData:
+      additionalProperties: false
+      example:
+        resource:
+          identifier: identifier
+          type: type
+        detailsType: detailsType
+        action: action
+        details: ""
+        category: category
+        message: message
+        userId: userId
+      properties:
+        action:
+          maxLength: 64
+          minLength: 0
+          type: string
+        category:
+          maxLength: 16
+          minLength: 0
+          type: string
+        userId:
+          maxLength: 128
+          minLength: 0
+          nullable: true
+          type: string
+        message:
+          maxLength: 1024
+          minLength: 0
+          nullable: true
+          type: string
+        resource:
+          $ref: '#/components/schemas/Resource'
+        detailsType:
+          maxLength: 16
+          minLength: 0
+          nullable: true
+          type: string
+        details:
+          nullable: true
+      required:
+      - action
+      - category
+      type: object
+    AuditDataSummary:
+      additionalProperties: false
+      example:
+        count: 0
+        categories:
+          key: 6
+      properties:
+        count:
+          format: int32
+          readOnly: true
+          type: integer
+        categories:
+          additionalProperties:
+            format: int32
+            type: integer
+          nullable: true
+          type: object
+      type: object
+    AuditEntry:
+      additionalProperties: false
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        process:
+          name: name
+          startTime: 2000-01-23T04:56:07.000+00:00
+          runId: runId
+          endTime: 2000-01-23T04:56:07.000+00:00
+          succeeded: true
+        notes:
+        - date: 2000-01-23T04:56:07.000+00:00
+          text: text
+          userId: userId
+        - date: 2000-01-23T04:56:07.000+00:00
+          text: text
+          userId: userId
+        data:
+          resource:
+            identifier: identifier
+            type: type
+          detailsType: detailsType
+          action: action
+          details: ""
+          category: category
+          message: message
+          userId: userId
+        id: id
+      properties:
+        id:
+          minLength: 1
+          type: string
+        date:
+          format: date-time
+          type: string
+        process:
+          $ref: '#/components/schemas/AuditProcess'
+        data:
+          $ref: '#/components/schemas/AuditData'
+        notes:
+          items:
+            $ref: '#/components/schemas/AuditEntryNote'
+          nullable: true
+          type: array
+      required:
+      - data
+      - date
+      - id
+      - process
+      type: object
+    AuditEntryNote:
+      additionalProperties: false
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        text: text
+        userId: userId
+      properties:
+        userId:
+          minLength: 1
+          type: string
+        text:
+          minLength: 1
+          type: string
+        date:
+          format: date-time
+          type: string
+      required:
+      - date
+      - text
+      - userId
+      type: object
+    AuditProcess:
+      additionalProperties: false
+      example:
+        name: name
+        startTime: 2000-01-23T04:56:07.000+00:00
+        runId: runId
+        endTime: 2000-01-23T04:56:07.000+00:00
+        succeeded: true
+      properties:
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        runId:
+          minLength: 1
+          type: string
+        startTime:
+          format: date-time
+          type: string
+        endTime:
+          format: date-time
+          nullable: true
+          type: string
+        succeeded:
+          nullable: true
+          type: boolean
+      required:
+      - name
+      - runId
+      - startTime
+      type: object
+    AuditProcessSummary:
+      additionalProperties: false
+      example:
+        summary:
+          count: 0
+          categories:
+            key: 6
+        process:
+          name: name
+          startTime: 2000-01-23T04:56:07.000+00:00
+          runId: runId
+          endTime: 2000-01-23T04:56:07.000+00:00
+          succeeded: true
+        latestEntry:
+          resource:
+            identifier: identifier
+            type: type
+          detailsType: detailsType
+          action: action
+          details: ""
+          category: category
+          message: message
+          userId: userId
+      properties:
+        process:
+          $ref: '#/components/schemas/AuditProcess'
+        latestEntry:
+          $ref: '#/components/schemas/AuditData'
+        summary:
+          $ref: '#/components/schemas/AuditDataSummary'
+      type: object
+    Bucket:
+      additionalProperties: false
+      description: A single histogram bucket.
+      example:
+        startTime: 2000-01-23T04:56:07.000+00:00
+        itemCount: 0
+      properties:
+        startTime:
+          description: The bucket's start time as a DateTimeOffset.
+          format: date-time
+          type: string
+        itemCount:
+          description: The number of items in the bucket.
+          format: int64
+          type: integer
+      type: object
+    CreateAuditEntry:
+      additionalProperties: false
+      description: Details to create an audit entry
+      example:
+        process:
+          name: name
+          startTime: 2000-01-23T04:56:07.000+00:00
+          runId: runId
+          endTime: 2000-01-23T04:56:07.000+00:00
+          succeeded: true
+        data:
+          resource:
+            identifier: identifier
+            type: type
+          detailsType: detailsType
+          action: action
+          details: ""
+          category: category
+          message: message
+          userId: userId
+      properties:
+        process:
+          $ref: '#/components/schemas/AuditProcess'
+        data:
+          $ref: '#/components/schemas/AuditData'
+      required:
+      - data
+      - process
+      type: object
+    Histogram:
+      additionalProperties: false
+      description: A histogram showing an item's count in buckets of equal timespans.
+      example:
+        buckets:
+        - startTime: 2000-01-23T04:56:07.000+00:00
+          itemCount: 0
+        - startTime: 2000-01-23T04:56:07.000+00:00
+          itemCount: 0
+      properties:
+        buckets:
+          description: An ordered list of the histogram buckets.
+          items:
+            $ref: '#/components/schemas/Bucket'
+          nullable: true
+          type: array
+      type: object
+    IdentifierPartSchema:
+      additionalProperties: false
+      example:
+        displayName: displayName
+        name: name
+        index: 0
+        description: description
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        required: true
+      properties:
+        index:
+          format: int32
+          type: integer
+        name:
+          minLength: 1
+          type: string
+        displayName:
+          minLength: 1
+          type: string
+        description:
+          minLength: 1
+          type: string
+        required:
+          type: boolean
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - description
+      - displayName
+      - index
+      - name
+      - required
+      type: object
+    IdSelectorDefinition:
+      additionalProperties: false
+      example:
+        identifier:
+          key: identifier
+        name: name
+        description: description
+        actions:
+        - activity: activity
+          scope: scope
+          entity: entity
+        - activity: activity
+          scope: scope
+          entity: entity
+      properties:
+        identifier:
+          additionalProperties:
+            type: string
+          minLength: 1
+          type: object
+        actions:
+          items:
+            $ref: '#/components/schemas/ActionId'
+          minItems: 1
+          type: array
+        name:
+          maxLength: 100
+          minLength: 0
+          nullable: true
+          type: string
+        description:
+          maxLength: 1024
+          minLength: 0
+          nullable: true
+          type: string
+      required:
+      - actions
+      - identifier
+      type: object
+    Link:
+      additionalProperties: false
+      example:
+        method: method
+        description: description
+        href: https://openapi-generator.tech
+        relation: relation
+      properties:
+        relation:
+          type: string
+        href:
+          format: uri
+          type: string
+        description:
+          nullable: true
+          type: string
+        method:
+          type: string
+      required:
+      - href
+      - method
+      - relation
+      type: object
+    LusidProblemDetails:
+      additionalProperties: false
+      properties:
+        name:
+          minLength: 1
+          type: string
+        errorDetails:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          nullable: true
+          type: array
+        code:
+          format: int32
+          type: integer
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      required:
+      - code
+      - name
+      type: object
+    LusidValidationProblemDetails:
+      additionalProperties: false
+      properties:
+        name:
+          minLength: 1
+          type: string
+        errorDetails:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          nullable: true
+          type: array
+        code:
+          format: int32
+          type: integer
+        errors:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          nullable: true
+          type: object
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      required:
+      - code
+      - name
+      type: object
+    ProblemDetails:
+      additionalProperties: false
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      type: object
+    Request:
+      additionalProperties: false
+      description: DTO of Finbourne.AspNetCore.Http.TrackingEntry.RequestInformation.
+      example:
+        headers:
+          key:
+          - headers
+          - headers
+        method: method
+        contentLength: 0
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        body: body
+        contentType: contentType
+        bodyWasTruncated: true
+        url: url
+      properties:
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: The headers
+          nullable: true
+          type: object
+        contentLength:
+          description: "The actual length of the body, which may be larger than the\
+            \ data recorded in Finbourne.Insights.WebApi.Dtos.Request.Body\r\n(e.g.\
+            \ if actual Body is large, or not convertible to a string)"
+          format: int64
+          nullable: true
+          type: integer
+        contentType:
+          description: The content type
+          nullable: true
+          type: string
+        body:
+          description: The recorded content.
+          nullable: true
+          type: string
+        bodyWasTruncated:
+          description: Determines if the recorded body was truncated.
+          type: boolean
+        method:
+          description: Method called by the request
+          nullable: true
+          type: string
+        url:
+          description: URL of the request
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      type: object
+    RequestLog:
+      additionalProperties: false
+      description: Holds logged information about a request performed on an API.
+      example:
+        sdkLanguage: sdkLanguage
+        verb: verb
+        errorCode: errorCode
+        sessionId: sessionId
+        url: url
+        duration: 0.8008281904610115
+        impersonatingUser: impersonatingUser
+        application: application
+        domain: domain
+        sdkVersion: sdkVersion
+        correlationId:
+        - correlationId
+        - correlationId
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        id: id
+        userType: userType
+        user: user
+        operation: operation
+        sourceApplication: sourceApplication
+        outcome: outcome
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        httpStatusCode: 6
+      properties:
+        timestamp:
+          description: The timestamp of the request.
+          format: date-time
+          type: string
+        application:
+          description: The name of the application that the request was made to.
+          minLength: 1
+          type: string
+        id:
+          description: The identifier of the request.
+          minLength: 1
+          type: string
+        sessionId:
+          description: The identifier of the session that the request was made in.
+          nullable: true
+          type: string
+        verb:
+          description: The HTTP verb of the request.
+          minLength: 1
+          type: string
+        url:
+          description: The URL of the request.
+          minLength: 1
+          type: string
+        domain:
+          description: The domain of the request.
+          nullable: true
+          type: string
+        user:
+          description: The user who made the request.
+          minLength: 1
+          type: string
+        userType:
+          description: The type of the user who made the request.
+          nullable: true
+          type: string
+        operation:
+          description: The API operation invoked by the request.
+          nullable: true
+          type: string
+        outcome:
+          description: "The outcome of the request: Success, Failure or Error."
+          minLength: 1
+          type: string
+        duration:
+          description: The duration of the request in milliseconds.
+          format: double
+          type: number
+        httpStatusCode:
+          description: The status code of the request.
+          format: int32
+          type: integer
+        errorCode:
+          description: "Error code, if the request had a failure or error."
+          nullable: true
+          type: string
+        sdkLanguage:
+          description: The language of the SDK used.
+          nullable: true
+          type: string
+        sdkVersion:
+          description: The version of the SDK used.
+          nullable: true
+          type: string
+        sourceApplication:
+          description: The name of the application that made the request.
+          nullable: true
+          type: string
+        correlationId:
+          description: The chain of requestIds preceding this request
+          items:
+            type: string
+          nullable: true
+          type: array
+        impersonatingUser:
+          description: The impersonating user. Only present if the request is an impersonated
+            one
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - application
+      - duration
+      - httpStatusCode
+      - id
+      - outcome
+      - timestamp
+      - url
+      - user
+      - verb
+      type: object
+    Resource:
+      additionalProperties: false
+      example:
+        identifier: identifier
+        type: type
+      properties:
+        type:
+          maxLength: 64
+          minLength: 0
+          nullable: true
+          type: string
+        identifier:
+          maxLength: 128
+          minLength: 0
+          nullable: true
+          type: string
+      type: object
+    ResourceListOfAccessControlledResource:
+      additionalProperties: false
+      example:
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - application: application
+          name: name
+          description: description
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          actions:
+          - limitedSet:
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            description: description
+            action:
+              activity: activity
+              scope: scope
+              entity: entity
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+          - limitedSet:
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            description: description
+            action:
+              activity: activity
+              scope: scope
+              entity: entity
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+          identifierParts:
+          - displayName: displayName
+            name: name
+            index: 0
+            description: description
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            required: true
+          - displayName: displayName
+            name: name
+            index: 0
+            description: description
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            required: true
+        - application: application
+          name: name
+          description: description
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          actions:
+          - limitedSet:
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            description: description
+            action:
+              activity: activity
+              scope: scope
+              entity: entity
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+          - limitedSet:
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            - identifier:
+                key: identifier
+              name: name
+              description: description
+              actions:
+              - activity: activity
+                scope: scope
+                entity: entity
+              - activity: activity
+                scope: scope
+                entity: entity
+            description: description
+            action:
+              activity: activity
+              scope: scope
+              entity: entity
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+          identifierParts:
+          - displayName: displayName
+            name: name
+            index: 0
+            description: description
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            required: true
+          - displayName: displayName
+            name: name
+            index: 0
+            description: description
+            links:
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            - method: method
+              description: description
+              href: https://openapi-generator.tech
+              relation: relation
+            required: true
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/AccessControlledResource'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+      required:
+      - values
+      type: object
+    ResourceListOfAuditProcessSummary:
+      additionalProperties: false
+      example:
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - summary:
+            count: 0
+            categories:
+              key: 6
+          process:
+            name: name
+            startTime: 2000-01-23T04:56:07.000+00:00
+            runId: runId
+            endTime: 2000-01-23T04:56:07.000+00:00
+            succeeded: true
+          latestEntry:
+            resource:
+              identifier: identifier
+              type: type
+            detailsType: detailsType
+            action: action
+            details: ""
+            category: category
+            message: message
+            userId: userId
+        - summary:
+            count: 0
+            categories:
+              key: 6
+          process:
+            name: name
+            startTime: 2000-01-23T04:56:07.000+00:00
+            runId: runId
+            endTime: 2000-01-23T04:56:07.000+00:00
+            succeeded: true
+          latestEntry:
+            resource:
+              identifier: identifier
+              type: type
+            detailsType: detailsType
+            action: action
+            details: ""
+            category: category
+            message: message
+            userId: userId
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/AuditProcessSummary'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+      required:
+      - values
+      type: object
+    ResourceListWithHistogramOfAccessEvaluationLog:
+      additionalProperties: false
+      description: ResourceList with additional aggregation data about the values.
+      example:
+        histogram:
+          buckets:
+          - startTime: 2000-01-23T04:56:07.000+00:00
+            itemCount: 0
+          - startTime: 2000-01-23T04:56:07.000+00:00
+            itemCount: 0
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - authoritativePolicyId: authoritativePolicyId
+          authoritativeSelector: authoritativeSelector
+          resource:
+            key: resource
+          sessionId: sessionId
+          resourceToEffectiveDate: resourceToEffectiveDate
+          resourceFromEffectiveDate: resourceFromEffectiveDate
+          duration: 6.027456183070403
+          result: result
+          application: application
+          requestId: requestId
+          authoritativeRoleId: authoritativeRoleId
+          requiredLicencePolicyId: requiredLicencePolicyId
+          action: action
+          resourceFromAsAt: resourceFromAsAt
+          accessAsAtTime: accessAsAtTime
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          userType: userType
+          resourceToAsAt: resourceToAsAt
+          accessExecutionTime: accessExecutionTime
+          user: user
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          resourceType: resourceType
+        - authoritativePolicyId: authoritativePolicyId
+          authoritativeSelector: authoritativeSelector
+          resource:
+            key: resource
+          sessionId: sessionId
+          resourceToEffectiveDate: resourceToEffectiveDate
+          resourceFromEffectiveDate: resourceFromEffectiveDate
+          duration: 6.027456183070403
+          result: result
+          application: application
+          requestId: requestId
+          authoritativeRoleId: authoritativeRoleId
+          requiredLicencePolicyId: requiredLicencePolicyId
+          action: action
+          resourceFromAsAt: resourceFromAsAt
+          accessAsAtTime: accessAsAtTime
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          userType: userType
+          resourceToAsAt: resourceToAsAt
+          accessExecutionTime: accessExecutionTime
+          user: user
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          resourceType: resourceType
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        histogram:
+          $ref: '#/components/schemas/Histogram'
+        values:
+          items:
+            $ref: '#/components/schemas/AccessEvaluationLog'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - values
+      type: object
+    ResourceListWithHistogramOfRequestLog:
+      additionalProperties: false
+      description: ResourceList with additional aggregation data about the values.
+      example:
+        histogram:
+          buckets:
+          - startTime: 2000-01-23T04:56:07.000+00:00
+            itemCount: 0
+          - startTime: 2000-01-23T04:56:07.000+00:00
+            itemCount: 0
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - sdkLanguage: sdkLanguage
+          verb: verb
+          errorCode: errorCode
+          sessionId: sessionId
+          url: url
+          duration: 0.8008281904610115
+          impersonatingUser: impersonatingUser
+          application: application
+          domain: domain
+          sdkVersion: sdkVersion
+          correlationId:
+          - correlationId
+          - correlationId
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          userType: userType
+          user: user
+          operation: operation
+          sourceApplication: sourceApplication
+          outcome: outcome
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          httpStatusCode: 6
+        - sdkLanguage: sdkLanguage
+          verb: verb
+          errorCode: errorCode
+          sessionId: sessionId
+          url: url
+          duration: 0.8008281904610115
+          impersonatingUser: impersonatingUser
+          application: application
+          domain: domain
+          sdkVersion: sdkVersion
+          correlationId:
+          - correlationId
+          - correlationId
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          userType: userType
+          user: user
+          operation: operation
+          sourceApplication: sourceApplication
+          outcome: outcome
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          httpStatusCode: 6
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        histogram:
+          $ref: '#/components/schemas/Histogram'
+        values:
+          items:
+            $ref: '#/components/schemas/RequestLog'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - values
+      type: object
+    ResourceListWithHistogramOfVendorLog:
+      additionalProperties: false
+      description: ResourceList with additional aggregation data about the values.
+      example:
+        histogram:
+          buckets:
+          - startTime: 2000-01-23T04:56:07.000+00:00
+            itemCount: 0
+          - startTime: 2000-01-23T04:56:07.000+00:00
+            itemCount: 0
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - duration: 0.8008281904610115
+          provider: provider
+          requestId: requestId
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          destinationUrl: destinationUrl
+          type: type
+          operation: operation
+          userId: userId
+          outcome: outcome
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          httpStatusCode: 6
+        - duration: 0.8008281904610115
+          provider: provider
+          requestId: requestId
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          destinationUrl: destinationUrl
+          type: type
+          operation: operation
+          userId: userId
+          outcome: outcome
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          httpStatusCode: 6
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        histogram:
+          $ref: '#/components/schemas/Histogram'
+        values:
+          items:
+            $ref: '#/components/schemas/VendorLog'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - values
+      type: object
+    Response:
+      additionalProperties: false
+      description: DTO of Finbourne.AspNetCore.Http.TrackingEntry.ResponseInformation.
+      example:
+        headers:
+          key:
+          - headers
+          - headers
+        contentLength: 0
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        body: body
+        contentType: contentType
+        bodyWasTruncated: true
+        statusCode: 6
+      properties:
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: The headers
+          nullable: true
+          type: object
+        contentLength:
+          description: "The actual length of the body, which may be larger than the\
+            \ data recorded in Finbourne.Insights.WebApi.Dtos.Response.Body\r\n(e.g.\
+            \ if actual Body is large, or not convertible to a string)"
+          format: int64
+          nullable: true
+          type: integer
+        contentType:
+          description: The content type
+          nullable: true
+          type: string
+        body:
+          description: The recorded content.
+          nullable: true
+          type: string
+        bodyWasTruncated:
+          description: Determines if the recorded body was truncated.
+          type: boolean
+        statusCode:
+          description: Http Status Code of the request.
+          format: int32
+          type: integer
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      type: object
+    ScrollableCollectionOfAuditEntry:
+      additionalProperties: false
+      example:
+        data:
+        - date: 2000-01-23T04:56:07.000+00:00
+          process:
+            name: name
+            startTime: 2000-01-23T04:56:07.000+00:00
+            runId: runId
+            endTime: 2000-01-23T04:56:07.000+00:00
+            succeeded: true
+          notes:
+          - date: 2000-01-23T04:56:07.000+00:00
+            text: text
+            userId: userId
+          - date: 2000-01-23T04:56:07.000+00:00
+            text: text
+            userId: userId
+          data:
+            resource:
+              identifier: identifier
+              type: type
+            detailsType: detailsType
+            action: action
+            details: ""
+            category: category
+            message: message
+            userId: userId
+          id: id
+        - date: 2000-01-23T04:56:07.000+00:00
+          process:
+            name: name
+            startTime: 2000-01-23T04:56:07.000+00:00
+            runId: runId
+            endTime: 2000-01-23T04:56:07.000+00:00
+            succeeded: true
+          notes:
+          - date: 2000-01-23T04:56:07.000+00:00
+            text: text
+            userId: userId
+          - date: 2000-01-23T04:56:07.000+00:00
+            text: text
+            userId: userId
+          data:
+            resource:
+              identifier: identifier
+              type: type
+            detailsType: detailsType
+            action: action
+            details: ""
+            category: category
+            message: message
+            userId: userId
+          id: id
+        state: state
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AuditEntry'
+          nullable: true
+          type: array
+        state:
+          nullable: true
+          type: string
+      type: object
+    VendorLog:
+      additionalProperties: false
+      description: Holds logged information about a request made to an external vendor.
+      example:
+        duration: 0.8008281904610115
+        provider: provider
+        requestId: requestId
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        id: id
+        destinationUrl: destinationUrl
+        type: type
+        operation: operation
+        userId: userId
+        outcome: outcome
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        httpStatusCode: 6
+      properties:
+        id:
+          description: The identifier of a log entry.
+          minLength: 1
+          type: string
+        provider:
+          description: The provider or service name.
+          minLength: 1
+          type: string
+        timestamp:
+          description: Timestamp of when the log was generated.
+          format: date-time
+          type: string
+        type:
+          description: "Type of log. Possible values: HttpResponse."
+          minLength: 1
+          type: string
+        destinationUrl:
+          description: The destination URL of the task.
+          minLength: 1
+          type: string
+        operation:
+          description: "The operation performed. Possible values: Evaluate."
+          minLength: 1
+          type: string
+        outcome:
+          description: "The outcome of the operation. Possible values: Success, Failure."
+          minLength: 1
+          type: string
+        duration:
+          description: The duration of the operation in ms.
+          format: double
+          type: number
+        httpStatusCode:
+          description: The status code of the operation.
+          format: int32
+          type: integer
+        userId:
+          description: The user that made the request to LUSID.
+          minLength: 1
+          type: string
+        requestId:
+          description: The ID of the request to LUSID.
+          minLength: 1
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - destinationUrl
+      - duration
+      - httpStatusCode
+      - id
+      - operation
+      - outcome
+      - provider
+      - requestId
+      - timestamp
+      - type
+      - userId
+      type: object
+    VendorRequest:
+      additionalProperties: false
+      description: Details of a request made to a vendor service.
+      example:
+        request: request
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        id: id
+      properties:
+        id:
+          description: The ID of the log.
+          minLength: 1
+          type: string
+        request:
+          description: The body of the request.
+          minLength: 1
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - id
+      - request
+      type: object
+    VendorResponse:
+      additionalProperties: false
+      description: Details of a response to a request made to a vendor service.
+      example:
+        response: response
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        id: id
+      properties:
+        id:
+          description: The ID of the log.
+          minLength: 1
+          type: string
+        response:
+          description: The body of the response.
+          minLength: 1
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - id
+      - response
+      type: object
+  securitySchemes:
+    oauth2:
+      description: OAuth2 Implicit Grant
+      flows:
+        implicit:
+          authorizationUrl: https://lusid.okta.com/oauth2/default/v1/authorize
+          scopes: {}
+      type: oauth2
+x-tagGroups:
+  name: API
+  tags:
+  - Access Evaluations
+  - Application Metadata
+  - Auditing
+  - Requests
+  - Vendor Logs
+x-group-parameters: true
+
