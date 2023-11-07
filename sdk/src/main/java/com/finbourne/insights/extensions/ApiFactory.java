@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-* Utility class that builds pre-configured lusidInsights API instances to access lusidInsights.
+* Utility class that builds pre-configured insights API instances to access insights.
 *
 */
 public class ApiFactory {
 
 
     /**
-    * The unique package that hosts all the lusidInsights API classes
+    * The unique package that hosts all the insights API classes
     */
-    public static final String API_PACKAGE = "com.finbourne.lusid-insights.api";
+    public static final String API_PACKAGE = "com.finbourne.insights.api";
 
     private final ApiClient apiClient;
     private final Map<Class, Object> initialisedApis;
@@ -32,17 +32,17 @@ public class ApiFactory {
     }
 
     /**
-    * Builds an instance of a lusidInsights API 
+    * Builds an instance of a insights API 
     *
-    * For each instance of an {@link ApiFactory} only a singleton instance of each lusidInsights API class exist. The APIs
+    * For each instance of an {@link ApiFactory} only a singleton instance of each insights API class exist. The APIs
     * are lazily initialised on request.
     *
     *
-    * @param apiClass - class of the lusidInsights API to create
-    * @param <T> lusidInsights API type
-    * @return instance of the lusidInsights API type configured as per the {@link ApiClient}
+    * @param apiClass - class of the insights API to create
+    * @param <T> insights API type
+    * @return instance of the insights API type configured as per the {@link ApiClient}
     *
-    * @throws UnsupportedOperationException is the apiClass does not belong to the import com.finbourne.lusid-insights.api package or
+    * @throws UnsupportedOperationException is the apiClass does not belong to the import com.finbourne.insights.api package or
     * if the class has no constructor that accepts an {@link ApiClient} parameter.
     */
     public synchronized <T> T build(Class<T> apiClass) {
@@ -58,9 +58,9 @@ public class ApiFactory {
     };
 
     /*
-    * Create an instance of a lusidInsights API configured by an {@link ApiClient}
+    * Create an instance of a insights API configured by an {@link ApiClient}
     *
-    * @throws UnsupportedOperationException on any reflection related issues on constructing the lusidInsights API object
+    * @throws UnsupportedOperationException on any reflection related issues on constructing the insights API object
     */
     private <T> T createInstance(Constructor<T> constructor){
         try {
@@ -72,10 +72,10 @@ public class ApiFactory {
     }
 
     /*
-    * Retrieves the constructor for the lusidInsights API that accepts an {@link ApiClient}
+    * Retrieves the constructor for the insights API that accepts an {@link ApiClient}
     *
     * @throws UnsupportedOperationException if the class doesn't have a valid constructor that takes
-    * an {@link ApiClient} as an argument to ensure proper construction of a lusidInsights API instance.
+    * an {@link ApiClient} as an argument to ensure proper construction of a insights API instance.
     */
     private <T> Constructor<T> getApiConstructor(Class<T> apiClass){
         try {
@@ -87,9 +87,9 @@ public class ApiFactory {
     }
 
     /*
-    * Checks the class lives in the set package for lusidInsights API classes.
+    * Checks the class lives in the set package for insights API classes.
     *
-    * @throws UnsupportedOperationException if API class does not live in lusidInsights API package
+    * @throws UnsupportedOperationException if API class does not live in insights API package
     */
     private void checkIsSupportedApiClass(Class apiClass){
         if (!isInApiPackage(apiClass)) {
