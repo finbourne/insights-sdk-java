@@ -1,6 +1,6 @@
 # RequestsApi
 
-All URIs are relative to *https://fbn-ci.lusid.com/insights*
+All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -29,7 +29,7 @@ import com.finbourne.insights.api.RequestsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-ci.lusid.com/insights");
+    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
     
     // Configure OAuth2 access token for authorization: oauth2
     OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
@@ -97,7 +97,7 @@ import com.finbourne.insights.api.RequestsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-ci.lusid.com/insights");
+    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
     
     // Configure OAuth2 access token for authorization: oauth2
     OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
@@ -165,7 +165,7 @@ import com.finbourne.insights.api.RequestsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-ci.lusid.com/insights");
+    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
     
     // Configure OAuth2 access token for authorization: oauth2
     OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
@@ -233,7 +233,7 @@ import com.finbourne.insights.api.RequestsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-ci.lusid.com/insights");
+    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
     
     // Configure OAuth2 access token for authorization: oauth2
     OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");

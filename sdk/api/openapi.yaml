@@ -6,12 +6,12 @@ info:
     url: https://www.finbourne.com
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.746
+  version: 0.0.747
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
 servers:
-- url: https://fbn-ci.lusid.com/insights
+- url: https://fbn-prd.lusid.com/insights
 security:
 - {}
 tags:
