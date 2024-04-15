@@ -4,17 +4,17 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getRequest**](RequestsApi.md#getRequest) | **GET** /api/requests/{id}/request | [EARLY ACCESS] GetRequest: Get the request content for a specific API request. |
-| [**getRequestLog**](RequestsApi.md#getRequestLog) | **GET** /api/requests/{id} | [EARLY ACCESS] GetRequestLog: Get the log for a specific API request. |
-| [**getResponse**](RequestsApi.md#getResponse) | **GET** /api/requests/{id}/response | [EARLY ACCESS] GetResponse: Get the response for a specific API request. |
-| [**listRequestLogs**](RequestsApi.md#listRequestLogs) | **GET** /api/requests | [EARLY ACCESS] ListRequestLogs: Get the logs for API requests. |
+| [**getRequest**](RequestsApi.md#getRequest) | **GET** /api/requests/{id}/request | GetRequest: Get the request content for a specific API request. |
+| [**getRequestLog**](RequestsApi.md#getRequestLog) | **GET** /api/requests/{id} | GetRequestLog: Get the log for a specific API request. |
+| [**getResponse**](RequestsApi.md#getResponse) | **GET** /api/requests/{id}/response | GetResponse: Get the response for a specific API request. |
+| [**listRequestLogs**](RequestsApi.md#listRequestLogs) | **GET** /api/requests | ListRequestLogs: Get the logs for API requests. |
 
 
 <a id="getRequest"></a>
 # **getRequest**
 > Request getRequest(id).execute();
 
-[EARLY ACCESS] GetRequest: Get the request content for a specific API request.
+GetRequest: Get the request content for a specific API request.
 
 ### Example
 ```java
@@ -82,7 +82,7 @@ public class Example {
 # **getRequestLog**
 > RequestLog getRequestLog(id).execute();
 
-[EARLY ACCESS] GetRequestLog: Get the log for a specific API request.
+GetRequestLog: Get the log for a specific API request.
 
 ### Example
 ```java
@@ -150,7 +150,7 @@ public class Example {
 # **getResponse**
 > Response getResponse(id).execute();
 
-[EARLY ACCESS] GetResponse: Get the response for a specific API request.
+GetResponse: Get the response for a specific API request.
 
 ### Example
 ```java
@@ -218,7 +218,7 @@ public class Example {
 # **listRequestLogs**
 > ResourceListWithHistogramOfRequestLog listRequestLogs().filter(filter).sortBy(sortBy).limit(limit).page(page).histogramInterval(histogramInterval).execute();
 
-[EARLY ACCESS] ListRequestLogs: Get the logs for API requests.
+ListRequestLogs: Get the logs for API requests.
 
 ### Example
 ```java

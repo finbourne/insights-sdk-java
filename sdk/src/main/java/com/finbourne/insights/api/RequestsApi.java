@@ -223,7 +223,7 @@ public class RequestsApi {
     }
 
     /**
-     * [EARLY ACCESS] GetRequest: Get the request content for a specific API request.
+     * GetRequest: Get the request content for a specific API request.
      * 
      * @param id The identifier of the request to obtain the content for. (required)
      * @return APIgetRequestRequest
@@ -387,7 +387,7 @@ public class RequestsApi {
     }
 
     /**
-     * [EARLY ACCESS] GetRequestLog: Get the log for a specific API request.
+     * GetRequestLog: Get the log for a specific API request.
      * 
      * @param id The identifier of the request to obtain the log for. (required)
      * @return APIgetRequestLogRequest
@@ -551,7 +551,7 @@ public class RequestsApi {
     }
 
     /**
-     * [EARLY ACCESS] GetResponse: Get the response for a specific API request.
+     * GetResponse: Get the response for a specific API request.
      * 
      * @param id The identifier of the request to obtain the response for. (required)
      * @return APIgetResponseRequest
@@ -782,7 +782,7 @@ public class RequestsApi {
     }
 
     /**
-     * [EARLY ACCESS] ListRequestLogs: Get the logs for API requests.
+     * ListRequestLogs: Get the logs for API requests.
      * 
      * @return APIlistRequestLogsRequest
      * @http.response.details
