@@ -5,7 +5,7 @@
     <artifactId>insights-sdk</artifactId>
     <packaging>jar</packaging>
     <name>insights-sdk</name>
-    <version>2.0.31</version>
+    <version>2.0.32</version>
     <url>https://github.com/finbourne/insights-sdk-java</url>
     <description>insights</description>
     <scm>
