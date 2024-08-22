@@ -47,9 +47,20 @@ public class RequestsApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // RequestsApi apiInstance = apiFactory.build(RequestsApi.class);
+
         RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
         String id = "id_example"; // String | The identifier of the request to obtain the content for.
         try {
+            // uncomment the below to set overrides at the request level
+            // Request result = apiInstance.getRequest(id).execute(opts);
+
             Request result = apiInstance.getRequest(id).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
@@ -125,9 +136,20 @@ public class RequestsApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // RequestsApi apiInstance = apiFactory.build(RequestsApi.class);
+
         RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
         String id = "id_example"; // String | The identifier of the request to obtain the log for.
         try {
+            // uncomment the below to set overrides at the request level
+            // RequestLog result = apiInstance.getRequestLog(id).execute(opts);
+
             RequestLog result = apiInstance.getRequestLog(id).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
@@ -203,9 +225,20 @@ public class RequestsApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // RequestsApi apiInstance = apiFactory.build(RequestsApi.class);
+
         RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
         String id = "id_example"; // String | The identifier of the request to obtain the response for.
         try {
+            // uncomment the below to set overrides at the request level
+            // Response result = apiInstance.getResponse(id).execute(opts);
+
             Response result = apiInstance.getResponse(id).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
@@ -281,6 +314,14 @@ public class RequestsApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // RequestsApi apiInstance = apiFactory.build(RequestsApi.class);
+
         RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
         String filter = "filter_example"; // String | Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.
         String sortBy = "sortBy_example"; // String | Order the results by these fields. Use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName
@@ -288,6 +329,9 @@ public class RequestsApiExample {
         String page = "page_example"; // String | Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied.
         String histogramInterval = "histogramInterval_example"; // String | Optional interval to use in a histogram of the returned values. If not provided, no histogram will be generated.
         try {
+            // uncomment the below to set overrides at the request level
+            // ResourceListWithHistogramOfRequestLog result = apiInstance.listRequestLogs(filter, sortBy, limit, page, histogramInterval).execute(opts);
+
             ResourceListWithHistogramOfRequestLog result = apiInstance.listRequestLogs(filter, sortBy, limit, page, histogramInterval).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {

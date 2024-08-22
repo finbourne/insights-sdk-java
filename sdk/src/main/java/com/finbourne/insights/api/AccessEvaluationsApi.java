@@ -18,6 +18,7 @@ import com.finbourne.insights.Configuration;
 import com.finbourne.insights.Pair;
 import com.finbourne.insights.ProgressRequestBody;
 import com.finbourne.insights.ProgressResponseBody;
+import com.finbourne.insights.extensions.ConfigurationOptions;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -74,6 +75,10 @@ public class AccessEvaluationsApi {
     }
 
     private okhttp3.Call getAccessEvaluationLogCall(String id, final ApiCallback _callback) throws ApiException {
+        return getAccessEvaluationLogCall(id,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call getAccessEvaluationLogCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -117,30 +122,44 @@ public class AccessEvaluationsApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAccessEvaluationLogValidateBeforeCall(String id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getAccessEvaluationLogValidateBeforeCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling getAccessEvaluationLog(Async)");
         }
 
-        return getAccessEvaluationLogCall(id, _callback);
+        return getAccessEvaluationLogCall(id, _callback, opts);
 
     }
 
 
     private ApiResponse<AccessEvaluationLog> getAccessEvaluationLogWithHttpInfo(String id) throws ApiException {
-        okhttp3.Call localVarCall = getAccessEvaluationLogValidateBeforeCall(id, null);
+        okhttp3.Call localVarCall = getAccessEvaluationLogValidateBeforeCall(id, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<AccessEvaluationLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<AccessEvaluationLog> getAccessEvaluationLogWithHttpInfo(String id, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getAccessEvaluationLogValidateBeforeCall(id, null, opts);
         Type localVarReturnType = new TypeToken<AccessEvaluationLog>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call getAccessEvaluationLogAsync(String id, final ApiCallback<AccessEvaluationLog> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getAccessEvaluationLogValidateBeforeCall(id, _callback);
+        okhttp3.Call localVarCall = getAccessEvaluationLogValidateBeforeCall(id, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<AccessEvaluationLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call getAccessEvaluationLogAsync(String id, final ApiCallback<AccessEvaluationLog> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = getAccessEvaluationLogValidateBeforeCall(id, _callback, opts);
         Type localVarReturnType = new TypeToken<AccessEvaluationLog>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -188,6 +207,23 @@ public class AccessEvaluationsApi {
         }
 
         /**
+         * Execute getAccessEvaluationLog request. Use any specified configuration options to override any other configuration for this request only.
+         * @return AccessEvaluationLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public AccessEvaluationLog execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<AccessEvaluationLog> localVarResp = getAccessEvaluationLogWithHttpInfo(id, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute getAccessEvaluationLog request with HTTP info returned
          * @return ApiResponse&lt;AccessEvaluationLog&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -201,6 +237,22 @@ public class AccessEvaluationsApi {
          */
         public ApiResponse<AccessEvaluationLog> executeWithHttpInfo() throws ApiException {
             return getAccessEvaluationLogWithHttpInfo(id);
+        }
+
+        /**
+         * Execute getAccessEvaluationLog request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;AccessEvaluationLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<AccessEvaluationLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getAccessEvaluationLogWithHttpInfo(id, opts);
         }
 
         /**
@@ -218,6 +270,23 @@ public class AccessEvaluationsApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<AccessEvaluationLog> _callback) throws ApiException {
             return getAccessEvaluationLogAsync(id, _callback);
+        }
+
+        /**
+         * Execute getAccessEvaluationLog request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<AccessEvaluationLog> _callback, ConfigurationOptions opts) throws ApiException {
+            return getAccessEvaluationLogAsync(id, _callback, opts);
         }
     }
 
@@ -238,6 +307,10 @@ public class AccessEvaluationsApi {
         return new APIgetAccessEvaluationLogRequest(id);
     }
     private okhttp3.Call listAccessEvaluationLogsCall(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback) throws ApiException {
+        return listAccessEvaluationLogsCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call listAccessEvaluationLogsCall(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -308,25 +381,39 @@ public class AccessEvaluationsApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listAccessEvaluationLogsValidateBeforeCall(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback) throws ApiException {
-        return listAccessEvaluationLogsCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback);
+    private okhttp3.Call listAccessEvaluationLogsValidateBeforeCall(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        return listAccessEvaluationLogsCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback, opts);
 
     }
 
 
     private ApiResponse<ResourceListWithHistogramOfAccessEvaluationLog> listAccessEvaluationLogsWithHttpInfo(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval) throws ApiException {
-        okhttp3.Call localVarCall = listAccessEvaluationLogsValidateBeforeCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, null);
+        okhttp3.Call localVarCall = listAccessEvaluationLogsValidateBeforeCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfAccessEvaluationLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<ResourceListWithHistogramOfAccessEvaluationLog> listAccessEvaluationLogsWithHttpInfo(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = listAccessEvaluationLogsValidateBeforeCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, null, opts);
         Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfAccessEvaluationLog>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call listAccessEvaluationLogsAsync(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback<ResourceListWithHistogramOfAccessEvaluationLog> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listAccessEvaluationLogsValidateBeforeCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback);
+        okhttp3.Call localVarCall = listAccessEvaluationLogsValidateBeforeCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfAccessEvaluationLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call listAccessEvaluationLogsAsync(OffsetDateTime startAt, OffsetDateTime endAt, String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback<ResourceListWithHistogramOfAccessEvaluationLog> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = listAccessEvaluationLogsValidateBeforeCall(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback, opts);
         Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfAccessEvaluationLog>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -449,6 +536,23 @@ public class AccessEvaluationsApi {
         }
 
         /**
+         * Execute listAccessEvaluationLogs request. Use any specified configuration options to override any other configuration for this request only.
+         * @return ResourceListWithHistogramOfAccessEvaluationLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ResourceListWithHistogramOfAccessEvaluationLog execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<ResourceListWithHistogramOfAccessEvaluationLog> localVarResp = listAccessEvaluationLogsWithHttpInfo(startAt, endAt, filter, sortBy, limit, page, histogramInterval, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute listAccessEvaluationLogs request with HTTP info returned
          * @return ApiResponse&lt;ResourceListWithHistogramOfAccessEvaluationLog&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -462,6 +566,22 @@ public class AccessEvaluationsApi {
          */
         public ApiResponse<ResourceListWithHistogramOfAccessEvaluationLog> executeWithHttpInfo() throws ApiException {
             return listAccessEvaluationLogsWithHttpInfo(startAt, endAt, filter, sortBy, limit, page, histogramInterval);
+        }
+
+        /**
+         * Execute listAccessEvaluationLogs request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;ResourceListWithHistogramOfAccessEvaluationLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<ResourceListWithHistogramOfAccessEvaluationLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return listAccessEvaluationLogsWithHttpInfo(startAt, endAt, filter, sortBy, limit, page, histogramInterval, opts);
         }
 
         /**
@@ -479,6 +599,23 @@ public class AccessEvaluationsApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<ResourceListWithHistogramOfAccessEvaluationLog> _callback) throws ApiException {
             return listAccessEvaluationLogsAsync(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback);
+        }
+
+        /**
+         * Execute listAccessEvaluationLogs request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<ResourceListWithHistogramOfAccessEvaluationLog> _callback, ConfigurationOptions opts) throws ApiException {
+            return listAccessEvaluationLogsAsync(startAt, endAt, filter, sortBy, limit, page, histogramInterval, _callback, opts);
         }
     }
 

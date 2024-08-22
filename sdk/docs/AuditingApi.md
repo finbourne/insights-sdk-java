@@ -46,9 +46,20 @@ public class AuditingApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // AuditingApi apiInstance = apiFactory.build(AuditingApi.class);
+
         AuditingApi apiInstance = ApiFactoryBuilder.build(fileName).build(AuditingApi.class);
         CreateAuditEntry createAuditEntry = new CreateAuditEntry(); // CreateAuditEntry | Information about the entry to be created.
         try {
+            // uncomment the below to set overrides at the request level
+            // AuditEntry result = apiInstance.createEntry(createAuditEntry).execute(opts);
+
             AuditEntry result = apiInstance.createEntry(createAuditEntry).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
@@ -127,8 +138,19 @@ public class AuditingApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // AuditingApi apiInstance = apiFactory.build(AuditingApi.class);
+
         AuditingApi apiInstance = ApiFactoryBuilder.build(fileName).build(AuditingApi.class);
         try {
+            // uncomment the below to set overrides at the request level
+            // ResourceListOfAuditProcessSummary result = apiInstance.getProcesses().execute(opts);
+
             ResourceListOfAuditProcessSummary result = apiInstance.getProcesses().execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
@@ -202,12 +224,23 @@ public class AuditingApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // AuditingApi apiInstance = apiFactory.build(AuditingApi.class);
+
         AuditingApi apiInstance = ApiFactoryBuilder.build(fileName).build(AuditingApi.class);
         String filter = "filter_example"; // String | The filter to be applied to the results.
         String sortBy = "sortBy_example"; // String | The order to return the entries in.
         Integer size = 1000; // Integer | The maximum number of entries to return.
         String state = "state_example"; // String | The scrolling state, used to iterate through the data set.
         try {
+            // uncomment the below to set overrides at the request level
+            // ScrollableCollectionOfAuditEntry result = apiInstance.listEntries(filter, sortBy, size, state).execute(opts);
+
             ScrollableCollectionOfAuditEntry result = apiInstance.listEntries(filter, sortBy, size, state).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {

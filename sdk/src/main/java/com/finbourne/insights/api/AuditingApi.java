@@ -18,6 +18,7 @@ import com.finbourne.insights.Configuration;
 import com.finbourne.insights.Pair;
 import com.finbourne.insights.ProgressRequestBody;
 import com.finbourne.insights.ProgressResponseBody;
+import com.finbourne.insights.extensions.ConfigurationOptions;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -76,6 +77,10 @@ public class AuditingApi {
     }
 
     private okhttp3.Call createEntryCall(CreateAuditEntry createAuditEntry, final ApiCallback _callback) throws ApiException {
+        return createEntryCall(createAuditEntry,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call createEntryCall(CreateAuditEntry createAuditEntry, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -118,25 +123,39 @@ public class AuditingApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createEntryValidateBeforeCall(CreateAuditEntry createAuditEntry, final ApiCallback _callback) throws ApiException {
-        return createEntryCall(createAuditEntry, _callback);
+    private okhttp3.Call createEntryValidateBeforeCall(CreateAuditEntry createAuditEntry, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        return createEntryCall(createAuditEntry, _callback, opts);
 
     }
 
 
     private ApiResponse<AuditEntry> createEntryWithHttpInfo(CreateAuditEntry createAuditEntry) throws ApiException {
-        okhttp3.Call localVarCall = createEntryValidateBeforeCall(createAuditEntry, null);
+        okhttp3.Call localVarCall = createEntryValidateBeforeCall(createAuditEntry, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<AuditEntry>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<AuditEntry> createEntryWithHttpInfo(CreateAuditEntry createAuditEntry, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = createEntryValidateBeforeCall(createAuditEntry, null, opts);
         Type localVarReturnType = new TypeToken<AuditEntry>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call createEntryAsync(CreateAuditEntry createAuditEntry, final ApiCallback<AuditEntry> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = createEntryValidateBeforeCall(createAuditEntry, _callback);
+        okhttp3.Call localVarCall = createEntryValidateBeforeCall(createAuditEntry, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<AuditEntry>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call createEntryAsync(CreateAuditEntry createAuditEntry, final ApiCallback<AuditEntry> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = createEntryValidateBeforeCall(createAuditEntry, _callback, opts);
         Type localVarReturnType = new TypeToken<AuditEntry>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -195,6 +214,24 @@ public class AuditingApi {
         }
 
         /**
+         * Execute createEntry request. Use any specified configuration options to override any other configuration for this request only.
+         * @return AuditEntry
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
+            <tr><td> 429 </td><td> There have been too many recent requests, retry later (using the RETRY-AFTER header value as the delay). </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public AuditEntry execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<AuditEntry> localVarResp = createEntryWithHttpInfo(createAuditEntry, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute createEntry request with HTTP info returned
          * @return ApiResponse&lt;AuditEntry&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -209,6 +246,23 @@ public class AuditingApi {
          */
         public ApiResponse<AuditEntry> executeWithHttpInfo() throws ApiException {
             return createEntryWithHttpInfo(createAuditEntry);
+        }
+
+        /**
+         * Execute createEntry request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;AuditEntry&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
+            <tr><td> 429 </td><td> There have been too many recent requests, retry later (using the RETRY-AFTER header value as the delay). </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<AuditEntry> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return createEntryWithHttpInfo(createAuditEntry, opts);
         }
 
         /**
@@ -227,6 +281,24 @@ public class AuditingApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<AuditEntry> _callback) throws ApiException {
             return createEntryAsync(createAuditEntry, _callback);
+        }
+
+        /**
+         * Execute createEntry request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 201 </td><td> Created </td><td>  -  </td></tr>
+            <tr><td> 429 </td><td> There have been too many recent requests, retry later (using the RETRY-AFTER header value as the delay). </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<AuditEntry> _callback, ConfigurationOptions opts) throws ApiException {
+            return createEntryAsync(createAuditEntry, _callback, opts);
         }
     }
 
@@ -247,6 +319,10 @@ public class AuditingApi {
         return new APIcreateEntryRequest();
     }
     private okhttp3.Call getProcessesCall(final ApiCallback _callback) throws ApiException {
+        return getProcessesCall( _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call getProcessesCall(final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -287,25 +363,39 @@ public class AuditingApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getProcessesValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return getProcessesCall(_callback);
+    private okhttp3.Call getProcessesValidateBeforeCall(final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        return getProcessesCall(_callback, opts);
 
     }
 
 
     private ApiResponse<ResourceListOfAuditProcessSummary> getProcessesWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = getProcessesValidateBeforeCall(null);
+        okhttp3.Call localVarCall = getProcessesValidateBeforeCall(null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListOfAuditProcessSummary>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<ResourceListOfAuditProcessSummary> getProcessesWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getProcessesValidateBeforeCall(null, opts);
         Type localVarReturnType = new TypeToken<ResourceListOfAuditProcessSummary>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call getProcessesAsync(final ApiCallback<ResourceListOfAuditProcessSummary> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getProcessesValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = getProcessesValidateBeforeCall(_callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListOfAuditProcessSummary>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call getProcessesAsync(final ApiCallback<ResourceListOfAuditProcessSummary> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = getProcessesValidateBeforeCall(_callback, opts);
         Type localVarReturnType = new TypeToken<ResourceListOfAuditProcessSummary>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -349,6 +439,22 @@ public class AuditingApi {
         }
 
         /**
+         * Execute getProcesses request. Use any specified configuration options to override any other configuration for this request only.
+         * @return ResourceListOfAuditProcessSummary
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ResourceListOfAuditProcessSummary execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<ResourceListOfAuditProcessSummary> localVarResp = getProcessesWithHttpInfo(opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute getProcesses request with HTTP info returned
          * @return ApiResponse&lt;ResourceListOfAuditProcessSummary&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -361,6 +467,21 @@ public class AuditingApi {
          */
         public ApiResponse<ResourceListOfAuditProcessSummary> executeWithHttpInfo() throws ApiException {
             return getProcessesWithHttpInfo();
+        }
+
+        /**
+         * Execute getProcesses request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;ResourceListOfAuditProcessSummary&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<ResourceListOfAuditProcessSummary> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getProcessesWithHttpInfo(opts);
         }
 
         /**
@@ -377,6 +498,22 @@ public class AuditingApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<ResourceListOfAuditProcessSummary> _callback) throws ApiException {
             return getProcessesAsync(_callback);
+        }
+
+        /**
+         * Execute getProcesses request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<ResourceListOfAuditProcessSummary> _callback, ConfigurationOptions opts) throws ApiException {
+            return getProcessesAsync(_callback, opts);
         }
     }
 
@@ -395,6 +532,10 @@ public class AuditingApi {
         return new APIgetProcessesRequest();
     }
     private okhttp3.Call listEntriesCall(String filter, String sortBy, Integer size, String state, final ApiCallback _callback) throws ApiException {
+        return listEntriesCall(filter, sortBy, size, state,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call listEntriesCall(String filter, String sortBy, Integer size, String state, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -451,25 +592,39 @@ public class AuditingApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listEntriesValidateBeforeCall(String filter, String sortBy, Integer size, String state, final ApiCallback _callback) throws ApiException {
-        return listEntriesCall(filter, sortBy, size, state, _callback);
+    private okhttp3.Call listEntriesValidateBeforeCall(String filter, String sortBy, Integer size, String state, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        return listEntriesCall(filter, sortBy, size, state, _callback, opts);
 
     }
 
 
     private ApiResponse<ScrollableCollectionOfAuditEntry> listEntriesWithHttpInfo(String filter, String sortBy, Integer size, String state) throws ApiException {
-        okhttp3.Call localVarCall = listEntriesValidateBeforeCall(filter, sortBy, size, state, null);
+        okhttp3.Call localVarCall = listEntriesValidateBeforeCall(filter, sortBy, size, state, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ScrollableCollectionOfAuditEntry>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<ScrollableCollectionOfAuditEntry> listEntriesWithHttpInfo(String filter, String sortBy, Integer size, String state, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = listEntriesValidateBeforeCall(filter, sortBy, size, state, null, opts);
         Type localVarReturnType = new TypeToken<ScrollableCollectionOfAuditEntry>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call listEntriesAsync(String filter, String sortBy, Integer size, String state, final ApiCallback<ScrollableCollectionOfAuditEntry> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listEntriesValidateBeforeCall(filter, sortBy, size, state, _callback);
+        okhttp3.Call localVarCall = listEntriesValidateBeforeCall(filter, sortBy, size, state, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ScrollableCollectionOfAuditEntry>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call listEntriesAsync(String filter, String sortBy, Integer size, String state, final ApiCallback<ScrollableCollectionOfAuditEntry> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = listEntriesValidateBeforeCall(filter, sortBy, size, state, _callback, opts);
         Type localVarReturnType = new TypeToken<ScrollableCollectionOfAuditEntry>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -559,6 +714,23 @@ public class AuditingApi {
         }
 
         /**
+         * Execute listEntries request. Use any specified configuration options to override any other configuration for this request only.
+         * @return ScrollableCollectionOfAuditEntry
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ScrollableCollectionOfAuditEntry execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<ScrollableCollectionOfAuditEntry> localVarResp = listEntriesWithHttpInfo(filter, sortBy, size, state, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute listEntries request with HTTP info returned
          * @return ApiResponse&lt;ScrollableCollectionOfAuditEntry&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -572,6 +744,22 @@ public class AuditingApi {
          */
         public ApiResponse<ScrollableCollectionOfAuditEntry> executeWithHttpInfo() throws ApiException {
             return listEntriesWithHttpInfo(filter, sortBy, size, state);
+        }
+
+        /**
+         * Execute listEntries request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;ScrollableCollectionOfAuditEntry&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<ScrollableCollectionOfAuditEntry> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return listEntriesWithHttpInfo(filter, sortBy, size, state, opts);
         }
 
         /**
@@ -589,6 +777,23 @@ public class AuditingApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<ScrollableCollectionOfAuditEntry> _callback) throws ApiException {
             return listEntriesAsync(filter, sortBy, size, state, _callback);
+        }
+
+        /**
+         * Execute listEntries request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<ScrollableCollectionOfAuditEntry> _callback, ConfigurationOptions opts) throws ApiException {
+            return listEntriesAsync(filter, sortBy, size, state, _callback, opts);
         }
     }
 

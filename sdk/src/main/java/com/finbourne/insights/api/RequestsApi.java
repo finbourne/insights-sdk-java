@@ -18,6 +18,7 @@ import com.finbourne.insights.Configuration;
 import com.finbourne.insights.Pair;
 import com.finbourne.insights.ProgressRequestBody;
 import com.finbourne.insights.ProgressResponseBody;
+import com.finbourne.insights.extensions.ConfigurationOptions;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -75,6 +76,10 @@ public class RequestsApi {
     }
 
     private okhttp3.Call getRequestCall(String id, final ApiCallback _callback) throws ApiException {
+        return getRequestCall(id,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call getRequestCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -118,30 +123,44 @@ public class RequestsApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getRequestValidateBeforeCall(String id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getRequestValidateBeforeCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling getRequest(Async)");
         }
 
-        return getRequestCall(id, _callback);
+        return getRequestCall(id, _callback, opts);
 
     }
 
 
     private ApiResponse<Request> getRequestWithHttpInfo(String id) throws ApiException {
-        okhttp3.Call localVarCall = getRequestValidateBeforeCall(id, null);
+        okhttp3.Call localVarCall = getRequestValidateBeforeCall(id, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<Request>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<Request> getRequestWithHttpInfo(String id, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getRequestValidateBeforeCall(id, null, opts);
         Type localVarReturnType = new TypeToken<Request>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call getRequestAsync(String id, final ApiCallback<Request> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getRequestValidateBeforeCall(id, _callback);
+        okhttp3.Call localVarCall = getRequestValidateBeforeCall(id, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<Request>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call getRequestAsync(String id, final ApiCallback<Request> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = getRequestValidateBeforeCall(id, _callback, opts);
         Type localVarReturnType = new TypeToken<Request>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -189,6 +208,23 @@ public class RequestsApi {
         }
 
         /**
+         * Execute getRequest request. Use any specified configuration options to override any other configuration for this request only.
+         * @return Request
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public Request execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<Request> localVarResp = getRequestWithHttpInfo(id, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute getRequest request with HTTP info returned
          * @return ApiResponse&lt;Request&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -202,6 +238,22 @@ public class RequestsApi {
          */
         public ApiResponse<Request> executeWithHttpInfo() throws ApiException {
             return getRequestWithHttpInfo(id);
+        }
+
+        /**
+         * Execute getRequest request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;Request&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<Request> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getRequestWithHttpInfo(id, opts);
         }
 
         /**
@@ -219,6 +271,23 @@ public class RequestsApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<Request> _callback) throws ApiException {
             return getRequestAsync(id, _callback);
+        }
+
+        /**
+         * Execute getRequest request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<Request> _callback, ConfigurationOptions opts) throws ApiException {
+            return getRequestAsync(id, _callback, opts);
         }
     }
 
@@ -239,6 +308,10 @@ public class RequestsApi {
         return new APIgetRequestRequest(id);
     }
     private okhttp3.Call getRequestLogCall(String id, final ApiCallback _callback) throws ApiException {
+        return getRequestLogCall(id,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call getRequestLogCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -282,30 +355,44 @@ public class RequestsApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getRequestLogValidateBeforeCall(String id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getRequestLogValidateBeforeCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling getRequestLog(Async)");
         }
 
-        return getRequestLogCall(id, _callback);
+        return getRequestLogCall(id, _callback, opts);
 
     }
 
 
     private ApiResponse<RequestLog> getRequestLogWithHttpInfo(String id) throws ApiException {
-        okhttp3.Call localVarCall = getRequestLogValidateBeforeCall(id, null);
+        okhttp3.Call localVarCall = getRequestLogValidateBeforeCall(id, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<RequestLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<RequestLog> getRequestLogWithHttpInfo(String id, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getRequestLogValidateBeforeCall(id, null, opts);
         Type localVarReturnType = new TypeToken<RequestLog>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call getRequestLogAsync(String id, final ApiCallback<RequestLog> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getRequestLogValidateBeforeCall(id, _callback);
+        okhttp3.Call localVarCall = getRequestLogValidateBeforeCall(id, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<RequestLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call getRequestLogAsync(String id, final ApiCallback<RequestLog> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = getRequestLogValidateBeforeCall(id, _callback, opts);
         Type localVarReturnType = new TypeToken<RequestLog>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -353,6 +440,23 @@ public class RequestsApi {
         }
 
         /**
+         * Execute getRequestLog request. Use any specified configuration options to override any other configuration for this request only.
+         * @return RequestLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public RequestLog execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<RequestLog> localVarResp = getRequestLogWithHttpInfo(id, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute getRequestLog request with HTTP info returned
          * @return ApiResponse&lt;RequestLog&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -366,6 +470,22 @@ public class RequestsApi {
          */
         public ApiResponse<RequestLog> executeWithHttpInfo() throws ApiException {
             return getRequestLogWithHttpInfo(id);
+        }
+
+        /**
+         * Execute getRequestLog request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;RequestLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<RequestLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getRequestLogWithHttpInfo(id, opts);
         }
 
         /**
@@ -383,6 +503,23 @@ public class RequestsApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<RequestLog> _callback) throws ApiException {
             return getRequestLogAsync(id, _callback);
+        }
+
+        /**
+         * Execute getRequestLog request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<RequestLog> _callback, ConfigurationOptions opts) throws ApiException {
+            return getRequestLogAsync(id, _callback, opts);
         }
     }
 
@@ -403,6 +540,10 @@ public class RequestsApi {
         return new APIgetRequestLogRequest(id);
     }
     private okhttp3.Call getResponseCall(String id, final ApiCallback _callback) throws ApiException {
+        return getResponseCall(id,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call getResponseCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -446,30 +587,44 @@ public class RequestsApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResponseValidateBeforeCall(String id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getResponseValidateBeforeCall(String id, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling getResponse(Async)");
         }
 
-        return getResponseCall(id, _callback);
+        return getResponseCall(id, _callback, opts);
 
     }
 
 
     private ApiResponse<Response> getResponseWithHttpInfo(String id) throws ApiException {
-        okhttp3.Call localVarCall = getResponseValidateBeforeCall(id, null);
+        okhttp3.Call localVarCall = getResponseValidateBeforeCall(id, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<Response>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<Response> getResponseWithHttpInfo(String id, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getResponseValidateBeforeCall(id, null, opts);
         Type localVarReturnType = new TypeToken<Response>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call getResponseAsync(String id, final ApiCallback<Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getResponseValidateBeforeCall(id, _callback);
+        okhttp3.Call localVarCall = getResponseValidateBeforeCall(id, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<Response>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call getResponseAsync(String id, final ApiCallback<Response> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = getResponseValidateBeforeCall(id, _callback, opts);
         Type localVarReturnType = new TypeToken<Response>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -517,6 +672,23 @@ public class RequestsApi {
         }
 
         /**
+         * Execute getResponse request. Use any specified configuration options to override any other configuration for this request only.
+         * @return Response
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public Response execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<Response> localVarResp = getResponseWithHttpInfo(id, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute getResponse request with HTTP info returned
          * @return ApiResponse&lt;Response&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -530,6 +702,22 @@ public class RequestsApi {
          */
         public ApiResponse<Response> executeWithHttpInfo() throws ApiException {
             return getResponseWithHttpInfo(id);
+        }
+
+        /**
+         * Execute getResponse request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;Response&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<Response> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getResponseWithHttpInfo(id, opts);
         }
 
         /**
@@ -547,6 +735,23 @@ public class RequestsApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<Response> _callback) throws ApiException {
             return getResponseAsync(id, _callback);
+        }
+
+        /**
+         * Execute getResponse request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<Response> _callback, ConfigurationOptions opts) throws ApiException {
+            return getResponseAsync(id, _callback, opts);
         }
     }
 
@@ -567,6 +772,10 @@ public class RequestsApi {
         return new APIgetResponseRequest(id);
     }
     private okhttp3.Call listRequestLogsCall(String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback) throws ApiException {
+        return listRequestLogsCall(filter, sortBy, limit, page, histogramInterval,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call listRequestLogsCall(String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -629,25 +838,39 @@ public class RequestsApi {
         }
 
         String[] localVarAuthNames = new String[] { "oauth2" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listRequestLogsValidateBeforeCall(String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback) throws ApiException {
-        return listRequestLogsCall(filter, sortBy, limit, page, histogramInterval, _callback);
+    private okhttp3.Call listRequestLogsValidateBeforeCall(String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        return listRequestLogsCall(filter, sortBy, limit, page, histogramInterval, _callback, opts);
 
     }
 
 
     private ApiResponse<ResourceListWithHistogramOfRequestLog> listRequestLogsWithHttpInfo(String filter, String sortBy, Integer limit, String page, String histogramInterval) throws ApiException {
-        okhttp3.Call localVarCall = listRequestLogsValidateBeforeCall(filter, sortBy, limit, page, histogramInterval, null);
+        okhttp3.Call localVarCall = listRequestLogsValidateBeforeCall(filter, sortBy, limit, page, histogramInterval, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfRequestLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<ResourceListWithHistogramOfRequestLog> listRequestLogsWithHttpInfo(String filter, String sortBy, Integer limit, String page, String histogramInterval, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = listRequestLogsValidateBeforeCall(filter, sortBy, limit, page, histogramInterval, null, opts);
         Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfRequestLog>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     private okhttp3.Call listRequestLogsAsync(String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback<ResourceListWithHistogramOfRequestLog> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listRequestLogsValidateBeforeCall(filter, sortBy, limit, page, histogramInterval, _callback);
+        okhttp3.Call localVarCall = listRequestLogsValidateBeforeCall(filter, sortBy, limit, page, histogramInterval, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfRequestLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call listRequestLogsAsync(String filter, String sortBy, Integer limit, String page, String histogramInterval, final ApiCallback<ResourceListWithHistogramOfRequestLog> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = listRequestLogsValidateBeforeCall(filter, sortBy, limit, page, histogramInterval, _callback, opts);
         Type localVarReturnType = new TypeToken<ResourceListWithHistogramOfRequestLog>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -748,6 +971,23 @@ public class RequestsApi {
         }
 
         /**
+         * Execute listRequestLogs request. Use any specified configuration options to override any other configuration for this request only.
+         * @return ResourceListWithHistogramOfRequestLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ResourceListWithHistogramOfRequestLog execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<ResourceListWithHistogramOfRequestLog> localVarResp = listRequestLogsWithHttpInfo(filter, sortBy, limit, page, histogramInterval, opts);
+            return localVarResp.getData();
+        }
+
+        /**
          * Execute listRequestLogs request with HTTP info returned
          * @return ApiResponse&lt;ResourceListWithHistogramOfRequestLog&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -761,6 +1001,22 @@ public class RequestsApi {
          */
         public ApiResponse<ResourceListWithHistogramOfRequestLog> executeWithHttpInfo() throws ApiException {
             return listRequestLogsWithHttpInfo(filter, sortBy, limit, page, histogramInterval);
+        }
+
+        /**
+         * Execute listRequestLogs request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;ResourceListWithHistogramOfRequestLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<ResourceListWithHistogramOfRequestLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return listRequestLogsWithHttpInfo(filter, sortBy, limit, page, histogramInterval, opts);
         }
 
         /**
@@ -778,6 +1034,23 @@ public class RequestsApi {
          */
         public okhttp3.Call executeAsync(final ApiCallback<ResourceListWithHistogramOfRequestLog> _callback) throws ApiException {
             return listRequestLogsAsync(filter, sortBy, limit, page, histogramInterval, _callback);
+        }
+
+        /**
+         * Execute listRequestLogs request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<ResourceListWithHistogramOfRequestLog> _callback, ConfigurationOptions opts) throws ApiException {
+            return listRequestLogsAsync(filter, sortBy, limit, page, histogramInterval, _callback, opts);
         }
     }
 

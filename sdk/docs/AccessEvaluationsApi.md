@@ -45,9 +45,20 @@ public class AccessEvaluationsApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // AccessEvaluationsApi apiInstance = apiFactory.build(AccessEvaluationsApi.class);
+
         AccessEvaluationsApi apiInstance = ApiFactoryBuilder.build(fileName).build(AccessEvaluationsApi.class);
         String id = "id_example"; // String | The identifier of the access evaluation to obtain the log for.
         try {
+            // uncomment the below to set overrides at the request level
+            // AccessEvaluationLog result = apiInstance.getAccessEvaluationLog(id).execute(opts);
+
             AccessEvaluationLog result = apiInstance.getAccessEvaluationLog(id).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
@@ -123,6 +134,14 @@ public class AccessEvaluationsApiExample {
             "}");
         }
 
+        // uncomment the below to use configuration overrides
+        // ConfigurationOptions opts = new ConfigurationOptions();
+        // opts.setTotalTimeoutMs(2000);
+        
+        // uncomment the below to use an api factory with overrides
+        // ApiFactory apiFactory = ApiFactoryBuilder.build(fileName, opts);
+        // AccessEvaluationsApi apiInstance = apiFactory.build(AccessEvaluationsApi.class);
+
         AccessEvaluationsApi apiInstance = ApiFactoryBuilder.build(fileName).build(AccessEvaluationsApi.class);
         OffsetDateTime startAt = OffsetDateTime.now(); // OffsetDateTime | Start date from which point to fetch logs.
         OffsetDateTime endAt = OffsetDateTime.now(); // OffsetDateTime | End date to which point to fetch logs.
@@ -132,6 +151,9 @@ public class AccessEvaluationsApiExample {
         String page = "page_example"; // String | Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied.
         String histogramInterval = "histogramInterval_example"; // String | The interval for an included histogram of the logs
         try {
+            // uncomment the below to set overrides at the request level
+            // ResourceListWithHistogramOfAccessEvaluationLog result = apiInstance.listAccessEvaluationLogs(startAt, endAt, filter, sortBy, limit, page, histogramInterval).execute(opts);
+
             ResourceListWithHistogramOfAccessEvaluationLog result = apiInstance.listAccessEvaluationLogs(startAt, endAt, filter, sortBy, limit, page, histogramInterval).execute();
             System.out.println(result.toJson());
         } catch (ApiException e) {
