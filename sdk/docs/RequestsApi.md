@@ -10,49 +10,60 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 | [**listRequestLogs**](RequestsApi.md#listRequestLogs) | **GET** /api/requests | ListRequestLogs: Get the logs for API requests. |
 
 
-<a id="getRequest"></a>
-# **getRequest**
-> Request getRequest(id).execute();
+
+## getRequest
+
+> Request getRequest(id)
 
 GetRequest: Get the request content for a specific API request.
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.RequestsApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    RequestsApi apiInstance = new RequestsApi(defaultClient);
-    String id = "id_example"; // String | The identifier of the request to obtain the content for.
-    try {
-      Request result = apiInstance.getRequest(id)
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling RequestsApi#getRequest");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class RequestsApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
+        String id = "id_example"; // String | The identifier of the request to obtain the content for.
+        try {
+            Request result = apiInstance.getRequest(id).execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RequestsApi#getRequest");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -62,14 +73,11 @@ public class Example {
 
 [**Request**](Request.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -78,49 +86,62 @@ public class Example {
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-<a id="getRequestLog"></a>
-# **getRequestLog**
-> RequestLog getRequestLog(id).execute();
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
+
+
+## getRequestLog
+
+> RequestLog getRequestLog(id)
 
 GetRequestLog: Get the log for a specific API request.
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.RequestsApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    RequestsApi apiInstance = new RequestsApi(defaultClient);
-    String id = "id_example"; // String | The identifier of the request to obtain the log for.
-    try {
-      RequestLog result = apiInstance.getRequestLog(id)
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling RequestsApi#getRequestLog");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class RequestsApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
+        String id = "id_example"; // String | The identifier of the request to obtain the log for.
+        try {
+            RequestLog result = apiInstance.getRequestLog(id).execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RequestsApi#getRequestLog");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -130,14 +151,11 @@ public class Example {
 
 [**RequestLog**](RequestLog.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -146,49 +164,62 @@ public class Example {
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-<a id="getResponse"></a>
-# **getResponse**
-> Response getResponse(id).execute();
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
+
+
+## getResponse
+
+> Response getResponse(id)
 
 GetResponse: Get the response for a specific API request.
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.RequestsApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    RequestsApi apiInstance = new RequestsApi(defaultClient);
-    String id = "id_example"; // String | The identifier of the request to obtain the response for.
-    try {
-      Response result = apiInstance.getResponse(id)
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling RequestsApi#getResponse");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class RequestsApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
+        String id = "id_example"; // String | The identifier of the request to obtain the response for.
+        try {
+            Response result = apiInstance.getResponse(id).execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RequestsApi#getResponse");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -198,14 +229,11 @@ public class Example {
 
 [**Response**](Response.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -214,58 +242,66 @@ public class Example {
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-<a id="listRequestLogs"></a>
-# **listRequestLogs**
-> ResourceListWithHistogramOfRequestLog listRequestLogs().filter(filter).sortBy(sortBy).limit(limit).page(page).histogramInterval(histogramInterval).execute();
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
+
+
+## listRequestLogs
+
+> ResourceListWithHistogramOfRequestLog listRequestLogs(filter, sortBy, limit, page, histogramInterval)
 
 ListRequestLogs: Get the logs for API requests.
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.RequestsApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    RequestsApi apiInstance = new RequestsApi(defaultClient);
-    String filter = "filter_example"; // String | Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.
-    String sortBy = "sortBy_example"; // String | Order the results by these fields. Use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName
-    Integer limit = 56; // Integer | When paginating, only return this number of records. The minimum value is 0 and the maximum is 10000.
-    String page = "page_example"; // String | Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied.
-    String histogramInterval = "histogramInterval_example"; // String | Optional interval to use in a histogram of the returned values. If not provided, no histogram will be generated.
-    try {
-      ResourceListWithHistogramOfRequestLog result = apiInstance.listRequestLogs()
-            .filter(filter)
-            .sortBy(sortBy)
-            .limit(limit)
-            .page(page)
-            .histogramInterval(histogramInterval)
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling RequestsApi#listRequestLogs");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class RequestsApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        RequestsApi apiInstance = ApiFactoryBuilder.build(fileName).build(RequestsApi.class);
+        String filter = "filter_example"; // String | Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.
+        String sortBy = "sortBy_example"; // String | Order the results by these fields. Use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName
+        Integer limit = 56; // Integer | When paginating, only return this number of records. The minimum value is 0 and the maximum is 10000.
+        String page = "page_example"; // String | Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied.
+        String histogramInterval = "histogramInterval_example"; // String | Optional interval to use in a histogram of the returned values. If not provided, no histogram will be generated.
+        try {
+            ResourceListWithHistogramOfRequestLog result = apiInstance.listRequestLogs(filter, sortBy, limit, page, histogramInterval).execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RequestsApi#listRequestLogs");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -279,14 +315,11 @@ public class Example {
 
 [**ResourceListWithHistogramOfRequestLog**](ResourceListWithHistogramOfRequestLog.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+- **Content-Type**: Not defined
+- **Accept**: text/plain, application/json, text/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -294,4 +327,6 @@ public class Example {
 | **200** | Success |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
+
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
 

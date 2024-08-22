@@ -9,50 +9,60 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 | [**listEntries**](AuditingApi.md#listEntries) | **GET** /api/auditing/entries | [EARLY ACCESS] ListEntries: Get the audit entries. |
 
 
-<a id="createEntry"></a>
-# **createEntry**
-> AuditEntry createEntry().createAuditEntry(createAuditEntry).execute();
+
+## createEntry
+
+> AuditEntry createEntry(createAuditEntry)
 
 [EARLY ACCESS] CreateEntry: Create (persist) and audit entry..
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.AuditingApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    AuditingApi apiInstance = new AuditingApi(defaultClient);
-    CreateAuditEntry createAuditEntry = new CreateAuditEntry(); // CreateAuditEntry | Information about the entry to be created.
-    try {
-      AuditEntry result = apiInstance.createEntry()
-            .createAuditEntry(createAuditEntry)
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling AuditingApi#createEntry");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class AuditingApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        AuditingApi apiInstance = ApiFactoryBuilder.build(fileName).build(AuditingApi.class);
+        CreateAuditEntry createAuditEntry = new CreateAuditEntry(); // CreateAuditEntry | Information about the entry to be created.
+        try {
+            AuditEntry result = apiInstance.createEntry(createAuditEntry).execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuditingApi#createEntry");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -62,14 +72,11 @@ public class Example {
 
 [**AuditEntry**](AuditEntry.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: application/json, application/json-patch+json
- - **Accept**: application/json
+- **Content-Type**: application/json, application/json-patch+json
+- **Accept**: application/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -79,64 +86,74 @@ public class Example {
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
 
-<a id="getProcesses"></a>
-# **getProcesses**
-> ResourceListOfAuditProcessSummary getProcesses().execute();
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
+
+
+## getProcesses
+
+> ResourceListOfAuditProcessSummary getProcesses()
 
 [EARLY ACCESS] GetProcesses: Get the latest audit entry for each process.
 
 This will never be &#x60;null&#x60;, though it may be empty.
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.AuditingApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    AuditingApi apiInstance = new AuditingApi(defaultClient);
-    try {
-      ResourceListOfAuditProcessSummary result = apiInstance.getProcesses()
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling AuditingApi#getProcesses");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class AuditingApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        AuditingApi apiInstance = ApiFactoryBuilder.build(fileName).build(AuditingApi.class);
+        try {
+            ResourceListOfAuditProcessSummary result = apiInstance.getProcesses().execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuditingApi#getProcesses");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
 [**ResourceListOfAuditProcessSummary**](ResourceListOfAuditProcessSummary.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -144,58 +161,67 @@ This endpoint does not need any parameter.
 | **200** | Success |  -  |
 | **0** | Error response |  -  |
 
-<a id="listEntries"></a>
-# **listEntries**
-> ScrollableCollectionOfAuditEntry listEntries().filter(filter).sortBy(sortBy).size(size).state(state).execute();
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
+
+
+## listEntries
+
+> ScrollableCollectionOfAuditEntry listEntries(filter, sortBy, size, state)
 
 [EARLY ACCESS] ListEntries: Get the audit entries.
 
 This will never be &#x60;null&#x60;, though it may be empty.
 
 ### Example
+
 ```java
-// Import classes:
-import com.finbourne.insights.ApiClient;
-import com.finbourne.insights.ApiException;
-import com.finbourne.insights.Configuration;
-import com.finbourne.insights.auth.*;
-import com.finbourne.insights.models.*;
+import com.finbourne.insights.model.*;
 import com.finbourne.insights.api.AuditingApi;
+import com.finbourne.insights.extensions.ApiConfigurationException;
+import com.finbourne.insights.extensions.ApiFactoryBuilder;
+import com.finbourne.insights.extensions.auth.FinbourneTokenException;
 
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://fbn-prd.lusid.com/insights");
-    
-    // Configure OAuth2 access token for authorization: oauth2
-    OAuth oauth2 = (OAuth) defaultClient.getAuthentication("oauth2");
-    oauth2.setAccessToken("YOUR ACCESS TOKEN");
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
-    AuditingApi apiInstance = new AuditingApi(defaultClient);
-    String filter = "filter_example"; // String | The filter to be applied to the results.
-    String sortBy = "sortBy_example"; // String | The order to return the entries in.
-    Integer size = 1000; // Integer | The maximum number of entries to return.
-    String state = "state_example"; // String | The scrolling state, used to iterate through the data set.
-    try {
-      ScrollableCollectionOfAuditEntry result = apiInstance.listEntries()
-            .filter(filter)
-            .sortBy(sortBy)
-            .size(size)
-            .state(state)
-            .execute();
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling AuditingApi#listEntries");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+public class AuditingApiExample {
+
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, ApiConfigurationException, FinbourneTokenException {
+        String fileName = "secrets.json";
+        try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+          writer.write("{" +
+            "\"api\": {" +
+            "    \"tokenUrl\": \"<your-token-url>\"," +
+            "    \"insightsUrl\": \"https://<your-domain>.lusid.com/insights\"," +
+            "    \"username\": \"<your-username>\"," +
+            "    \"password\": \"<your-password>\"," +
+            "    \"clientId\": \"<your-client-id>\"," +
+            "    \"clientSecret\": \"<your-client-secret>\"" +
+            "  }" +
+            "}");
+        }
+
+        AuditingApi apiInstance = ApiFactoryBuilder.build(fileName).build(AuditingApi.class);
+        String filter = "filter_example"; // String | The filter to be applied to the results.
+        String sortBy = "sortBy_example"; // String | The order to return the entries in.
+        Integer size = 1000; // Integer | The maximum number of entries to return.
+        String state = "state_example"; // String | The scrolling state, used to iterate through the data set.
+        try {
+            ScrollableCollectionOfAuditEntry result = apiInstance.listEntries(filter, sortBy, size, state).execute();
+            System.out.println(result.toJson());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling AuditingApi#listEntries");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -208,14 +234,11 @@ public class Example {
 
 [**ScrollableCollectionOfAuditEntry**](ScrollableCollectionOfAuditEntry.md)
 
-### Authorization
-
-[oauth2](../README.md#oauth2)
-
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -223,4 +246,6 @@ public class Example {
 | **200** | Success |  -  |
 | **400** | The details of the input related failure |  -  |
 | **0** | Error response |  -  |
+
+[Back to top](#) &#8226; [Back to API list](../README.md#documentation-for-api-endpoints) &#8226; [Back to Model list](../README.md#documentation-for-models) &#8226; [Back to README](../README.md)
 
