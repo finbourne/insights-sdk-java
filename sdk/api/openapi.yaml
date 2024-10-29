@@ -4,23 +4,60 @@ info:
     email: info@finbourne.com
     name: FINBOURNE Technology
     url: https://www.finbourne.com
-  description: " \n\n# Error Codes\n\n | Code|Name|Description |\n| ---|---|--- |\n\
-    | <a name=\"-1\">-1</a>|Unknown error|An unexpected error was encountered on our\
-    \ side. |\n| <a name=\"144\">144</a>|Duplicate In Parameter Set| |\n| <a name=\"\
-    150\">150</a>|Elastic Search Error| |\n| <a name=\"151\">151</a>|Invalid Parameter\
-    \ Value| |\n| <a name=\"181\">181</a>|Data Filter Application Failure| |\n| <a\
-    \ name=\"182\">182</a>|Search Failed| |\n| <a name=\"411\">411</a>|Sort Field\
-    \ Does Not Exist| |\n| <a name=\"653\">653</a>|Request File Not Found| |\n| <a\
-    \ name=\"678\">678</a>|Log not found| |\n| <a name=\"689\">689</a>|The supplied\
-    \ pagination token is invalid| |\n| <a name=\"692\">692</a>|This endpoint does\
-    \ not support impersonation| |\n| <a name=\"871\">871</a>|The specified impersonated\
-    \ user does not exist| |\n"
+  description: |
+    Insights is LUSID's troubleshooting, monitoring and audit application. It enables you to quickly identify issues in failed requests, and offers a detailed view of your system's operations.
+
+    ### Error Codes
+
+    | Code|Name|Description |
+    | ---|---|--- |
+    | <a name="-1">-1</a>|Unknown error|An unexpected error was encountered on our side. |
+    | <a name="144">144</a>|Duplicate In Parameter Set| |
+    | <a name="150">150</a>|Elastic Search Error| |
+    | <a name="151">151</a>|Invalid Parameter Value| |
+    | <a name="181">181</a>|Data Filter Application Failure| |
+    | <a name="182">182</a>|Search Failed| |
+    | <a name="411">411</a>|Sort Field Does Not Exist| |
+    | <a name="653">653</a>|Request File Not Found| |
+    | <a name="678">678</a>|Log not found| |
+    | <a name="689">689</a>|The supplied pagination token is invalid| |
+    | <a name="692">692</a>|This endpoint does not support impersonation| |
+    | <a name="871">871</a>|The specified impersonated user does not exist| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.806
+  version: 0.0.807
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
+  x-fbn-error-codes:
+    "-1":
+      title: Unknown error
+      description: An unexpected error was encountered on our side.
+    "144":
+      title: Duplicate In Parameter Set
+    "150":
+      title: Elastic Search Error
+    "151":
+      title: Invalid Parameter Value
+    "181":
+      title: Data Filter Application Failure
+    "182":
+      title: Search Failed
+    "411":
+      title: Sort Field Does Not Exist
+    "653":
+      title: Request File Not Found
+    "678":
+      title: Log not found
+    "689":
+      title: The supplied pagination token is invalid
+    "692":
+      title: This endpoint does not support impersonation
+    "871":
+      title: The specified impersonated user does not exist
+  x-fbn-description: "Insights is LUSID's troubleshooting, monitoring and audit application.\
+    \ It enables you to quickly identify issues in failed requests, and offers a detailed\
+    \ view of your system's operations."
 servers:
 - url: https://fbn-prd.lusid.com/insights
 security:
