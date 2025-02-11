@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.818
+  version: 0.0.830
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -101,8 +101,8 @@ paths:
           type: string
         style: form
         x-nullable: true
-      - description: Expression to filter the result set. Read more about <see href="https://support.lusid.com/filtering-results-from-lusid">
-          filtering results from LUSID</see>.
+      - description: "Expression to filter the result set. Read more about [ filtering\
+          \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
         name: filter
@@ -173,7 +173,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ResourceListWithHistogramOfAccessEvaluationLog'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -227,7 +227,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/AccessEvaluationLog'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -300,7 +300,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScrollableCollectionOfAuditEntry'
-          description: Success
+          description: OK
         "400":
           content:
             application/json:
@@ -403,7 +403,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourceListOfAuditProcessSummary'
-          description: Success
+          description: OK
         default:
           content:
             application/json:
@@ -434,7 +434,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ResourceListOfAccessControlledResource'
-          description: Success
+          description: OK
         default:
           content:
             application/json:
@@ -453,8 +453,8 @@ paths:
     get:
       operationId: ListRequestLogs
       parameters:
-      - description: Expression to filter the result set. Read more about <see href="https://support.lusid.com/filtering-results-from-lusid">
-          filtering results from LUSID</see>.
+      - description: "Expression to filter the result set. Read more about [ filtering\
+          \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
         name: filter
@@ -526,7 +526,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ResourceListWithHistogramOfRequestLog'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -579,7 +579,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/RequestLog'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -632,7 +632,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/Request'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -685,7 +685,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/Response'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -715,8 +715,8 @@ paths:
     get:
       operationId: ListVendorLogs
       parameters:
-      - description: Expression to filter the result set. Read more about <see href="https://support.lusid.com/filtering-results-from-lusid">
-          filtering results from LUSID</see>.
+      - description: "Expression to filter the result set. Read more about [ filtering\
+          \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
         name: filter
@@ -788,7 +788,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ResourceListWithHistogramOfVendorLog'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -833,15 +833,72 @@ paths:
         "200":
           content:
             text/plain:
+              example:
+                id: "12345"
+                provider: ExampleProvider
+                timestamp: 2023-10-01T12:34:56.0000000+00:00
+                type: HttpResponse
+                destinationUrl: https://example.com/api
+                operation: Evaluate
+                outcome: Success
+                duration: 150.5
+                httpStatusCode: 200
+                userId: user123
+                requestId: req-67890
+                links:
+                - relation: Linked
+                  href: https://example.com/link1
+                  method: GET
+                - relation: Linked
+                  href: https://example.com/link2
+                  method: GET
               schema:
                 $ref: '#/components/schemas/VendorLog'
             application/json:
+              example:
+                id: "12345"
+                provider: ExampleProvider
+                timestamp: 2023-10-01T12:34:56.0000000+00:00
+                type: HttpResponse
+                destinationUrl: https://example.com/api
+                operation: Evaluate
+                outcome: Success
+                duration: 150.5
+                httpStatusCode: 200
+                userId: user123
+                requestId: req-67890
+                links:
+                - relation: Linked
+                  href: https://example.com/link1
+                  method: GET
+                - relation: Linked
+                  href: https://example.com/link2
+                  method: GET
               schema:
                 $ref: '#/components/schemas/VendorLog'
             text/json:
+              example:
+                id: "12345"
+                provider: ExampleProvider
+                timestamp: 2023-10-01T12:34:56.0000000+00:00
+                type: HttpResponse
+                destinationUrl: https://example.com/api
+                operation: Evaluate
+                outcome: Success
+                duration: 150.5
+                httpStatusCode: 200
+                userId: user123
+                requestId: req-67890
+                links:
+                - relation: Linked
+                  href: https://example.com/link1
+                  method: GET
+                - relation: Linked
+                  href: https://example.com/link2
+                  method: GET
               schema:
                 $ref: '#/components/schemas/VendorLog'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -894,7 +951,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/VendorRequest'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -948,7 +1005,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/VendorResponse'
-          description: Success
+          description: OK
         "400":
           content:
             text/plain:
@@ -1673,6 +1730,7 @@ components:
       properties:
         identifier:
           additionalProperties:
+            nullable: true
             type: string
           minLength: 1
           type: object
