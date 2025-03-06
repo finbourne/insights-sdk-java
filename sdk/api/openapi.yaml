@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.833
+  version: 0.0.834
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -2015,7 +2015,7 @@ components:
           nullable: true
           type: string
         outcome:
-          description: "The outcome of the request: Success, Failure or Error."
+          description: "The outcome of the request: Completed, Errored or Failed."
           minLength: 1
           type: string
         duration:

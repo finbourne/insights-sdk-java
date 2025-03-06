@@ -354,7 +354,7 @@ public class RequestLog {
   }
 
    /**
-   * The outcome of the request: Success, Failure or Error.
+   * The outcome of the request: Completed, Errored or Failed.
    * @return outcome
   **/
   @jakarta.annotation.Nonnull

@@ -18,7 +18,7 @@ Holds logged information about a request performed on an API.
 |**user** | **String** | The user who made the request. |  |
 |**userType** | **String** | The type of the user who made the request. |  [optional] |
 |**operation** | **String** | The API operation invoked by the request. |  [optional] |
-|**outcome** | **String** | The outcome of the request: Success, Failure or Error. |  |
+|**outcome** | **String** | The outcome of the request: Completed, Errored or Failed. |  |
 |**duration** | **java.math.BigDecimal** | The duration of the request in milliseconds. |  |
 |**httpStatusCode** | **Integer** | The status code of the request. |  |
 |**errorCode** | **String** | Error code, if the request had a failure or error. |  [optional] |
