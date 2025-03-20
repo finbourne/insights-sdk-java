@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.836
+  version: 0.0.842
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -108,7 +108,7 @@ paths:
         name: filter
         required: false
         schema:
-          maxLength: 16384
+          maxLength: 3000
           minLength: 0
           pattern: "^[\\s\\S]*$"
           type: string
@@ -147,7 +147,7 @@ paths:
         name: page
         required: false
         schema:
-          maxLength: 2500
+          maxLength: 4500
           minLength: 1
           pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
           type: string
@@ -460,7 +460,7 @@ paths:
         name: filter
         required: false
         schema:
-          maxLength: 16384
+          maxLength: 3000
           minLength: 0
           pattern: "^[\\s\\S]*$"
           type: string
@@ -499,7 +499,7 @@ paths:
         name: page
         required: false
         schema:
-          maxLength: 500
+          maxLength: 4500
           minLength: 1
           pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
           type: string
@@ -722,7 +722,7 @@ paths:
         name: filter
         required: false
         schema:
-          maxLength: 16384
+          maxLength: 3000
           minLength: 0
           pattern: "^[\\s\\S]*$"
           type: string
@@ -761,7 +761,7 @@ paths:
         name: page
         required: false
         schema:
-          maxLength: 500
+          maxLength: 4500
           minLength: 1
           pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
           type: string
