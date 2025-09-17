@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.878
+  version: 0.0.887
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -72,6 +72,8 @@ tags:
   name: Application Metadata
 - description: Methods for interacting with Auditing
   name: Auditing
+- description: Methods to retrieve Candela traces and trace events.
+  name: Candela Traces
 - description: Methods to retrieve logs and content of API requests.
   name: Requests
 - description: Methods to retrieve logs and content of requests to vendors.
@@ -416,6 +418,239 @@ paths:
       tags:
       - Auditing
       x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/candelatraces:
+    get:
+      operationId: ListTraceLogs
+      parameters:
+      - description: "Expression to filter the result set. Read more about [ filtering\
+          \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
+        explode: true
+        in: query
+        name: filter
+        required: false
+        schema:
+          maxLength: 3000
+          minLength: 0
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "Order the results by these fields. Use the '-' sign to denote\
+          \ descending order e.g. -MyFieldName. Multiple fields can be denoted by\
+          \ a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName"
+        explode: true
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          maxLength: 16384
+          minLength: 1
+          pattern: "^[\\s\\S]*$"
+          type: string
+        style: form
+      - description: "When paginating, only return this number of records. The minimum\
+          \ value is 0 and the maximum is 10000."
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          maximum: 10000
+          minimum: 0
+          type: integer
+        style: form
+        x-nullable: true
+      - description: "Encoded page string returned from a previous search result that\
+          \ will retrieve the next page of data. When this field is supplied, filter\
+          \ and sortby fields should not be supplied."
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          maxLength: 4500
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfTraceLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfTraceLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfTraceLog'
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] ListTraceLogs: Get the logs for traces."
+      tags:
+      - Candela Traces
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+  /api/candelatraces/{scope}/{traceId}:
+    get:
+      operationId: GetTraceLog
+      parameters:
+      - description: The identifier of the request to obtain the log for.
+        explode: false
+        in: path
+        name: traceId
+        required: true
+        schema:
+          maxLength: 100
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: scope
+        required: true
+        schema:
+          maxLength: 100
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TraceLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TraceLog'
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] GetTraceLog: Get the log for a specific trace."
+      tags:
+      - Candela Traces
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+  /api/candelatraces/{scope}/{traceId}/events:
+    get:
+      operationId: ListTraceEventLogs
+      parameters:
+      - description: The identifier of the request to obtain the log for.
+        explode: false
+        in: path
+        name: traceId
+        required: true
+        schema:
+          maxLength: 100
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: scope
+        required: true
+        schema:
+          maxLength: 100
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          type: string
+        style: simple
+      - description: ""
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          maxLength: 4500
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfTraceEventLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfTraceEventLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfTraceEventLog'
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a\
+        \ specific trace."
+      tags:
+      - Candela Traces
+      x-fbn-apistatus: Experimental
       x-accepts: application/json
   /api/metadata/access/resources:
     get:
@@ -2436,6 +2671,148 @@ components:
       required:
       - values
       type: object
+    ResourceListOfTraceEventLog:
+      additionalProperties: false
+      example:
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - traceId: traceId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          traceEventId: traceEventId
+          circuitVersion: circuitVersion
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          eventType: eventType
+          sessionId: sessionId
+          nodeId: nodeId
+          content: content
+          circuitId: circuitId
+        - traceId: traceId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          traceEventId: traceEventId
+          circuitVersion: circuitVersion
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          eventType: eventType
+          sessionId: sessionId
+          nodeId: nodeId
+          content: content
+          circuitId: circuitId
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/TraceEventLog'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+      required:
+      - values
+      type: object
+    ResourceListOfTraceLog:
+      additionalProperties: false
+      example:
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - traceId: traceId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          scope: scope
+          description: description
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          userId: userId
+        - traceId: traceId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          scope: scope
+          description: description
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          userId: userId
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/TraceLog'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+      required:
+      - values
+      type: object
     ResourceListWithHistogramOfAccessEvaluationLog:
       additionalProperties: false
       description: ResourceList with additional aggregation data about the values.
@@ -2868,6 +3245,131 @@ components:
           nullable: true
           type: string
       type: object
+    TraceEventLog:
+      additionalProperties: false
+      description: Holds information about a trace event.
+      example:
+        traceId: traceId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        traceEventId: traceEventId
+        circuitVersion: circuitVersion
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        eventType: eventType
+        sessionId: sessionId
+        nodeId: nodeId
+        content: content
+        circuitId: circuitId
+      properties:
+        traceEventId:
+          description: The identifier of the trace event.
+          minLength: 1
+          type: string
+        traceId:
+          description: The identifier of the parent trace.
+          minLength: 1
+          type: string
+        createdAt:
+          description: The datetime at which the trace event was created.
+          format: date-time
+          type: string
+        eventType:
+          description: The type of the trace event.
+          minLength: 1
+          type: string
+        content:
+          description: The content of the trace event.
+          minLength: 1
+          type: string
+        sessionId:
+          description: The session ID of the trace event.
+          minLength: 1
+          type: string
+        circuitId:
+          description: The ID of the circuit in which the trace event occurred.
+          minLength: 1
+          type: string
+        circuitVersion:
+          description: The version of the circuit in which the trace event occurred.
+          minLength: 1
+          type: string
+        nodeId:
+          description: The ID of the circuit's node at which the trace event occured.
+          minLength: 1
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - circuitId
+      - circuitVersion
+      - content
+      - createdAt
+      - eventType
+      - nodeId
+      - sessionId
+      - traceEventId
+      - traceId
+      type: object
+    TraceLog:
+      additionalProperties: false
+      description: Holds metadata for a trace.
+      example:
+        traceId: traceId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        scope: scope
+        description: description
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        userId: userId
+      properties:
+        traceId:
+          description: The identifier of the trace.
+          minLength: 1
+          type: string
+        scope:
+          description: The scope of the trace.
+          minLength: 1
+          type: string
+        createdAt:
+          description: The datetime at which the trace was created.
+          format: date-time
+          type: string
+        userId:
+          description: The id of the user who created the trace.
+          minLength: 1
+          type: string
+        description:
+          description: The description of the trace.
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - createdAt
+      - scope
+      - traceId
+      - userId
+      type: object
     VendorLog:
       additionalProperties: false
       description: Holds logged information about a request made to an external vendor.
@@ -3035,6 +3537,7 @@ x-tagGroups:
   - Access Evaluations
   - Application Metadata
   - Auditing
+  - Candela Traces
   - Requests
   - Vendor Logs
 x-group-parameters: true

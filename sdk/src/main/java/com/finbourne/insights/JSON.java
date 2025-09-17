@@ -114,11 +114,15 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.Resource.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListOfAccessControlledResource.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListOfAuditProcessSummary.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListOfTraceEventLog.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListOfTraceLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListWithHistogramOfAccessEvaluationLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListWithHistogramOfRequestLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListWithHistogramOfVendorLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.Response.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ScrollableCollectionOfAuditEntry.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceEventLog.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.VendorLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.VendorRequest.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.VendorResponse.CustomTypeAdapterFactory());
