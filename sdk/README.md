@@ -5,14 +5,15 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AccessEvaluationsApi* | [**getAccessEvaluationLog**](docs/AccessEvaluationsApi.md#getaccessevaluationlog) | **GET** /api/access/{id} | [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation.  This endpoint will be deprecated in the near future.
+*AccessEvaluationsApi* | [**getAccessEvaluationLog**](docs/AccessEvaluationsApi.md#getaccessevaluationlog) | **GET** /api/access/{id} | [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation. This endpoint will be deprecated in the near future.
 *AccessEvaluationsApi* | [**listAccessEvaluationLogs**](docs/AccessEvaluationsApi.md#listaccessevaluationlogs) | **GET** /api/access | [EARLY ACCESS] ListAccessEvaluationLogs: List the logs for access evaluations.
 *ApplicationMetadataApi* | [**listAccessControlledResources**](docs/ApplicationMetadataApi.md#listaccesscontrolledresources) | **GET** /api/metadata/access/resources | ListAccessControlledResources: Get resources available for access control
 *AuditingApi* | [**createEntry**](docs/AuditingApi.md#createentry) | **POST** /api/auditing/entries | [EARLY ACCESS] CreateEntry: Create (persist) and audit entry..
 *AuditingApi* | [**getProcesses**](docs/AuditingApi.md#getprocesses) | **GET** /api/auditing/processes | [EARLY ACCESS] GetProcesses: Get the latest audit entry for each process.
 *AuditingApi* | [**listEntries**](docs/AuditingApi.md#listentries) | **GET** /api/auditing/entries | [EARLY ACCESS] ListEntries: Get the audit entries.
-*CandelaTracesApi* | [**getTraceLog**](docs/CandelaTracesApi.md#gettracelog) | **GET** /api/candelatraces/{scope}/{traceId} | [EXPERIMENTAL] GetTraceLog: Get the log for a specific trace.
-*CandelaTracesApi* | [**listTraceEventLogs**](docs/CandelaTracesApi.md#listtraceeventlogs) | **GET** /api/candelatraces/{scope}/{traceId}/events | [EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a specific trace.
+*CandelaTracesApi* | [**getTraceDiagram**](docs/CandelaTracesApi.md#gettracediagram) | **GET** /api/candelatraces/{traceId}/diagram | [EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for a specific trace.
+*CandelaTracesApi* | [**getTraceLog**](docs/CandelaTracesApi.md#gettracelog) | **GET** /api/candelatraces/{traceId} | [EXPERIMENTAL] GetTraceLog: Get the log for a specific trace.
+*CandelaTracesApi* | [**listTraceEventLogs**](docs/CandelaTracesApi.md#listtraceeventlogs) | **GET** /api/candelatraces/{traceId}/events | [EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a specific trace.
 *CandelaTracesApi* | [**listTraceLogs**](docs/CandelaTracesApi.md#listtracelogs) | **GET** /api/candelatraces | [EXPERIMENTAL] ListTraceLogs: Get the logs for traces.
 *RequestsApi* | [**getRequest**](docs/RequestsApi.md#getrequest) | **GET** /api/requests/{id}/request | GetRequest: Get the request content for a specific API request.
 *RequestsApi* | [**getRequestLog**](docs/RequestsApi.md#getrequestlog) | **GET** /api/requests/{id} | GetRequestLog: Get the log for a specific API request.
@@ -58,6 +59,9 @@ Class | Method | HTTP request | Description
  - [ResourceListWithHistogramOfVendorLog](docs/ResourceListWithHistogramOfVendorLog.md)
  - [Response](docs/Response.md)
  - [ScrollableCollectionOfAuditEntry](docs/ScrollableCollectionOfAuditEntry.md)
+ - [TraceDiagramEdge](docs/TraceDiagramEdge.md)
+ - [TraceDiagramNode](docs/TraceDiagramNode.md)
+ - [TraceDiagramResponse](docs/TraceDiagramResponse.md)
  - [TraceEventLog](docs/TraceEventLog.md)
  - [TraceLog](docs/TraceLog.md)
  - [VendorLog](docs/VendorLog.md)

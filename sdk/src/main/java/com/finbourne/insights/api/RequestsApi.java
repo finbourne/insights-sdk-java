@@ -888,7 +888,7 @@ public class RequestsApi {
 
         /**
          * Set filter
-         * @param filter Expression to filter the result set. Read more about [ filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
+         * @param filter Expression to filter the result set. Read more about [filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
          * @return APIlistRequestLogsRequest
          */
         public APIlistRequestLogsRequest filter(String filter) {

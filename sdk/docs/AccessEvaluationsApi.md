@@ -4,7 +4,7 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getAccessEvaluationLog**](AccessEvaluationsApi.md#getAccessEvaluationLog) | **GET** /api/access/{id} | [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation.  This endpoint will be deprecated in the near future. |
+| [**getAccessEvaluationLog**](AccessEvaluationsApi.md#getAccessEvaluationLog) | **GET** /api/access/{id} | [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation. This endpoint will be deprecated in the near future. |
 | [**listAccessEvaluationLogs**](AccessEvaluationsApi.md#listAccessEvaluationLogs) | **GET** /api/access | [EARLY ACCESS] ListAccessEvaluationLogs: List the logs for access evaluations. |
 
 
@@ -13,7 +13,7 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 > AccessEvaluationLog getAccessEvaluationLog(id)
 
-[EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation.  This endpoint will be deprecated in the near future.
+[EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation. This endpoint will be deprecated in the near future.
 
 ### Example
 
@@ -145,7 +145,7 @@ public class AccessEvaluationsApiExample {
         AccessEvaluationsApi apiInstance = ApiFactoryBuilder.build(fileName).build(AccessEvaluationsApi.class);
         OffsetDateTime startAt = OffsetDateTime.now(); // OffsetDateTime | Start date from which point to fetch logs.
         OffsetDateTime endAt = OffsetDateTime.now(); // OffsetDateTime | End date to which point to fetch logs.
-        String filter = "filter_example"; // String | Expression to filter the result set. Read more about [ filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid).
+        String filter = "filter_example"; // String | Expression to filter the result set. Read more about [filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid).
         String sortBy = "sortBy_example"; // String | Order the results by these fields. Use the '-' sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName
         Integer limit = 56; // Integer | When paginating, only return this number of records. The minimum value is 0 and the maximum is 10000.
         String page = "page_example"; // String | Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied.
@@ -173,7 +173,7 @@ public class AccessEvaluationsApiExample {
 |------------- | ------------- | ------------- | -------------|
 | **startAt** | **OffsetDateTime**| Start date from which point to fetch logs. | [optional] |
 | **endAt** | **OffsetDateTime**| End date to which point to fetch logs. | [optional] |
-| **filter** | **String**| Expression to filter the result set. Read more about [ filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). | [optional] |
+| **filter** | **String**| Expression to filter the result set. Read more about [filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). | [optional] |
 | **sortBy** | **String**| Order the results by these fields. Use the &#39;-&#39; sign to denote descending order e.g. -MyFieldName. Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName | [optional] |
 | **limit** | **Integer**| When paginating, only return this number of records. The minimum value is 0 and the maximum is 10000. | [optional] |
 | **page** | **String**| Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied. | [optional] |

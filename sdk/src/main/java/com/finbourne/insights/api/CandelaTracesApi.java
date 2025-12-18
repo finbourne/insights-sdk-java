@@ -29,6 +29,7 @@ import com.finbourne.insights.model.LusidProblemDetails;
 import com.finbourne.insights.model.LusidValidationProblemDetails;
 import com.finbourne.insights.model.ResourceListOfTraceEventLog;
 import com.finbourne.insights.model.ResourceListOfTraceLog;
+import com.finbourne.insights.model.TraceDiagramResponse;
 import com.finbourne.insights.model.TraceLog;
 
 import java.lang.reflect.Type;
@@ -74,11 +75,11 @@ public class CandelaTracesApi {
         this.localCustomBaseUrl = customBaseUrl;
     }
 
-    private okhttp3.Call getTraceLogCall(String traceId, String scope, final ApiCallback _callback) throws ApiException {
-        return getTraceLogCall(traceId, scope,  _callback, new ConfigurationOptions());
+    private okhttp3.Call getTraceDiagramCall(String traceId, final ApiCallback _callback) throws ApiException {
+        return getTraceDiagramCall(traceId,  _callback, new ConfigurationOptions());
     }
 
-    private okhttp3.Call getTraceLogCall(String traceId, String scope, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+    private okhttp3.Call getTraceDiagramCall(String traceId, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -95,9 +96,8 @@ public class CandelaTracesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/candelatraces/{scope}/{traceId}"
-            .replace("{" + "traceId" + "}", localVarApiClient.escapeString(traceId.toString()))
-            .replace("{" + "scope" + "}", localVarApiClient.escapeString(scope.toString()));
+        String localVarPath = "/api/candelatraces/{traceId}/diagram"
+            .replace("{" + "traceId" + "}", localVarApiClient.escapeString(traceId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -127,61 +127,54 @@ public class CandelaTracesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getTraceLogValidateBeforeCall(String traceId, String scope, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+    private okhttp3.Call getTraceDiagramValidateBeforeCall(String traceId, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         // verify the required parameter 'traceId' is set
         if (traceId == null) {
-            throw new ApiException("Missing the required parameter 'traceId' when calling getTraceLog(Async)");
+            throw new ApiException("Missing the required parameter 'traceId' when calling getTraceDiagram(Async)");
         }
 
-        // verify the required parameter 'scope' is set
-        if (scope == null) {
-            throw new ApiException("Missing the required parameter 'scope' when calling getTraceLog(Async)");
-        }
-
-        return getTraceLogCall(traceId, scope, _callback, opts);
+        return getTraceDiagramCall(traceId, _callback, opts);
 
     }
 
 
-    private ApiResponse<TraceLog> getTraceLogWithHttpInfo(String traceId, String scope) throws ApiException {
-        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, scope, null, new ConfigurationOptions());
-        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+    private ApiResponse<TraceDiagramResponse> getTraceDiagramWithHttpInfo(String traceId) throws ApiException {
+        okhttp3.Call localVarCall = getTraceDiagramValidateBeforeCall(traceId, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<TraceDiagramResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
-    private ApiResponse<TraceLog> getTraceLogWithHttpInfo(String traceId, String scope, ConfigurationOptions opts) throws ApiException {
-        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, scope, null, opts);
-        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+    private ApiResponse<TraceDiagramResponse> getTraceDiagramWithHttpInfo(String traceId, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getTraceDiagramValidateBeforeCall(traceId, null, opts);
+        Type localVarReturnType = new TypeToken<TraceDiagramResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
-    private okhttp3.Call getTraceLogAsync(String traceId, String scope, final ApiCallback<TraceLog> _callback) throws ApiException {
+    private okhttp3.Call getTraceDiagramAsync(String traceId, final ApiCallback<TraceDiagramResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, scope, _callback, new ConfigurationOptions());
-        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+        okhttp3.Call localVarCall = getTraceDiagramValidateBeforeCall(traceId, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<TraceDiagramResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
-    private okhttp3.Call getTraceLogAsync(String traceId, String scope, final ApiCallback<TraceLog> _callback, ConfigurationOptions opts) throws ApiException {
+    private okhttp3.Call getTraceDiagramAsync(String traceId, final ApiCallback<TraceDiagramResponse> _callback, ConfigurationOptions opts) throws ApiException {
 
-        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, scope, _callback, opts);
-        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+        okhttp3.Call localVarCall = getTraceDiagramValidateBeforeCall(traceId, _callback, opts);
+        Type localVarReturnType = new TypeToken<TraceDiagramResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
-    public class APIgetTraceLogRequest {
+    public class APIgetTraceDiagramRequest {
         private final String traceId;
-        private final String scope;
 
-        private APIgetTraceLogRequest(String traceId, String scope) {
+        private APIgetTraceDiagramRequest(String traceId) {
             this.traceId = traceId;
-            this.scope = scope;
         }
 
         /**
-         * Build call for getTraceLog
+         * Build call for getTraceDiagram
          * @param _callback ApiCallback API callback
          * @return Call to execute
          * @throws ApiException If fail to serialize the request body object
@@ -194,12 +187,12 @@ public class CandelaTracesApi {
          </table>
          */
         public okhttp3.Call buildCall(final ApiCallback _callback) throws ApiException {
-            return getTraceLogCall(traceId, scope, _callback);
+            return getTraceDiagramCall(traceId, _callback);
         }
 
         /**
-         * Execute getTraceLog request
-         * @return TraceLog
+         * Execute getTraceDiagram request
+         * @return TraceDiagramResponse
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
          * @http.response.details
          <table summary="Response Details" border="1">
@@ -209,14 +202,14 @@ public class CandelaTracesApi {
             <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
          </table>
          */
-        public TraceLog execute() throws ApiException {
-            ApiResponse<TraceLog> localVarResp = getTraceLogWithHttpInfo(traceId, scope);
+        public TraceDiagramResponse execute() throws ApiException {
+            ApiResponse<TraceDiagramResponse> localVarResp = getTraceDiagramWithHttpInfo(traceId);
             return localVarResp.getData();
         }
 
         /**
-         * Execute getTraceLog request. Use any specified configuration options to override any other configuration for this request only.
-         * @return TraceLog
+         * Execute getTraceDiagram request. Use any specified configuration options to override any other configuration for this request only.
+         * @return TraceDiagramResponse
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
          * @http.response.details
          <table summary="Response Details" border="1">
@@ -226,14 +219,14 @@ public class CandelaTracesApi {
             <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
          </table>
          */
-        public TraceLog execute(ConfigurationOptions opts) throws ApiException {
-            ApiResponse<TraceLog> localVarResp = getTraceLogWithHttpInfo(traceId, scope, opts);
+        public TraceDiagramResponse execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<TraceDiagramResponse> localVarResp = getTraceDiagramWithHttpInfo(traceId, opts);
             return localVarResp.getData();
         }
 
         /**
-         * Execute getTraceLog request with HTTP info returned
-         * @return ApiResponse&lt;TraceLog&gt;
+         * Execute getTraceDiagram request with HTTP info returned
+         * @return ApiResponse&lt;TraceDiagramResponse&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
          * @http.response.details
          <table summary="Response Details" border="1">
@@ -243,13 +236,13 @@ public class CandelaTracesApi {
             <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
          </table>
          */
-        public ApiResponse<TraceLog> executeWithHttpInfo() throws ApiException {
-            return getTraceLogWithHttpInfo(traceId, scope);
+        public ApiResponse<TraceDiagramResponse> executeWithHttpInfo() throws ApiException {
+            return getTraceDiagramWithHttpInfo(traceId);
         }
 
         /**
-         * Execute getTraceLog request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
-         * @return ApiResponse&lt;TraceLog&gt;
+         * Execute getTraceDiagram request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;TraceDiagramResponse&gt;
          * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
          * @http.response.details
          <table summary="Response Details" border="1">
@@ -259,12 +252,12 @@ public class CandelaTracesApi {
             <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
          </table>
          */
-        public ApiResponse<TraceLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
-            return getTraceLogWithHttpInfo(traceId, scope, opts);
+        public ApiResponse<TraceDiagramResponse> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getTraceDiagramWithHttpInfo(traceId, opts);
         }
 
         /**
-         * Execute getTraceLog request (asynchronously)
+         * Execute getTraceDiagram request (asynchronously)
          * @param _callback The callback to be executed when the API call finishes
          * @return The request call
          * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -276,12 +269,12 @@ public class CandelaTracesApi {
             <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
          </table>
          */
-        public okhttp3.Call executeAsync(final ApiCallback<TraceLog> _callback) throws ApiException {
-            return getTraceLogAsync(traceId, scope, _callback);
+        public okhttp3.Call executeAsync(final ApiCallback<TraceDiagramResponse> _callback) throws ApiException {
+            return getTraceDiagramAsync(traceId, _callback);
         }
 
         /**
-         * Execute getTraceLog request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * Execute getTraceDiagram request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
          * @param _callback The callback to be executed when the API call finishes
          * @return The request call
          * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -293,17 +286,16 @@ public class CandelaTracesApi {
             <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
          </table>
          */
-        public okhttp3.Call executeAsync(final ApiCallback<TraceLog> _callback, ConfigurationOptions opts) throws ApiException {
-            return getTraceLogAsync(traceId, scope, _callback, opts);
+        public okhttp3.Call executeAsync(final ApiCallback<TraceDiagramResponse> _callback, ConfigurationOptions opts) throws ApiException {
+            return getTraceDiagramAsync(traceId, _callback, opts);
         }
     }
 
     /**
-     * [EXPERIMENTAL] GetTraceLog: Get the log for a specific trace.
+     * [EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for a specific trace.
      * 
-     * @param traceId The identifier of the request to obtain the log for. (required)
-     * @param scope  (required)
-     * @return APIgetTraceLogRequest
+     * @param traceId The identifier of the trace. (required)
+     * @return APIgetTraceDiagramRequest
      * @http.response.details
      <table summary="Response Details" border="1">
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
@@ -312,14 +304,14 @@ public class CandelaTracesApi {
         <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
      </table>
      */
-    public APIgetTraceLogRequest getTraceLog(String traceId, String scope) {
-        return new APIgetTraceLogRequest(traceId, scope);
+    public APIgetTraceDiagramRequest getTraceDiagram(String traceId) {
+        return new APIgetTraceDiagramRequest(traceId);
     }
-    private okhttp3.Call listTraceEventLogsCall(String traceId, String scope, String page, final ApiCallback _callback) throws ApiException {
-        return listTraceEventLogsCall(traceId, scope, page,  _callback, new ConfigurationOptions());
+    private okhttp3.Call getTraceLogCall(String traceId, final ApiCallback _callback) throws ApiException {
+        return getTraceLogCall(traceId,  _callback, new ConfigurationOptions());
     }
 
-    private okhttp3.Call listTraceEventLogsCall(String traceId, String scope, String page, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+    private okhttp3.Call getTraceLogCall(String traceId, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -336,9 +328,240 @@ public class CandelaTracesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/candelatraces/{scope}/{traceId}/events"
-            .replace("{" + "traceId" + "}", localVarApiClient.escapeString(traceId.toString()))
-            .replace("{" + "scope" + "}", localVarApiClient.escapeString(scope.toString()));
+        String localVarPath = "/api/candelatraces/{traceId}"
+            .replace("{" + "traceId" + "}", localVarApiClient.escapeString(traceId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "text/plain",
+            "application/json",
+            "text/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "oauth2" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getTraceLogValidateBeforeCall(String traceId, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        // verify the required parameter 'traceId' is set
+        if (traceId == null) {
+            throw new ApiException("Missing the required parameter 'traceId' when calling getTraceLog(Async)");
+        }
+
+        return getTraceLogCall(traceId, _callback, opts);
+
+    }
+
+
+    private ApiResponse<TraceLog> getTraceLogWithHttpInfo(String traceId) throws ApiException {
+        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<TraceLog> getTraceLogWithHttpInfo(String traceId, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, null, opts);
+        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private okhttp3.Call getTraceLogAsync(String traceId, final ApiCallback<TraceLog> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call getTraceLogAsync(String traceId, final ApiCallback<TraceLog> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = getTraceLogValidateBeforeCall(traceId, _callback, opts);
+        Type localVarReturnType = new TypeToken<TraceLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    public class APIgetTraceLogRequest {
+        private final String traceId;
+
+        private APIgetTraceLogRequest(String traceId) {
+            this.traceId = traceId;
+        }
+
+        /**
+         * Build call for getTraceLog
+         * @param _callback ApiCallback API callback
+         * @return Call to execute
+         * @throws ApiException If fail to serialize the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call buildCall(final ApiCallback _callback) throws ApiException {
+            return getTraceLogCall(traceId, _callback);
+        }
+
+        /**
+         * Execute getTraceLog request
+         * @return TraceLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public TraceLog execute() throws ApiException {
+            ApiResponse<TraceLog> localVarResp = getTraceLogWithHttpInfo(traceId);
+            return localVarResp.getData();
+        }
+
+        /**
+         * Execute getTraceLog request. Use any specified configuration options to override any other configuration for this request only.
+         * @return TraceLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public TraceLog execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<TraceLog> localVarResp = getTraceLogWithHttpInfo(traceId, opts);
+            return localVarResp.getData();
+        }
+
+        /**
+         * Execute getTraceLog request with HTTP info returned
+         * @return ApiResponse&lt;TraceLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<TraceLog> executeWithHttpInfo() throws ApiException {
+            return getTraceLogWithHttpInfo(traceId);
+        }
+
+        /**
+         * Execute getTraceLog request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;TraceLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<TraceLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return getTraceLogWithHttpInfo(traceId, opts);
+        }
+
+        /**
+         * Execute getTraceLog request (asynchronously)
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<TraceLog> _callback) throws ApiException {
+            return getTraceLogAsync(traceId, _callback);
+        }
+
+        /**
+         * Execute getTraceLog request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<TraceLog> _callback, ConfigurationOptions opts) throws ApiException {
+            return getTraceLogAsync(traceId, _callback, opts);
+        }
+    }
+
+    /**
+     * [EXPERIMENTAL] GetTraceLog: Get the log for a specific trace.
+     * 
+     * @param traceId The identifier of the request to obtain the log for. (required)
+     * @return APIgetTraceLogRequest
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+        <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+     </table>
+     */
+    public APIgetTraceLogRequest getTraceLog(String traceId) {
+        return new APIgetTraceLogRequest(traceId);
+    }
+    private okhttp3.Call listTraceEventLogsCall(String traceId, String page, final ApiCallback _callback) throws ApiException {
+        return listTraceEventLogsCall(traceId, page,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call listTraceEventLogsCall(String traceId, String page, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/candelatraces/{traceId}/events"
+            .replace("{" + "traceId" + "}", localVarApiClient.escapeString(traceId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -372,45 +595,40 @@ public class CandelaTracesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listTraceEventLogsValidateBeforeCall(String traceId, String scope, String page, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+    private okhttp3.Call listTraceEventLogsValidateBeforeCall(String traceId, String page, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
         // verify the required parameter 'traceId' is set
         if (traceId == null) {
             throw new ApiException("Missing the required parameter 'traceId' when calling listTraceEventLogs(Async)");
         }
 
-        // verify the required parameter 'scope' is set
-        if (scope == null) {
-            throw new ApiException("Missing the required parameter 'scope' when calling listTraceEventLogs(Async)");
-        }
-
-        return listTraceEventLogsCall(traceId, scope, page, _callback, opts);
+        return listTraceEventLogsCall(traceId, page, _callback, opts);
 
     }
 
 
-    private ApiResponse<ResourceListOfTraceEventLog> listTraceEventLogsWithHttpInfo(String traceId, String scope, String page) throws ApiException {
-        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, scope, page, null, new ConfigurationOptions());
+    private ApiResponse<ResourceListOfTraceEventLog> listTraceEventLogsWithHttpInfo(String traceId, String page) throws ApiException {
+        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, page, null, new ConfigurationOptions());
         Type localVarReturnType = new TypeToken<ResourceListOfTraceEventLog>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
-    private ApiResponse<ResourceListOfTraceEventLog> listTraceEventLogsWithHttpInfo(String traceId, String scope, String page, ConfigurationOptions opts) throws ApiException {
-        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, scope, page, null, opts);
+    private ApiResponse<ResourceListOfTraceEventLog> listTraceEventLogsWithHttpInfo(String traceId, String page, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, page, null, opts);
         Type localVarReturnType = new TypeToken<ResourceListOfTraceEventLog>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
-    private okhttp3.Call listTraceEventLogsAsync(String traceId, String scope, String page, final ApiCallback<ResourceListOfTraceEventLog> _callback) throws ApiException {
+    private okhttp3.Call listTraceEventLogsAsync(String traceId, String page, final ApiCallback<ResourceListOfTraceEventLog> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, scope, page, _callback, new ConfigurationOptions());
+        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, page, _callback, new ConfigurationOptions());
         Type localVarReturnType = new TypeToken<ResourceListOfTraceEventLog>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
-    private okhttp3.Call listTraceEventLogsAsync(String traceId, String scope, String page, final ApiCallback<ResourceListOfTraceEventLog> _callback, ConfigurationOptions opts) throws ApiException {
+    private okhttp3.Call listTraceEventLogsAsync(String traceId, String page, final ApiCallback<ResourceListOfTraceEventLog> _callback, ConfigurationOptions opts) throws ApiException {
 
-        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, scope, page, _callback, opts);
+        okhttp3.Call localVarCall = listTraceEventLogsValidateBeforeCall(traceId, page, _callback, opts);
         Type localVarReturnType = new TypeToken<ResourceListOfTraceEventLog>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -418,12 +636,10 @@ public class CandelaTracesApi {
 
     public class APIlistTraceEventLogsRequest {
         private final String traceId;
-        private final String scope;
         private String page;
 
-        private APIlistTraceEventLogsRequest(String traceId, String scope) {
+        private APIlistTraceEventLogsRequest(String traceId) {
             this.traceId = traceId;
-            this.scope = scope;
         }
 
         /**
@@ -450,7 +666,7 @@ public class CandelaTracesApi {
          </table>
          */
         public okhttp3.Call buildCall(final ApiCallback _callback) throws ApiException {
-            return listTraceEventLogsCall(traceId, scope, page, _callback);
+            return listTraceEventLogsCall(traceId, page, _callback);
         }
 
         /**
@@ -466,7 +682,7 @@ public class CandelaTracesApi {
          </table>
          */
         public ResourceListOfTraceEventLog execute() throws ApiException {
-            ApiResponse<ResourceListOfTraceEventLog> localVarResp = listTraceEventLogsWithHttpInfo(traceId, scope, page);
+            ApiResponse<ResourceListOfTraceEventLog> localVarResp = listTraceEventLogsWithHttpInfo(traceId, page);
             return localVarResp.getData();
         }
 
@@ -483,7 +699,7 @@ public class CandelaTracesApi {
          </table>
          */
         public ResourceListOfTraceEventLog execute(ConfigurationOptions opts) throws ApiException {
-            ApiResponse<ResourceListOfTraceEventLog> localVarResp = listTraceEventLogsWithHttpInfo(traceId, scope, page, opts);
+            ApiResponse<ResourceListOfTraceEventLog> localVarResp = listTraceEventLogsWithHttpInfo(traceId, page, opts);
             return localVarResp.getData();
         }
 
@@ -500,7 +716,7 @@ public class CandelaTracesApi {
          </table>
          */
         public ApiResponse<ResourceListOfTraceEventLog> executeWithHttpInfo() throws ApiException {
-            return listTraceEventLogsWithHttpInfo(traceId, scope, page);
+            return listTraceEventLogsWithHttpInfo(traceId, page);
         }
 
         /**
@@ -516,7 +732,7 @@ public class CandelaTracesApi {
          </table>
          */
         public ApiResponse<ResourceListOfTraceEventLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
-            return listTraceEventLogsWithHttpInfo(traceId, scope, page, opts);
+            return listTraceEventLogsWithHttpInfo(traceId, page, opts);
         }
 
         /**
@@ -533,7 +749,7 @@ public class CandelaTracesApi {
          </table>
          */
         public okhttp3.Call executeAsync(final ApiCallback<ResourceListOfTraceEventLog> _callback) throws ApiException {
-            return listTraceEventLogsAsync(traceId, scope, page, _callback);
+            return listTraceEventLogsAsync(traceId, page, _callback);
         }
 
         /**
@@ -550,7 +766,7 @@ public class CandelaTracesApi {
          </table>
          */
         public okhttp3.Call executeAsync(final ApiCallback<ResourceListOfTraceEventLog> _callback, ConfigurationOptions opts) throws ApiException {
-            return listTraceEventLogsAsync(traceId, scope, page, _callback, opts);
+            return listTraceEventLogsAsync(traceId, page, _callback, opts);
         }
     }
 
@@ -558,7 +774,6 @@ public class CandelaTracesApi {
      * [EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a specific trace.
      * 
      * @param traceId The identifier of the request to obtain the log for. (required)
-     * @param scope  (required)
      * @return APIlistTraceEventLogsRequest
      * @http.response.details
      <table summary="Response Details" border="1">
@@ -568,8 +783,8 @@ public class CandelaTracesApi {
         <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
      </table>
      */
-    public APIlistTraceEventLogsRequest listTraceEventLogs(String traceId, String scope) {
-        return new APIlistTraceEventLogsRequest(traceId, scope);
+    public APIlistTraceEventLogsRequest listTraceEventLogs(String traceId) {
+        return new APIlistTraceEventLogsRequest(traceId);
     }
     private okhttp3.Call listTraceLogsCall(String filter, String sortBy, Integer limit, String page, final ApiCallback _callback) throws ApiException {
         return listTraceLogsCall(filter, sortBy, limit, page,  _callback, new ConfigurationOptions());
@@ -683,7 +898,7 @@ public class CandelaTracesApi {
 
         /**
          * Set filter
-         * @param filter Expression to filter the result set. Read more about [ filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
+         * @param filter Expression to filter the result set. Read more about [filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
          * @return APIlistTraceLogsRequest
          */
         public APIlistTraceLogsRequest filter(String filter) {
@@ -713,7 +928,7 @@ public class CandelaTracesApi {
 
         /**
          * Set page
-         * @param page Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied. (optional)
+         * @param page Encoded pagwwwwe string returned from a previous search result that will retrieve the next page of data. When this field is supplied, filter and sortby fields should not be supplied. (optional)
          * @return APIlistTraceLogsRequest
          */
         public APIlistTraceLogsRequest page(String page) {

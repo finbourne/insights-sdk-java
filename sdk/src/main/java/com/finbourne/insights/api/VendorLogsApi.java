@@ -888,7 +888,7 @@ public class VendorLogsApi {
 
         /**
          * Set filter
-         * @param filter Expression to filter the result set. Read more about [ filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
+         * @param filter Expression to filter the result set. Read more about [filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
          * @return APIlistVendorLogsRequest
          */
         public APIlistVendorLogsRequest filter(String filter) {

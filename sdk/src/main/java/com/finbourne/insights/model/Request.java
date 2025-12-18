@@ -126,7 +126,7 @@ public class Request {
   }
 
    /**
-   * The actual length of the body, which may be larger than the data recorded in Finbourne.Insights.WebApi.Dtos.Request.Body  (e.g. if actual Body is large, or not convertible to a string)
+   * The actual length of the body, which may be larger than the data recorded in Finbourne.Insights.WebApi.Dtos.Request.Body (e.g. if actual Body is large, or not convertible to a string)
    * @return contentLength
   **/
   @jakarta.annotation.Nullable

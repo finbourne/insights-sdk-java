@@ -70,21 +70,25 @@ public class TraceEventLog {
   @SerializedName(SERIALIZED_NAME_EVENT_TYPE)
   private String eventType;
 
+  public static final String SERIALIZED_NAME_ORIGIN = "origin";
+  @SerializedName(SERIALIZED_NAME_ORIGIN)
+  private String origin;
+
   public static final String SERIALIZED_NAME_CONTENT = "content";
   @SerializedName(SERIALIZED_NAME_CONTENT)
   private String content;
 
-  public static final String SERIALIZED_NAME_SESSION_ID = "sessionId";
-  @SerializedName(SERIALIZED_NAME_SESSION_ID)
-  private String sessionId;
+  public static final String SERIALIZED_NAME_AGENT_SCOPE = "agentScope";
+  @SerializedName(SERIALIZED_NAME_AGENT_SCOPE)
+  private String agentScope;
 
-  public static final String SERIALIZED_NAME_CIRCUIT_ID = "circuitId";
-  @SerializedName(SERIALIZED_NAME_CIRCUIT_ID)
-  private String circuitId;
+  public static final String SERIALIZED_NAME_AGENT_CODE = "agentCode";
+  @SerializedName(SERIALIZED_NAME_AGENT_CODE)
+  private String agentCode;
 
-  public static final String SERIALIZED_NAME_CIRCUIT_VERSION = "circuitVersion";
-  @SerializedName(SERIALIZED_NAME_CIRCUIT_VERSION)
-  private String circuitVersion;
+  public static final String SERIALIZED_NAME_AGENT_VERSION = "agentVersion";
+  @SerializedName(SERIALIZED_NAME_AGENT_VERSION)
+  private Integer agentVersion;
 
   public static final String SERIALIZED_NAME_NODE_ID = "nodeId";
   @SerializedName(SERIALIZED_NAME_NODE_ID)
@@ -181,6 +185,27 @@ public class TraceEventLog {
   }
 
 
+  public TraceEventLog origin(String origin) {
+    
+    this.origin = origin;
+    return this;
+  }
+
+   /**
+   * Whether the event originated from the AI or the user
+   * @return origin
+  **/
+  @jakarta.annotation.Nonnull
+  public String getOrigin() {
+    return origin;
+  }
+
+
+  public void setOrigin(String origin) {
+    this.origin = origin;
+  }
+
+
   public TraceEventLog content(String content) {
     
     this.content = content;
@@ -202,66 +227,66 @@ public class TraceEventLog {
   }
 
 
-  public TraceEventLog sessionId(String sessionId) {
+  public TraceEventLog agentScope(String agentScope) {
     
-    this.sessionId = sessionId;
+    this.agentScope = agentScope;
     return this;
   }
 
    /**
-   * The session ID of the trace event.
-   * @return sessionId
+   * The scope of the agent currently being interacted with
+   * @return agentScope
   **/
   @jakarta.annotation.Nonnull
-  public String getSessionId() {
-    return sessionId;
+  public String getAgentScope() {
+    return agentScope;
   }
 
 
-  public void setSessionId(String sessionId) {
-    this.sessionId = sessionId;
+  public void setAgentScope(String agentScope) {
+    this.agentScope = agentScope;
   }
 
 
-  public TraceEventLog circuitId(String circuitId) {
+  public TraceEventLog agentCode(String agentCode) {
     
-    this.circuitId = circuitId;
+    this.agentCode = agentCode;
     return this;
   }
 
    /**
-   * The ID of the circuit in which the trace event occurred.
-   * @return circuitId
+   * The code identifier of the agent currently being interacted with
+   * @return agentCode
   **/
   @jakarta.annotation.Nonnull
-  public String getCircuitId() {
-    return circuitId;
+  public String getAgentCode() {
+    return agentCode;
   }
 
 
-  public void setCircuitId(String circuitId) {
-    this.circuitId = circuitId;
+  public void setAgentCode(String agentCode) {
+    this.agentCode = agentCode;
   }
 
 
-  public TraceEventLog circuitVersion(String circuitVersion) {
+  public TraceEventLog agentVersion(Integer agentVersion) {
     
-    this.circuitVersion = circuitVersion;
+    this.agentVersion = agentVersion;
     return this;
   }
 
    /**
    * The version of the circuit in which the trace event occurred.
-   * @return circuitVersion
+   * @return agentVersion
   **/
   @jakarta.annotation.Nonnull
-  public String getCircuitVersion() {
-    return circuitVersion;
+  public Integer getAgentVersion() {
+    return agentVersion;
   }
 
 
-  public void setCircuitVersion(String circuitVersion) {
-    this.circuitVersion = circuitVersion;
+  public void setAgentVersion(Integer agentVersion) {
+    this.agentVersion = agentVersion;
   }
 
 
@@ -329,10 +354,11 @@ public class TraceEventLog {
         Objects.equals(this.traceId, traceEventLog.traceId) &&
         Objects.equals(this.createdAt, traceEventLog.createdAt) &&
         Objects.equals(this.eventType, traceEventLog.eventType) &&
+        Objects.equals(this.origin, traceEventLog.origin) &&
         Objects.equals(this.content, traceEventLog.content) &&
-        Objects.equals(this.sessionId, traceEventLog.sessionId) &&
-        Objects.equals(this.circuitId, traceEventLog.circuitId) &&
-        Objects.equals(this.circuitVersion, traceEventLog.circuitVersion) &&
+        Objects.equals(this.agentScope, traceEventLog.agentScope) &&
+        Objects.equals(this.agentCode, traceEventLog.agentCode) &&
+        Objects.equals(this.agentVersion, traceEventLog.agentVersion) &&
         Objects.equals(this.nodeId, traceEventLog.nodeId) &&
         Objects.equals(this.links, traceEventLog.links);
   }
@@ -343,7 +369,7 @@ public class TraceEventLog {
 
   @Override
   public int hashCode() {
-    return Objects.hash(traceEventId, traceId, createdAt, eventType, content, sessionId, circuitId, circuitVersion, nodeId, links);
+    return Objects.hash(traceEventId, traceId, createdAt, eventType, origin, content, agentScope, agentCode, agentVersion, nodeId, links);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -361,10 +387,11 @@ public class TraceEventLog {
     sb.append("    traceId: ").append(toIndentedString(traceId)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
+    sb.append("    origin: ").append(toIndentedString(origin)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
-    sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
-    sb.append("    circuitId: ").append(toIndentedString(circuitId)).append("\n");
-    sb.append("    circuitVersion: ").append(toIndentedString(circuitVersion)).append("\n");
+    sb.append("    agentScope: ").append(toIndentedString(agentScope)).append("\n");
+    sb.append("    agentCode: ").append(toIndentedString(agentCode)).append("\n");
+    sb.append("    agentVersion: ").append(toIndentedString(agentVersion)).append("\n");
     sb.append("    nodeId: ").append(toIndentedString(nodeId)).append("\n");
     sb.append("    links: ").append(toIndentedString(links)).append("\n");
     sb.append("}");
@@ -393,10 +420,11 @@ public class TraceEventLog {
     openapiFields.add("traceId");
     openapiFields.add("createdAt");
     openapiFields.add("eventType");
+    openapiFields.add("origin");
     openapiFields.add("content");
-    openapiFields.add("sessionId");
-    openapiFields.add("circuitId");
-    openapiFields.add("circuitVersion");
+    openapiFields.add("agentScope");
+    openapiFields.add("agentCode");
+    openapiFields.add("agentVersion");
     openapiFields.add("nodeId");
     openapiFields.add("links");
 
@@ -406,10 +434,11 @@ public class TraceEventLog {
     openapiRequiredFields.add("traceId");
     openapiRequiredFields.add("createdAt");
     openapiRequiredFields.add("eventType");
+    openapiRequiredFields.add("origin");
     openapiRequiredFields.add("content");
-    openapiRequiredFields.add("sessionId");
-    openapiRequiredFields.add("circuitId");
-    openapiRequiredFields.add("circuitVersion");
+    openapiRequiredFields.add("agentScope");
+    openapiRequiredFields.add("agentCode");
+    openapiRequiredFields.add("agentVersion");
     openapiRequiredFields.add("nodeId");
   }
 
@@ -442,17 +471,17 @@ public class TraceEventLog {
       if (!jsonObj.get("eventType").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `eventType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("eventType").toString()));
       }
+      if (!jsonObj.get("origin").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `origin` to be a primitive type in the JSON string but got `%s`", jsonObj.get("origin").toString()));
+      }
       if (!jsonObj.get("content").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `content` to be a primitive type in the JSON string but got `%s`", jsonObj.get("content").toString()));
       }
-      if (!jsonObj.get("sessionId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `sessionId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("sessionId").toString()));
+      if (!jsonObj.get("agentScope").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `agentScope` to be a primitive type in the JSON string but got `%s`", jsonObj.get("agentScope").toString()));
       }
-      if (!jsonObj.get("circuitId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `circuitId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("circuitId").toString()));
-      }
-      if (!jsonObj.get("circuitVersion").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `circuitVersion` to be a primitive type in the JSON string but got `%s`", jsonObj.get("circuitVersion").toString()));
+      if (!jsonObj.get("agentCode").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `agentCode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("agentCode").toString()));
       }
       if (!jsonObj.get("nodeId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `nodeId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("nodeId").toString()));

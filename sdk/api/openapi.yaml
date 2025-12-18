@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.4
 info:
   contact:
     email: info@finbourne.com
@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.891
+  version: 0.0.902
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -103,7 +103,7 @@ paths:
           type: string
         style: form
         x-nullable: true
-      - description: "Expression to filter the result set. Read more about [ filtering\
+      - description: "Expression to filter the result set. Read more about [filtering\
           \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
@@ -250,8 +250,9 @@ paths:
           description: Error response
       security:
       - oauth2: []
-      summary: "[EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific\
-        \ access evaluation.\r\nThis endpoint will be deprecated in the near future."
+      summary: |-
+        [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation.
+        This endpoint will be deprecated in the near future.
       tags:
       - Access Evaluations
       x-fbn-apistatus: EarlyAccess
@@ -423,7 +424,7 @@ paths:
     get:
       operationId: ListTraceLogs
       parameters:
-      - description: "Expression to filter the result set. Read more about [ filtering\
+      - description: "Expression to filter the result set. Read more about [filtering\
           \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
@@ -461,9 +462,9 @@ paths:
           type: integer
         style: form
         x-nullable: true
-      - description: "Encoded page string returned from a previous search result that\
-          \ will retrieve the next page of data. When this field is supplied, filter\
-          \ and sortby fields should not be supplied."
+      - description: "Encoded pagwwwwe string returned from a previous search result\
+          \ that will retrieve the next page of data. When this field is supplied,\
+          \ filter and sortby fields should not be supplied."
         explode: true
         in: query
         name: page
@@ -512,7 +513,7 @@ paths:
       - Candela Traces
       x-fbn-apistatus: Experimental
       x-accepts: application/json
-  /api/candelatraces/{scope}/{traceId}:
+  /api/candelatraces/{traceId}:
     get:
       operationId: GetTraceLog
       parameters:
@@ -522,20 +523,9 @@ paths:
         name: traceId
         required: true
         schema:
-          maxLength: 100
+          maxLength: 50
           minLength: 1
-          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
-          type: string
-        style: simple
-      - description: ""
-        explode: false
-        in: path
-        name: scope
-        required: true
-        schema:
-          maxLength: 100
-          minLength: 1
-          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          pattern: "^[a-zA-Z0-9\\-]+$"
           type: string
         style: simple
       responses:
@@ -576,7 +566,61 @@ paths:
       - Candela Traces
       x-fbn-apistatus: Experimental
       x-accepts: application/json
-  /api/candelatraces/{scope}/{traceId}/events:
+  /api/candelatraces/{traceId}/diagram:
+    get:
+      operationId: GetTraceDiagram
+      parameters:
+      - description: The identifier of the trace.
+        explode: false
+        in: path
+        name: traceId
+        required: true
+        schema:
+          maxLength: 50
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-]+$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TraceDiagramResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceDiagramResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TraceDiagramResponse'
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for\
+        \ a specific trace."
+      tags:
+      - Candela Traces
+      x-fbn-apistatus: Experimental
+      x-accepts: application/json
+  /api/candelatraces/{traceId}/events:
     get:
       operationId: ListTraceEventLogs
       parameters:
@@ -586,20 +630,9 @@ paths:
         name: traceId
         required: true
         schema:
-          maxLength: 100
+          maxLength: 50
           minLength: 1
-          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
-          type: string
-        style: simple
-      - description: ""
-        explode: false
-        in: path
-        name: scope
-        required: true
-        schema:
-          maxLength: 100
-          minLength: 1
-          pattern: "^[a-zA-Z0-9\\-_:\\+]+$"
+          pattern: "^[a-zA-Z0-9\\-]+$"
           type: string
         style: simple
       - description: ""
@@ -688,7 +721,7 @@ paths:
     get:
       operationId: ListRequestLogs
       parameters:
-      - description: "Expression to filter the result set. Read more about [ filtering\
+      - description: "Expression to filter the result set. Read more about [filtering\
           \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
@@ -950,7 +983,7 @@ paths:
     get:
       operationId: ListVendorLogs
       parameters:
-      - description: "Expression to filter the result set. Read more about [ filtering\
+      - description: "Expression to filter the result set. Read more about [filtering\
           \ results from LUSID](https://support.lusid.com/filtering-results-from-lusid)."
         explode: true
         in: query
@@ -2143,9 +2176,9 @@ components:
           nullable: true
           type: object
         contentLength:
-          description: "The actual length of the body, which may be larger than the\
-            \ data recorded in Finbourne.Insights.WebApi.Dtos.Request.Body\r\n(e.g.\
-            \ if actual Body is large, or not convertible to a string)"
+          description: |-
+            The actual length of the body, which may be larger than the data recorded in Finbourne.Insights.WebApi.Dtos.Request.Body
+            (e.g. if actual Body is large, or not convertible to a string)
           format: int64
           nullable: true
           type: integer
@@ -2680,7 +2713,9 @@ components:
         - traceId: traceId
           createdAt: 2000-01-23T04:56:07.000+00:00
           traceEventId: traceEventId
-          circuitVersion: circuitVersion
+          agentCode: agentCode
+          origin: origin
+          agentVersion: 0
           links:
           - method: method
             description: description
@@ -2691,14 +2726,15 @@ components:
             href: https://openapi-generator.tech
             relation: relation
           eventType: eventType
-          sessionId: sessionId
+          agentScope: agentScope
           nodeId: nodeId
           content: content
-          circuitId: circuitId
         - traceId: traceId
           createdAt: 2000-01-23T04:56:07.000+00:00
           traceEventId: traceEventId
-          circuitVersion: circuitVersion
+          agentCode: agentCode
+          origin: origin
+          agentVersion: 0
           links:
           - method: method
             description: description
@@ -2709,10 +2745,9 @@ components:
             href: https://openapi-generator.tech
             relation: relation
           eventType: eventType
-          sessionId: sessionId
+          agentScope: agentScope
           nodeId: nodeId
           content: content
-          circuitId: circuitId
         links:
         - method: method
           description: description
@@ -2754,7 +2789,6 @@ components:
         values:
         - traceId: traceId
           createdAt: 2000-01-23T04:56:07.000+00:00
-          scope: scope
           description: description
           links:
           - method: method
@@ -2768,7 +2802,6 @@ components:
           userId: userId
         - traceId: traceId
           createdAt: 2000-01-23T04:56:07.000+00:00
-          scope: scope
           description: description
           links:
           - method: method
@@ -3153,9 +3186,9 @@ components:
           nullable: true
           type: object
         contentLength:
-          description: "The actual length of the body, which may be larger than the\
-            \ data recorded in Finbourne.Insights.WebApi.Dtos.Response.Body\r\n(e.g.\
-            \ if actual Body is large, or not convertible to a string)"
+          description: |-
+            The actual length of the body, which may be larger than the data recorded in Finbourne.Insights.WebApi.Dtos.Response.Body
+            (e.g. if actual Body is large, or not convertible to a string)
           format: int64
           nullable: true
           type: integer
@@ -3245,6 +3278,116 @@ components:
           nullable: true
           type: string
       type: object
+    TraceDiagramEdge:
+      additionalProperties: false
+      description: Represents an edge connecting two nodes within a trace diagram.
+      example:
+        childNodeId: childNodeId
+        id: 1
+        label: label
+        nodeId: nodeId
+      properties:
+        id:
+          description: Sequential identifier of the edge.
+          format: int32
+          type: integer
+        nodeId:
+          description: Identifier of the parent node.
+          nullable: true
+          type: string
+        childNodeId:
+          description: Identifier of the child node.
+          nullable: true
+          type: string
+        label:
+          description: Label displayed for the edge.
+          nullable: true
+          type: string
+      type: object
+    TraceDiagramNode:
+      additionalProperties: false
+      description: Represents a node within a trace diagram.
+      example:
+        parent: parent
+        level: 0
+        displayName: displayName
+        agentVersion: 6
+        id: id
+        type: type
+        agentScope: agentScope
+      properties:
+        id:
+          description: Unique identifier of the node.
+          nullable: true
+          type: string
+        displayName:
+          description: Display name of the node.
+          nullable: true
+          type: string
+        level:
+          description: Depth level of the node within the diagram.
+          format: int32
+          type: integer
+        parent:
+          description: Identifier of the node's parent. This is null for the root
+            node.
+          nullable: true
+          type: string
+        type:
+          description: Type classification of the node.
+          nullable: true
+          type: string
+        agentScope:
+          description: The scope of the agent.
+          nullable: true
+          type: string
+        agentVersion:
+          description: The version of the agent.
+          format: int32
+          type: integer
+      type: object
+    TraceDiagramResponse:
+      additionalProperties: false
+      description: Represents a trace diagram composed of nodes and edges.
+      example:
+        nodes:
+        - parent: parent
+          level: 0
+          displayName: displayName
+          agentVersion: 6
+          id: id
+          type: type
+          agentScope: agentScope
+        - parent: parent
+          level: 0
+          displayName: displayName
+          agentVersion: 6
+          id: id
+          type: type
+          agentScope: agentScope
+        edges:
+        - childNodeId: childNodeId
+          id: 1
+          label: label
+          nodeId: nodeId
+        - childNodeId: childNodeId
+          id: 1
+          label: label
+          nodeId: nodeId
+      properties:
+        nodes:
+          description: The nodes that make up the diagram.
+          items:
+            $ref: '#/components/schemas/TraceDiagramNode'
+          nullable: true
+          type: array
+        edges:
+          description: The edges that connect the nodes in the diagram.
+          items:
+            $ref: '#/components/schemas/TraceDiagramEdge'
+          nullable: true
+          type: array
+      type: object
     TraceEventLog:
       additionalProperties: false
       description: Holds information about a trace event.
@@ -3252,7 +3395,9 @@ components:
         traceId: traceId
         createdAt: 2000-01-23T04:56:07.000+00:00
         traceEventId: traceEventId
-        circuitVersion: circuitVersion
+        agentCode: agentCode
+        origin: origin
+        agentVersion: 0
         links:
         - method: method
           description: description
@@ -3263,10 +3408,9 @@ components:
           href: https://openapi-generator.tech
           relation: relation
         eventType: eventType
-        sessionId: sessionId
+        agentScope: agentScope
         nodeId: nodeId
         content: content
-        circuitId: circuitId
       properties:
         traceEventId:
           description: The identifier of the trace event.
@@ -3284,22 +3428,27 @@ components:
           description: The type of the trace event.
           minLength: 1
           type: string
+        origin:
+          description: Whether the event originated from the AI or the user
+          minLength: 1
+          type: string
         content:
           description: The content of the trace event.
           minLength: 1
           type: string
-        sessionId:
-          description: The session ID of the trace event.
+        agentScope:
+          description: The scope of the agent currently being interacted with
           minLength: 1
           type: string
-        circuitId:
-          description: The ID of the circuit in which the trace event occurred.
+        agentCode:
+          description: The code identifier of the agent currently being interacted
+            with
           minLength: 1
           type: string
-        circuitVersion:
+        agentVersion:
           description: The version of the circuit in which the trace event occurred.
-          minLength: 1
-          type: string
+          format: int32
+          type: integer
         nodeId:
           description: The ID of the circuit's node at which the trace event occured.
           minLength: 1
@@ -3310,13 +3459,14 @@ components:
           nullable: true
           type: array
       required:
-      - circuitId
-      - circuitVersion
+      - agentCode
+      - agentScope
+      - agentVersion
       - content
       - createdAt
       - eventType
       - nodeId
-      - sessionId
+      - origin
       - traceEventId
       - traceId
       type: object
@@ -3326,7 +3476,6 @@ components:
       example:
         traceId: traceId
         createdAt: 2000-01-23T04:56:07.000+00:00
-        scope: scope
         description: description
         links:
         - method: method
@@ -3341,10 +3490,6 @@ components:
       properties:
         traceId:
           description: The identifier of the trace.
-          minLength: 1
-          type: string
-        scope:
-          description: The scope of the trace.
           minLength: 1
           type: string
         createdAt:
@@ -3366,7 +3511,6 @@ components:
           type: array
       required:
       - createdAt
-      - scope
       - traceId
       - userId
       type: object

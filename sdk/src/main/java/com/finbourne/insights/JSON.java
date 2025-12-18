@@ -121,6 +121,9 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListWithHistogramOfVendorLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.Response.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ScrollableCollectionOfAuditEntry.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceDiagramEdge.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceDiagramNode.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceDiagramResponse.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceEventLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.TraceLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.VendorLog.CustomTypeAdapterFactory());

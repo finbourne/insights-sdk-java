@@ -58,10 +58,6 @@ public class TraceLog {
   @SerializedName(SERIALIZED_NAME_TRACE_ID)
   private String traceId;
 
-  public static final String SERIALIZED_NAME_SCOPE = "scope";
-  @SerializedName(SERIALIZED_NAME_SCOPE)
-  private String scope;
-
   public static final String SERIALIZED_NAME_CREATED_AT = "createdAt";
   @SerializedName(SERIALIZED_NAME_CREATED_AT)
   private OffsetDateTime createdAt;
@@ -99,27 +95,6 @@ public class TraceLog {
 
   public void setTraceId(String traceId) {
     this.traceId = traceId;
-  }
-
-
-  public TraceLog scope(String scope) {
-    
-    this.scope = scope;
-    return this;
-  }
-
-   /**
-   * The scope of the trace.
-   * @return scope
-  **/
-  @jakarta.annotation.Nonnull
-  public String getScope() {
-    return scope;
-  }
-
-
-  public void setScope(String scope) {
-    this.scope = scope;
   }
 
 
@@ -226,7 +201,6 @@ public class TraceLog {
     }
     TraceLog traceLog = (TraceLog) o;
     return Objects.equals(this.traceId, traceLog.traceId) &&
-        Objects.equals(this.scope, traceLog.scope) &&
         Objects.equals(this.createdAt, traceLog.createdAt) &&
         Objects.equals(this.userId, traceLog.userId) &&
         Objects.equals(this.description, traceLog.description) &&
@@ -239,7 +213,7 @@ public class TraceLog {
 
   @Override
   public int hashCode() {
-    return Objects.hash(traceId, scope, createdAt, userId, description, links);
+    return Objects.hash(traceId, createdAt, userId, description, links);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -254,7 +228,6 @@ public class TraceLog {
     StringBuilder sb = new StringBuilder();
     sb.append("class TraceLog {\n");
     sb.append("    traceId: ").append(toIndentedString(traceId)).append("\n");
-    sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
@@ -282,7 +255,6 @@ public class TraceLog {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("traceId");
-    openapiFields.add("scope");
     openapiFields.add("createdAt");
     openapiFields.add("userId");
     openapiFields.add("description");
@@ -291,7 +263,6 @@ public class TraceLog {
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("traceId");
-    openapiRequiredFields.add("scope");
     openapiRequiredFields.add("createdAt");
     openapiRequiredFields.add("userId");
   }
@@ -318,9 +289,6 @@ public class TraceLog {
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("traceId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `traceId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("traceId").toString()));
-      }
-      if (!jsonObj.get("scope").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `scope` to be a primitive type in the JSON string but got `%s`", jsonObj.get("scope").toString()));
       }
       if (!jsonObj.get("userId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `userId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("userId").toString()));

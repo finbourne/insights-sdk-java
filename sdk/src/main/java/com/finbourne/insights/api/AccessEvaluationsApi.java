@@ -291,7 +291,7 @@ public class AccessEvaluationsApi {
     }
 
     /**
-     * [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation.  This endpoint will be deprecated in the near future.
+     * [EARLY ACCESS] GetAccessEvaluationLog: Get the log for a specific access evaluation. This endpoint will be deprecated in the near future.
      * 
      * @param id The identifier of the access evaluation to obtain the log for. (required)
      * @return APIgetAccessEvaluationLogRequest
@@ -453,7 +453,7 @@ public class AccessEvaluationsApi {
 
         /**
          * Set filter
-         * @param filter Expression to filter the result set. Read more about [ filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
+         * @param filter Expression to filter the result set. Read more about [filtering results from LUSID](https://support.lusid.com/filtering-results-from-lusid). (optional)
          * @return APIlistAccessEvaluationLogsRequest
          */
         public APIlistAccessEvaluationLogsRequest filter(String filter) {
