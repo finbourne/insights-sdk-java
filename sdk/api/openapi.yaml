@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.915
+  version: 0.0.917
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -508,10 +508,10 @@ paths:
           description: Error response
       security:
       - oauth2: []
-      summary: "[EXPERIMENTAL] ListTraceLogs: Get the logs for traces."
+      summary: "[EARLY ACCESS] ListTraceLogs: Get the logs for traces."
       tags:
       - Candela Traces
-      x-fbn-apistatus: Experimental
+      x-fbn-apistatus: EarlyAccess
       x-accepts: application/json
   /api/candelatraces/{traceId}:
     get:
@@ -561,10 +561,10 @@ paths:
           description: Error response
       security:
       - oauth2: []
-      summary: "[EXPERIMENTAL] GetTraceLog: Get the log for a specific trace."
+      summary: "[EARLY ACCESS] GetTraceLog: Get the log for a specific trace."
       tags:
       - Candela Traces
-      x-fbn-apistatus: Experimental
+      x-fbn-apistatus: EarlyAccess
       x-accepts: application/json
   /api/candelatraces/{traceId}/diagram:
     get:
@@ -614,11 +614,11 @@ paths:
           description: Error response
       security:
       - oauth2: []
-      summary: "[EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for\
+      summary: "[EARLY ACCESS] GetTraceDiagram: Get the diagram representation for\
         \ a specific trace."
       tags:
       - Candela Traces
-      x-fbn-apistatus: Experimental
+      x-fbn-apistatus: EarlyAccess
       x-accepts: application/json
   /api/candelatraces/{traceId}/events:
     get:
@@ -679,11 +679,11 @@ paths:
           description: Error response
       security:
       - oauth2: []
-      summary: "[EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a\
+      summary: "[EARLY ACCESS] ListTraceEventLogs: Get the trace event logs for a\
         \ specific trace."
       tags:
       - Candela Traces
-      x-fbn-apistatus: Experimental
+      x-fbn-apistatus: EarlyAccess
       x-accepts: application/json
   /api/metadata/access/resources:
     get:

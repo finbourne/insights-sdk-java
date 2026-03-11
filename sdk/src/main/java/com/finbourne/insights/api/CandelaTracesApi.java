@@ -292,7 +292,7 @@ public class CandelaTracesApi {
     }
 
     /**
-     * [EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for a specific trace.
+     * [EARLY ACCESS] GetTraceDiagram: Get the diagram representation for a specific trace.
      * 
      * @param traceId The identifier of the trace. (required)
      * @return APIgetTraceDiagramRequest
@@ -524,7 +524,7 @@ public class CandelaTracesApi {
     }
 
     /**
-     * [EXPERIMENTAL] GetTraceLog: Get the log for a specific trace.
+     * [EARLY ACCESS] GetTraceLog: Get the log for a specific trace.
      * 
      * @param traceId The identifier of the request to obtain the log for. (required)
      * @return APIgetTraceLogRequest
@@ -771,7 +771,7 @@ public class CandelaTracesApi {
     }
 
     /**
-     * [EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a specific trace.
+     * [EARLY ACCESS] ListTraceEventLogs: Get the trace event logs for a specific trace.
      * 
      * @param traceId The identifier of the request to obtain the log for. (required)
      * @return APIlistTraceEventLogsRequest
@@ -1055,7 +1055,7 @@ public class CandelaTracesApi {
     }
 
     /**
-     * [EXPERIMENTAL] ListTraceLogs: Get the logs for traces.
+     * [EARLY ACCESS] ListTraceLogs: Get the logs for traces.
      * 
      * @return APIlistTraceLogsRequest
      * @http.response.details

@@ -4,10 +4,10 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getTraceDiagram**](CandelaTracesApi.md#getTraceDiagram) | **GET** /api/candelatraces/{traceId}/diagram | [EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for a specific trace. |
-| [**getTraceLog**](CandelaTracesApi.md#getTraceLog) | **GET** /api/candelatraces/{traceId} | [EXPERIMENTAL] GetTraceLog: Get the log for a specific trace. |
-| [**listTraceEventLogs**](CandelaTracesApi.md#listTraceEventLogs) | **GET** /api/candelatraces/{traceId}/events | [EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a specific trace. |
-| [**listTraceLogs**](CandelaTracesApi.md#listTraceLogs) | **GET** /api/candelatraces | [EXPERIMENTAL] ListTraceLogs: Get the logs for traces. |
+| [**getTraceDiagram**](CandelaTracesApi.md#getTraceDiagram) | **GET** /api/candelatraces/{traceId}/diagram | [EARLY ACCESS] GetTraceDiagram: Get the diagram representation for a specific trace. |
+| [**getTraceLog**](CandelaTracesApi.md#getTraceLog) | **GET** /api/candelatraces/{traceId} | [EARLY ACCESS] GetTraceLog: Get the log for a specific trace. |
+| [**listTraceEventLogs**](CandelaTracesApi.md#listTraceEventLogs) | **GET** /api/candelatraces/{traceId}/events | [EARLY ACCESS] ListTraceEventLogs: Get the trace event logs for a specific trace. |
+| [**listTraceLogs**](CandelaTracesApi.md#listTraceLogs) | **GET** /api/candelatraces | [EARLY ACCESS] ListTraceLogs: Get the logs for traces. |
 
 
 
@@ -15,7 +15,7 @@ All URIs are relative to *https://fbn-prd.lusid.com/insights*
 
 > TraceDiagramResponse getTraceDiagram(traceId)
 
-[EXPERIMENTAL] GetTraceDiagram: Get the diagram representation for a specific trace.
+[EARLY ACCESS] GetTraceDiagram: Get the diagram representation for a specific trace.
 
 ### Example
 
@@ -104,7 +104,7 @@ public class CandelaTracesApiExample {
 
 > TraceLog getTraceLog(traceId)
 
-[EXPERIMENTAL] GetTraceLog: Get the log for a specific trace.
+[EARLY ACCESS] GetTraceLog: Get the log for a specific trace.
 
 ### Example
 
@@ -193,7 +193,7 @@ public class CandelaTracesApiExample {
 
 > ResourceListOfTraceEventLog listTraceEventLogs(traceId, page)
 
-[EXPERIMENTAL] ListTraceEventLogs: Get the trace event logs for a specific trace.
+[EARLY ACCESS] ListTraceEventLogs: Get the trace event logs for a specific trace.
 
 ### Example
 
@@ -284,7 +284,7 @@ public class CandelaTracesApiExample {
 
 > ResourceListOfTraceLog listTraceLogs(filter, sortBy, limit, page)
 
-[EXPERIMENTAL] ListTraceLogs: Get the logs for traces.
+[EARLY ACCESS] ListTraceLogs: Get the logs for traces.
 
 ### Example
 
