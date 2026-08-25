@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.917
+  version: 0.0.943
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -74,6 +74,10 @@ tags:
   name: Auditing
 - description: Methods to retrieve Candela traces and trace events.
   name: Candela Traces
+- description: Metadata describing the queryable fields of each log type.
+  name: Log Metadata
+- description: Aggregated platform request and identity metrics for a domain.
+  name: Metrics
 - description: Methods to retrieve logs and content of API requests.
   name: Requests
 - description: Methods to retrieve logs and content of requests to vendors.
@@ -717,6 +721,112 @@ paths:
       - Application Metadata
       x-fbn-apistatus: Stable
       x-accepts: application/json
+  /api/metadata/logs:
+    get:
+      description: |-
+        Returns, for each log type, the fields that can be selected and/or filtered, their data types, and the
+        comparator operations available for each filterable field. Intended to power a UI that advertises the
+        correct comparators for a chosen field.
+      operationId: ListQueryableFields
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfQueryableLogType'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfQueryableLogType'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfQueryableLogType'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] ListQueryableFields: List the queryable fields for\
+        \ every supported log type."
+      tags:
+      - Log Metadata
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
+  /api/metrics:
+    get:
+      description: |2-
+
+        Returns request volumes, error rates and duration distributions for the domain's services, plus its identity
+         population and activity counts. The domain is taken from the authenticated request, never from a parameter.
+
+        <b>This endpoint is slow by design.</b> It runs several analytical queries in parallel and commonly takes
+         upwards of thirty seconds when the underlying data is cold. The server abandons a data set that has not
+         completed within its configured budget and reports it in `failed`, so a call returns rather than hanging
+         indefinitely; allow comfortably more than that budget on the client, and do not call this on a
+         user-interactive code path without showing progress.
+
+        Partial success is normal and is still reported as a `200`. A data set that could not be retrieved is
+         null in the response and named in `failed` with a reason; a data set excluded via
+         include is null and named in `notIncluded`. Render a null data set as unavailable
+         rather than as an absence of activity.
+      operationId: GetMetrics
+      parameters:
+      - description: |-
+          The data sets to return, by name. Omit to return all of them. Repeat the parameter to request several, for
+          example `?include=RequestsPerMinute&include=IdentityMetrics`. Matched case-insensitively against the
+          data set names, which are the `name` values on the response's data sets; duplicates are ignored.
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+        x-nullable: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: "[EARLY ACCESS] GetMetrics: Get the aggregated platform metrics for\
+        \ the caller's domain."
+      tags:
+      - Metrics
+      x-fbn-apistatus: EarlyAccess
+      x-accepts: application/json
   /api/requests:
     get:
       operationId: ListRequestLogs
@@ -819,6 +929,151 @@ paths:
       tags:
       - Requests
       x-fbn-apistatus: Stable
+      x-accepts: application/json
+  /api/requests/$query:
+    post:
+      operationId: QueryRequestLogs
+      requestBody:
+        content:
+          application/json-patch+json:
+            example:
+              startAt: 2026-06-22T00:00:00.0000000+00:00
+              endAt: 2026-06-23T00:00:00.0000000+00:00
+              filters:
+              - field: Application
+                text:
+                  operation: EqualTo
+                  value: Insights
+              - field: HttpStatusCode
+                numeric:
+                  operation: EqualTo
+                  value: 500
+              sortBy: -Timestamp
+              maxResults: 1000
+              limit: 50
+              fields:
+              - HttpStatusCode
+              - Verb
+              - Url
+              - Duration
+              - User
+            schema:
+              $ref: '#/components/schemas/QueryRequestLogsRequest'
+          application/json:
+            example:
+              startAt: 2026-06-22T00:00:00.0000000+00:00
+              endAt: 2026-06-23T00:00:00.0000000+00:00
+              filters:
+              - field: Application
+                text:
+                  operation: EqualTo
+                  value: Insights
+              - field: HttpStatusCode
+                numeric:
+                  operation: EqualTo
+                  value: 500
+              sortBy: -Timestamp
+              maxResults: 1000
+              limit: 50
+              fields:
+              - HttpStatusCode
+              - Verb
+              - Url
+              - Duration
+              - User
+            schema:
+              $ref: '#/components/schemas/QueryRequestLogsRequest'
+          text/json:
+            example:
+              startAt: 2026-06-22T00:00:00.0000000+00:00
+              endAt: 2026-06-23T00:00:00.0000000+00:00
+              filters:
+              - field: Application
+                text:
+                  operation: EqualTo
+                  value: Insights
+              - field: HttpStatusCode
+                numeric:
+                  operation: EqualTo
+                  value: 500
+              sortBy: -Timestamp
+              maxResults: 1000
+              limit: 50
+              fields:
+              - HttpStatusCode
+              - Verb
+              - Url
+              - Duration
+              - User
+            schema:
+              $ref: '#/components/schemas/QueryRequestLogsRequest'
+          application/*+json:
+            example:
+              startAt: 2026-06-22T00:00:00.0000000+00:00
+              endAt: 2026-06-23T00:00:00.0000000+00:00
+              filters:
+              - field: Application
+                text:
+                  operation: EqualTo
+                  value: Insights
+              - field: HttpStatusCode
+                numeric:
+                  operation: EqualTo
+                  value: 500
+              sortBy: -Timestamp
+              maxResults: 1000
+              limit: 50
+              fields:
+              - HttpStatusCode
+              - Verb
+              - Url
+              - Duration
+              - User
+            schema:
+              $ref: '#/components/schemas/QueryRequestLogsRequest'
+        description: The query parameters in the request body.
+        required: true
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfQueriedRequestLog'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfQueriedRequestLog'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListOfQueriedRequestLog'
+          description: OK
+        "400":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LusidValidationProblemDetails'
+          description: The details of the input related failure
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LusidProblemDetails'
+          description: Error response
+      security:
+      - oauth2: []
+      summary: |-
+        QueryRequestLogs: Query the logs for API requests, returning only the caller-specified fields in addition to the
+        always-required fields (Timestamp, Id, Application, Operation). The server fetches only the requested
+        columns from the underlying data source to minimise payload and query time.
+      tags:
+      - Requests
+      x-fbn-apistatus: Stable
+      x-content-type: application/json-patch+json
       x-accepts: application/json
   /api/requests/{id}:
     get:
@@ -1875,6 +2130,26 @@ components:
         summary:
           $ref: '#/components/schemas/AuditDataSummary'
       type: object
+    BooleanComparator:
+      additionalProperties: false
+      description: Filters a boolean field by comparing it to a supplied boolean value.
+      example:
+        operation: operation
+        value: true
+      properties:
+        operation:
+          description: |-
+            The comparison to apply between the field and Finbourne.Insights.WebApi.Dtos.Querying.BooleanComparator.Value. One of the Finbourne.Insights.WebApi.Dtos.Querying.BooleanOperation
+            values (EqualTo, NotEqualTo); discoverable via the queryable-fields metadata endpoint.
+          minLength: 1
+          type: string
+        value:
+          description: The value to compare the field against.
+          type: boolean
+      required:
+      - operation
+      - value
+      type: object
     Bucket:
       additionalProperties: false
       description: A single histogram bucket.
@@ -1919,6 +2194,28 @@ components:
       required:
       - data
       - process
+      type: object
+    DateComparator:
+      additionalProperties: false
+      description: Filters a date/time field by comparing it to a supplied date/time
+        value.
+      example:
+        operation: operation
+        value: 2000-01-23T04:56:07.000+00:00
+      properties:
+        operation:
+          description: |-
+            The comparison to apply between the field and Finbourne.Insights.WebApi.Dtos.Querying.DateComparator.Value. One of the Finbourne.Insights.WebApi.Dtos.Querying.DateOperation
+            values (e.g. Before, OnOrAfter); discoverable via the queryable-fields metadata endpoint.
+          minLength: 1
+          type: string
+        value:
+          description: The value to compare the field against.
+          format: date-time
+          type: string
+      required:
+      - operation
+      - value
       type: object
     Histogram:
       additionalProperties: false
@@ -1981,6 +2278,114 @@ components:
       - name
       - required
       type: object
+    IdentityMetricsDataSet:
+      additionalProperties: false
+      description: |-
+        Identity population and activity counts for the domain, pivoted from the latest tranche the identity metrics
+        provider collected.
+      example:
+        accountLocked: 1
+        ignored: 1
+        collectedAt: 2000-01-23T04:56:07.000+00:00
+        activeLast7Days: 9
+        createdLast7Days: 1
+        activeLast30Days: 9
+        activeLast24Hours: 5
+        suspendedPwReset: 6
+        name: name
+        neverLoggedIn: 1
+        serviceUsers: 7
+        createdLast24Hours: 7
+        createdLast30Days: 4
+        personalUsers: 4
+      properties:
+        name:
+          description: |-
+            The name of this data set. Always `IdentityMetrics`, matching the corresponding
+            Finbourne.Insights.WebApi.Dtos.Metrics.MetricDataSet value and Finbourne.Insights.WebApi.Dtos.Metrics.MetricsResponse property.
+          minLength: 1
+          type: string
+        collectedAt:
+          description: "The timestamp of the tranche these values were collected in,\
+            \ in UTC, or null if no tranche was returned."
+          format: date-time
+          nullable: true
+          type: string
+        personalUsers:
+          description: "The number of personal (human) users in the domain, or null\
+            \ if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        serviceUsers:
+          description: "The number of service users in the domain, or null if not\
+            \ reported."
+          format: int64
+          nullable: true
+          type: integer
+        neverLoggedIn:
+          description: "The number of users that have never logged in, or null if\
+            \ not reported."
+          format: int64
+          nullable: true
+          type: integer
+        ignored:
+          description: "The number of users excluded from the other counts, or null\
+            \ if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        accountLocked:
+          description: "The number of users whose account is locked, or null if not\
+            \ reported."
+          format: int64
+          nullable: true
+          type: integer
+        suspendedPwReset:
+          description: "The number of users suspended pending a password reset, or\
+            \ null if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        createdLast24Hours:
+          description: "The number of users created in the last 24 hours, or null\
+            \ if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        createdLast7Days:
+          description: "The number of users created in the last 7 days, or null if\
+            \ not reported."
+          format: int64
+          nullable: true
+          type: integer
+        createdLast30Days:
+          description: "The number of users created in the last 30 days, or null if\
+            \ not reported."
+          format: int64
+          nullable: true
+          type: integer
+        activeLast24Hours:
+          description: "The number of users active in the last 24 hours, or null if\
+            \ not reported."
+          format: int64
+          nullable: true
+          type: integer
+        activeLast7Days:
+          description: "The number of users active in the last 7 days, or null if\
+            \ not reported."
+          format: int64
+          nullable: true
+          type: integer
+        activeLast30Days:
+          description: "The number of users active in the last 30 days, or null if\
+            \ not reported."
+          format: int64
+          nullable: true
+          type: integer
+      required:
+      - name
+      type: object
     IdSelectorDefinition:
       additionalProperties: false
       example:
@@ -2020,6 +2425,49 @@ components:
       required:
       - actions
       - identifier
+      type: object
+    InsightsFilter:
+      additionalProperties: false
+      description: |-
+        A single filter applied to a queryable log field. Exactly one comparator (Finbourne.Insights.WebApi.Dtos.Querying.InsightsFilter.Text,
+        Finbourne.Insights.WebApi.Dtos.Querying.InsightsFilter.Numeric, Finbourne.Insights.WebApi.Dtos.Querying.InsightsFilter.Date or Finbourne.Insights.WebApi.Dtos.Querying.InsightsFilter.Boolean) must be populated, and its type must match
+        the data type of the field named by Finbourne.Insights.WebApi.Dtos.Querying.InsightsFilter.Field. The available comparator and operation for a field
+        can be discovered via the queryable-fields metadata endpoint.
+      example:
+        date:
+          operation: operation
+          value: 2000-01-23T04:56:07.000+00:00
+        boolean:
+          operation: operation
+          value: true
+        field: field
+        numeric:
+          operation: operation
+          value: 6.027456183070403
+        text:
+          values:
+          - values
+          - values
+          operation: operation
+          value: value
+      properties:
+        field:
+          description: The name of the field to filter on (case-insensitive). Must
+            be a filterable field of the queried log type.
+          maxLength: 64
+          minLength: 1
+          pattern: "^[a-zA-Z0-9\\-_]+$"
+          type: string
+        text:
+          $ref: '#/components/schemas/TextComparator'
+        numeric:
+          $ref: '#/components/schemas/NumericComparator'
+        date:
+          $ref: '#/components/schemas/DateComparator'
+        boolean:
+          $ref: '#/components/schemas/BooleanComparator'
+      required:
+      - field
       type: object
     Link:
       additionalProperties: false
@@ -2123,6 +2571,183 @@ components:
       - code
       - name
       type: object
+    MetricDataSetFailure:
+      additionalProperties: false
+      description: "Names a metric data set that was requested but could not be returned,\
+        \ with a caller-safe explanation."
+      example:
+        reason: reason
+        name: name
+      properties:
+        name:
+          description: |-
+            The data set that could not be returned. One of the Finbourne.Insights.WebApi.Dtos.Metrics.MetricDataSet values, and identical to the
+            name of the Finbourne.Insights.WebApi.Dtos.Metrics.MetricsResponse property that would have carried it.
+          minLength: 1
+          type: string
+        reason:
+          description: |-
+            A generic, caller-safe explanation of why the data set is missing. Never contains provider names, query
+            text, internal service names or exception detail.
+          minLength: 1
+          type: string
+      required:
+      - name
+      - reason
+      type: object
+    MetricsResponse:
+      additionalProperties: false
+      description: "The aggregated platform metrics for a domain: one nullable, strongly-typed\
+        \ property per data set."
+      example:
+        serviceEndpointDurations24h:
+          windowStart: 2000-01-23T04:56:07.000+00:00
+          values:
+          - endpoint: endpoint
+            meanDurationMs: 5.637376656633329
+            p95DurationMs: 7.061401241503109
+            service: service
+            totalRequests: 5
+            medianDurationMs: 2.3021358869347655
+          - endpoint: endpoint
+            meanDurationMs: 5.637376656633329
+            p95DurationMs: 7.061401241503109
+            service: service
+            totalRequests: 5
+            medianDurationMs: 2.3021358869347655
+          name: name
+          truncated: true
+          windowEnd: 2000-01-23T04:56:07.000+00:00
+        notIncluded:
+        - notIncluded
+        - notIncluded
+        domain: domain
+        asAt: 2000-01-23T04:56:07.000+00:00
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        requestsPerMinute:
+          windowStart: 2000-01-23T04:56:07.000+00:00
+          values:
+          - endpoint: endpoint
+            durationSumMs: 1.4658129805029452
+            service: service
+            totalRequests: 0
+            requests5xx: 6
+            minuteBucket: 2000-01-23T04:56:07.000+00:00
+          - endpoint: endpoint
+            durationSumMs: 1.4658129805029452
+            service: service
+            totalRequests: 0
+            requests5xx: 6
+            minuteBucket: 2000-01-23T04:56:07.000+00:00
+          name: name
+          truncated: true
+          windowEnd: 2000-01-23T04:56:07.000+00:00
+        failed:
+        - reason: reason
+          name: name
+        - reason: reason
+          name: name
+        serviceRequests24h:
+          windowStart: 2000-01-23T04:56:07.000+00:00
+          values:
+          - pct5xx: 2.027123023002322
+            service: service
+            totalRequests: 9
+            requests5xx: 3
+          - pct5xx: 2.027123023002322
+            service: service
+            totalRequests: 9
+            requests5xx: 3
+          name: name
+          truncated: true
+          windowEnd: 2000-01-23T04:56:07.000+00:00
+        identityMetrics:
+          accountLocked: 1
+          ignored: 1
+          collectedAt: 2000-01-23T04:56:07.000+00:00
+          activeLast7Days: 9
+          createdLast7Days: 1
+          activeLast30Days: 9
+          activeLast24Hours: 5
+          suspendedPwReset: 6
+          name: name
+          neverLoggedIn: 1
+          serviceUsers: 7
+          createdLast24Hours: 7
+          createdLast30Days: 4
+          personalUsers: 4
+      properties:
+        asAt:
+          description: "When this response was assembled, in UTC. Every data set in\
+            \ the response was resolved against this instant."
+          format: date-time
+          type: string
+        domain:
+          description: "The domain the metrics are for, resolved from the authenticated\
+            \ request rather than from any parameter."
+          minLength: 1
+          type: string
+        requestsPerMinute:
+          $ref: '#/components/schemas/RequestsPerMinuteDataSet'
+        serviceEndpointDurations24h:
+          $ref: '#/components/schemas/ServiceEndpointDurations24hDataSet'
+        serviceRequests24h:
+          $ref: '#/components/schemas/ServiceRequests24hDataSet'
+        identityMetrics:
+          $ref: '#/components/schemas/IdentityMetricsDataSet'
+        notIncluded:
+          description: |-
+            The data sets the caller excluded via the `include` parameter, and which were therefore never queried.
+            Each value is one of the Finbourne.Insights.WebApi.Dtos.Metrics.MetricDataSet values.
+          items:
+            type: string
+          type: array
+        failed:
+          description: "The data sets that were requested but could not be returned,\
+            \ each with a caller-safe reason."
+          items:
+            $ref: '#/components/schemas/MetricDataSetFailure'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - asAt
+      - domain
+      - failed
+      - notIncluded
+      type: object
+    NumericComparator:
+      additionalProperties: false
+      description: Filters a numeric field by comparing it to a supplied numeric value.
+      example:
+        operation: operation
+        value: 6.027456183070403
+      properties:
+        operation:
+          description: |-
+            The comparison to apply between the field and Finbourne.Insights.WebApi.Dtos.Querying.NumericComparator.Value. One of the Finbourne.Insights.WebApi.Dtos.Querying.NumericOperation
+            values (e.g. EqualTo, GreaterThan); discoverable via the queryable-fields metadata endpoint.
+          minLength: 1
+          type: string
+        value:
+          description: The value to compare the field against.
+          format: double
+          type: number
+      required:
+      - operation
+      - value
+      type: object
     ProblemDetails:
       additionalProperties: false
       properties:
@@ -2142,6 +2767,452 @@ components:
         instance:
           nullable: true
           type: string
+      type: object
+    QueriedRequestLog:
+      additionalProperties: false
+      description: |-
+        Holds logged information about a request performed on an API, where only a subset of fields may be populated
+        depending on which fields were requested via the QueryRequestLogs endpoint.
+      example:
+        sdkLanguage: sdkLanguage
+        verb: verb
+        errorCode: errorCode
+        sessionId: sessionId
+        url: url
+        duration: 0.8008281904610115
+        impersonatingUser: impersonatingUser
+        application: application
+        domain: domain
+        sdkVersion: sdkVersion
+        correlationId:
+        - correlationId
+        - correlationId
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        id: id
+        userType: userType
+        operation: operation
+        user: user
+        sourceApplication: sourceApplication
+        outcome: outcome
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        httpStatusCode: 6
+      properties:
+        timestamp:
+          description: The timestamp of the request.
+          format: date-time
+          type: string
+        id:
+          description: The identifier of the request.
+          minLength: 1
+          type: string
+        application:
+          description: The name of the application that the request was made to.
+          minLength: 1
+          type: string
+        operation:
+          description: The API operation invoked by the request.
+          minLength: 1
+          type: string
+        sessionId:
+          description: The identifier of the session that the request was made in.
+          nullable: true
+          type: string
+        verb:
+          description: The HTTP verb of the request.
+          nullable: true
+          type: string
+        url:
+          description: The URL of the request.
+          nullable: true
+          type: string
+        domain:
+          description: The domain of the request.
+          nullable: true
+          type: string
+        user:
+          description: The user who made the request.
+          nullable: true
+          type: string
+        userType:
+          description: The type of the user who made the request.
+          nullable: true
+          type: string
+        outcome:
+          description: "The outcome of the request: Completed, Errored or Failed."
+          nullable: true
+          type: string
+        duration:
+          description: The duration of the request in milliseconds.
+          format: double
+          nullable: true
+          type: number
+        httpStatusCode:
+          description: The status code of the request.
+          format: int32
+          nullable: true
+          type: integer
+        errorCode:
+          description: "Error code, if the request had a failure or error."
+          nullable: true
+          type: string
+        sdkLanguage:
+          description: The language of the SDK used.
+          nullable: true
+          type: string
+        sdkVersion:
+          description: The version of the SDK used.
+          nullable: true
+          type: string
+        sourceApplication:
+          description: The name of the application that made the request.
+          nullable: true
+          type: string
+        correlationId:
+          description: The chain of requestIds preceding this request
+          items:
+            type: string
+          nullable: true
+          type: array
+        impersonatingUser:
+          description: The impersonating user. Only present if the request is an impersonated
+            one
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+      required:
+      - application
+      - id
+      - operation
+      - timestamp
+      type: object
+    QueryableLogField:
+      additionalProperties: false
+      description: |-
+        Describes a field of a log type that can be selected and (where Finbourne.Insights.WebApi.Dtos.Querying.QueryableLogField.Filterable is set) filtered when
+        querying logs, including the comparator operations available for it. Returned by the queryable-fields metadata
+        endpoint so a UI can advertise the correct comparators for each field.
+      example:
+        alwaysReturned: true
+        filterable: true
+        supportedOperations:
+        - supportedOperations
+        - supportedOperations
+        dataType: dataType
+        name: name
+      properties:
+        name:
+          description: "The name of the field, as used when requesting it or filtering\
+            \ on it (case-insensitive)."
+          minLength: 1
+          type: string
+        dataType:
+          description: "The data type of the field: Text, Numeric, Date or Boolean."
+          minLength: 1
+          type: string
+        supportedOperations:
+          description: The comparator operations available for this field. Empty when
+            the field is not filterable.
+          items:
+            type: string
+          type: array
+        filterable:
+          description: Whether the field can be used in a filter.
+          type: boolean
+        alwaysReturned:
+          description: Whether the field is always returned (and therefore need not
+            be requested).
+          type: boolean
+      required:
+      - dataType
+      - name
+      - supportedOperations
+      type: object
+    QueryableLogType:
+      additionalProperties: false
+      description: "The queryable fields of a single log type, returned by the queryable-fields\
+        \ metadata endpoint."
+      example:
+        logType: logType
+        fields:
+        - alwaysReturned: true
+          filterable: true
+          supportedOperations:
+          - supportedOperations
+          - supportedOperations
+          dataType: dataType
+          name: name
+        - alwaysReturned: true
+          filterable: true
+          supportedOperations:
+          - supportedOperations
+          - supportedOperations
+          dataType: dataType
+          name: name
+      properties:
+        logType:
+          description: "The log type, e.g. Requests, Vendor, Access, Trace or TraceEvent."
+          minLength: 1
+          type: string
+        fields:
+          description: The fields of this log type that can be selected and/or filtered.
+          items:
+            $ref: '#/components/schemas/QueryableLogField'
+          type: array
+      required:
+      - fields
+      - logType
+      type: object
+    QueryRequestLogsRequest:
+      additionalProperties: false
+      description: |-
+        Body of the QueryRequestLogs endpoint. A query is bounded by a time range (Finbourne.Insights.WebApi.Dtos.QueryRequestLogsRequest.StartAt/Finbourne.Insights.WebApi.Dtos.QueryRequestLogsRequest.EndAt)
+        and refined by an optional set of Finbourne.Insights.WebApi.Dtos.QueryRequestLogsRequest.Filters that are combined with logical AND. The discoverable set
+        of filterable fields, their data types and the operations available for each is returned by the queryable-fields
+        metadata endpoint.
+      example:
+        maxResults: 1466
+        limit: 5962
+        sortBy: sortBy
+        filters:
+        - date:
+            operation: operation
+            value: 2000-01-23T04:56:07.000+00:00
+          boolean:
+            operation: operation
+            value: true
+          field: field
+          numeric:
+            operation: operation
+            value: 6.027456183070403
+          text:
+            values:
+            - values
+            - values
+            operation: operation
+            value: value
+        - date:
+            operation: operation
+            value: 2000-01-23T04:56:07.000+00:00
+          boolean:
+            operation: operation
+            value: true
+          field: field
+          numeric:
+            operation: operation
+            value: 6.027456183070403
+          text:
+            values:
+            - values
+            - values
+            operation: operation
+            value: value
+        - date:
+            operation: operation
+            value: 2000-01-23T04:56:07.000+00:00
+          boolean:
+            operation: operation
+            value: true
+          field: field
+          numeric:
+            operation: operation
+            value: 6.027456183070403
+          text:
+            values:
+            - values
+            - values
+            operation: operation
+            value: value
+        - date:
+            operation: operation
+            value: 2000-01-23T04:56:07.000+00:00
+          boolean:
+            operation: operation
+            value: true
+          field: field
+          numeric:
+            operation: operation
+            value: 6.027456183070403
+          text:
+            values:
+            - values
+            - values
+            operation: operation
+            value: value
+        - date:
+            operation: operation
+            value: 2000-01-23T04:56:07.000+00:00
+          boolean:
+            operation: operation
+            value: true
+          field: field
+          numeric:
+            operation: operation
+            value: 6.027456183070403
+          text:
+            values:
+            - values
+            - values
+            operation: operation
+            value: value
+        page: page
+        endAt: 2000-01-23T04:56:07.000+00:00
+        fields:
+        - fields
+        - fields
+        startAt: 2000-01-23T04:56:07.000+00:00
+        timeRange:
+          timeZone: timeZone
+          from:
+            midnight: true
+            offset:
+              amount: 171976545
+              unit: unit
+            absolute: 2000-01-23T04:56:07.000+00:00
+            now: true
+          preset: preset
+          to:
+            midnight: true
+            offset:
+              amount: 171976545
+              unit: unit
+            absolute: 2000-01-23T04:56:07.000+00:00
+            now: true
+      properties:
+        startAt:
+          description: |-
+            The inclusive start of the time range to query. Required unless Finbourne.Insights.WebApi.Dtos.QueryRequestLogsRequest.Page is supplied. Used to bound
+            the underlying partition scan, so a tighter range is cheaper and faster.
+          format: date-time
+          nullable: true
+          type: string
+        endAt:
+          description: The end of the time range to query. Required unless Finbourne.Insights.WebApi.Dtos.QueryRequestLogsRequest.Page
+            or Finbourne.Insights.WebApi.Dtos.QueryRequestLogsRequest.TimeRange is
+            supplied.
+          format: date-time
+          nullable: true
+          type: string
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        filters:
+          description: |-
+            Optional filters to apply, combined with logical AND. Each filter targets a filterable field and supplies
+            exactly one comparator matching that field's data type.
+          items:
+            $ref: '#/components/schemas/InsightsFilter'
+          maxItems: 50
+          nullable: true
+          type: array
+        sortBy:
+          description: |-
+            Order the results by these fields. Use the '-' sign to denote descending order e.g. -MyFieldName.
+            Multiple fields can be denoted by a comma e.g. -MyFieldName,AnotherFieldName,-AFurtherFieldName.
+          maxLength: 16384
+          minLength: 1
+          nullable: true
+          pattern: "^[\\s\\S]*$"
+          type: string
+        maxResults:
+          description: |-
+            The maximum total number of records to capture in the result set; applied as the Luminesce query limit and
+            so bounding the work the query performs. The minimum value is 1 and the maximum is 10000; defaults to 500
+            when not supplied. The per-page limit then controls how many of these captured records are returned per page.
+          format: int32
+          maximum: 10000
+          minimum: 1
+          nullable: true
+          type: integer
+        limit:
+          description: |-
+            When paginating, only return this number of records per page. The minimum value is 0 (return all captured
+            records in a single page) and the maximum is 10000.
+          format: int32
+          maximum: 10000
+          minimum: 0
+          type: integer
+        page:
+          description: |-
+            Encoded page string returned from a previous search result that will retrieve the next page of data.
+            When this field is supplied, the query-defining fields should not be supplied.
+          maxLength: 4500
+          minLength: 1
+          nullable: true
+          pattern: "^[a-zA-Z0-9\\+/]*={0,3}$"
+          type: string
+        fields:
+          description: |-
+            Optional list of additional field names to include in the response. The fields Timestamp, Id,
+            Application and Operation are always returned. Values are matched case-insensitively against the
+            queryable fields of the request logs.
+          items:
+            type: string
+          nullable: true
+          type: array
+      type: object
+    RelativeBoundary:
+      additionalProperties: false
+      description: |-
+        One end of a relative time range. Exactly one of the options must be set: Finbourne.Insights.WebApi.Dtos.Querying.RelativeBoundary.Now (the current
+        instant), Finbourne.Insights.WebApi.Dtos.Querying.RelativeBoundary.Midnight (the start of the current day in the range's time zone), Finbourne.Insights.WebApi.Dtos.Querying.RelativeBoundary.Offset
+        (a duration back from now) or Finbourne.Insights.WebApi.Dtos.Querying.RelativeBoundary.Absolute (an explicit instant).
+      example:
+        midnight: true
+        offset:
+          amount: 171976545
+          unit: unit
+        absolute: 2000-01-23T04:56:07.000+00:00
+        now: true
+      properties:
+        now:
+          description: "When `true`, this boundary is the current instant (\"now\"\
+            )."
+          type: boolean
+        midnight:
+          description: "When `true`, this boundary is the start of the current day\
+            \ (midnight) in the range's time zone."
+          type: boolean
+        offset:
+          $ref: '#/components/schemas/RelativeOffset'
+        absolute:
+          description: An explicit absolute instant.
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    RelativeOffset:
+      additionalProperties: false
+      description: "A relative offset back from \"now\", e.g. `{ Amount = 2, Unit\
+        \ = Hours }` meaning two hours before now."
+      example:
+        amount: 171976545
+        unit: unit
+      properties:
+        amount:
+          description: The number of units to go back from now. Must be at least 1.
+          format: int32
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+        unit:
+          description: The unit of the offset. One of the Finbourne.Insights.WebApi.Dtos.Querying.RelativeTimeUnit
+            values.
+          minLength: 1
+          type: string
+      required:
+      - amount
+      - unit
       type: object
     Request:
       additionalProperties: false
@@ -2336,6 +3407,107 @@ components:
       - url
       - user
       - verb
+      type: object
+    RequestsPerMinuteBucket:
+      additionalProperties: false
+      description: One minute of request activity for a single service and endpoint.
+      example:
+        endpoint: endpoint
+        durationSumMs: 1.4658129805029452
+        service: service
+        totalRequests: 0
+        requests5xx: 6
+        minuteBucket: 2000-01-23T04:56:07.000+00:00
+      properties:
+        minuteBucket:
+          description: "Start of the whole minute this row covers, in UTC."
+          format: date-time
+          type: string
+        service:
+          description: The name of the service (application) that handled the requests.
+          nullable: true
+          type: string
+        endpoint:
+          description: The endpoint (API operation) the requests were made to.
+          nullable: true
+          type: string
+        totalRequests:
+          description: "The number of requests in this minute, or null if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        requests5xx:
+          description: "The number of requests in this minute that returned a 5xx\
+            \ status code, or null if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        durationSumMs:
+          description: "The sum of the request durations in this minute, in milliseconds,\
+            \ or null if not reported."
+          format: double
+          nullable: true
+          type: number
+      required:
+      - minuteBucket
+      type: object
+    RequestsPerMinuteDataSet:
+      additionalProperties: false
+      description: |-
+        Request volume, error count and total duration per minute, broken down by service and endpoint, over a rolling
+        three hour window.
+      example:
+        windowStart: 2000-01-23T04:56:07.000+00:00
+        values:
+        - endpoint: endpoint
+          durationSumMs: 1.4658129805029452
+          service: service
+          totalRequests: 0
+          requests5xx: 6
+          minuteBucket: 2000-01-23T04:56:07.000+00:00
+        - endpoint: endpoint
+          durationSumMs: 1.4658129805029452
+          service: service
+          totalRequests: 0
+          requests5xx: 6
+          minuteBucket: 2000-01-23T04:56:07.000+00:00
+        name: name
+        truncated: true
+        windowEnd: 2000-01-23T04:56:07.000+00:00
+      properties:
+        name:
+          description: |-
+            The name of this data set. Always `RequestsPerMinute`, matching the corresponding
+            Finbourne.Insights.WebApi.Dtos.Metrics.MetricDataSet value and Finbourne.Insights.WebApi.Dtos.Metrics.MetricsResponse property.
+          minLength: 1
+          type: string
+        windowStart:
+          description: "Inclusive start of the window the data covers, in UTC, floored\
+            \ to a whole minute."
+          format: date-time
+          type: string
+        windowEnd:
+          description: "End of the window the data covers, in UTC, floored to a whole\
+            \ minute."
+          format: date-time
+          type: string
+        truncated:
+          description: |-
+            True when the query reached the row cap, so the data covers only part of the window and totals are
+            understated. False when the whole window was returned.
+          type: boolean
+        values:
+          description: "The per-minute rows, ordered by minute, then service, then\
+            \ endpoint."
+          items:
+            $ref: '#/components/schemas/RequestsPerMinuteBucket'
+          type: array
+      required:
+      - name
+      - truncated
+      - values
+      - windowEnd
+      - windowStart
       type: object
     Resource:
       additionalProperties: false
@@ -2704,6 +3876,176 @@ components:
       required:
       - values
       type: object
+    ResourceListOfQueriedRequestLog:
+      additionalProperties: false
+      example:
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - sdkLanguage: sdkLanguage
+          verb: verb
+          errorCode: errorCode
+          sessionId: sessionId
+          url: url
+          duration: 0.8008281904610115
+          impersonatingUser: impersonatingUser
+          application: application
+          domain: domain
+          sdkVersion: sdkVersion
+          correlationId:
+          - correlationId
+          - correlationId
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          userType: userType
+          operation: operation
+          user: user
+          sourceApplication: sourceApplication
+          outcome: outcome
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          httpStatusCode: 6
+        - sdkLanguage: sdkLanguage
+          verb: verb
+          errorCode: errorCode
+          sessionId: sessionId
+          url: url
+          duration: 0.8008281904610115
+          impersonatingUser: impersonatingUser
+          application: application
+          domain: domain
+          sdkVersion: sdkVersion
+          correlationId:
+          - correlationId
+          - correlationId
+          links:
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          - method: method
+            description: description
+            href: https://openapi-generator.tech
+            relation: relation
+          id: id
+          userType: userType
+          operation: operation
+          user: user
+          sourceApplication: sourceApplication
+          outcome: outcome
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          httpStatusCode: 6
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/QueriedRequestLog'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+      required:
+      - values
+      type: object
+    ResourceListOfQueryableLogType:
+      additionalProperties: false
+      example:
+        previousPage: previousPage
+        nextPage: nextPage
+        values:
+        - logType: logType
+          fields:
+          - alwaysReturned: true
+            filterable: true
+            supportedOperations:
+            - supportedOperations
+            - supportedOperations
+            dataType: dataType
+            name: name
+          - alwaysReturned: true
+            filterable: true
+            supportedOperations:
+            - supportedOperations
+            - supportedOperations
+            dataType: dataType
+            name: name
+        - logType: logType
+          fields:
+          - alwaysReturned: true
+            filterable: true
+            supportedOperations:
+            - supportedOperations
+            - supportedOperations
+            dataType: dataType
+            name: name
+          - alwaysReturned: true
+            filterable: true
+            supportedOperations:
+            - supportedOperations
+            - supportedOperations
+            dataType: dataType
+            name: name
+        links:
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        - method: method
+          description: description
+          href: https://openapi-generator.tech
+          relation: relation
+        href: https://openapi-generator.tech
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/QueryableLogType'
+          type: array
+        href:
+          format: uri
+          nullable: true
+          type: string
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          nullable: true
+          type: array
+        nextPage:
+          nullable: true
+          type: string
+        previousPage:
+          nullable: true
+          type: string
+      required:
+      - values
+      type: object
     ResourceListOfTraceEventLog:
       additionalProperties: false
       example:
@@ -2729,6 +4071,7 @@ components:
           agentScope: agentScope
           nodeId: nodeId
           content: content
+          rowId: rowId
         - traceId: traceId
           createdAt: 2000-01-23T04:56:07.000+00:00
           traceEventId: traceEventId
@@ -2748,6 +4091,7 @@ components:
           agentScope: agentScope
           nodeId: nodeId
           content: content
+          rowId: rowId
         links:
         - method: method
           description: description
@@ -3278,6 +4622,271 @@ components:
           nullable: true
           type: string
       type: object
+    ServiceEndpointDuration:
+      additionalProperties: false
+      description: The request duration distribution for a single service and endpoint
+        over the window.
+      example:
+        endpoint: endpoint
+        meanDurationMs: 5.637376656633329
+        p95DurationMs: 7.061401241503109
+        service: service
+        totalRequests: 5
+        medianDurationMs: 2.3021358869347655
+      properties:
+        service:
+          description: The name of the service (application) that handled the requests.
+          nullable: true
+          type: string
+        endpoint:
+          description: The endpoint (API operation) the requests were made to.
+          nullable: true
+          type: string
+        totalRequests:
+          description: "The number of requests over the window, or null if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        meanDurationMs:
+          description: "The mean request duration in milliseconds, or null if not\
+            \ reported."
+          format: double
+          nullable: true
+          type: number
+        medianDurationMs:
+          description: "The median (50th percentile) request duration in milliseconds,\
+            \ or null if not reported."
+          format: double
+          nullable: true
+          type: number
+        p95DurationMs:
+          description: "The 95th percentile request duration in milliseconds, or null\
+            \ if not reported."
+          format: double
+          nullable: true
+          type: number
+      type: object
+    ServiceEndpointDurations24hDataSet:
+      additionalProperties: false
+      description: Request duration distribution per service and endpoint over a rolling
+        twenty four hour window.
+      example:
+        windowStart: 2000-01-23T04:56:07.000+00:00
+        values:
+        - endpoint: endpoint
+          meanDurationMs: 5.637376656633329
+          p95DurationMs: 7.061401241503109
+          service: service
+          totalRequests: 5
+          medianDurationMs: 2.3021358869347655
+        - endpoint: endpoint
+          meanDurationMs: 5.637376656633329
+          p95DurationMs: 7.061401241503109
+          service: service
+          totalRequests: 5
+          medianDurationMs: 2.3021358869347655
+        name: name
+        truncated: true
+        windowEnd: 2000-01-23T04:56:07.000+00:00
+      properties:
+        name:
+          description: |-
+            The name of this data set. Always `ServiceEndpointDurations24h`, matching the corresponding
+            Finbourne.Insights.WebApi.Dtos.Metrics.MetricDataSet value and Finbourne.Insights.WebApi.Dtos.Metrics.MetricsResponse property.
+          minLength: 1
+          type: string
+        windowStart:
+          description: "Inclusive start of the window the data covers, in UTC, floored\
+            \ to a whole minute."
+          format: date-time
+          type: string
+        windowEnd:
+          description: "End of the window the data covers, in UTC, floored to a whole\
+            \ minute."
+          format: date-time
+          type: string
+        truncated:
+          description: |-
+            True when the query reached the row cap, so some services or endpoints are missing. False when the whole
+            result set was returned.
+          type: boolean
+        values:
+          description: "The rows, ordered by service then endpoint."
+          items:
+            $ref: '#/components/schemas/ServiceEndpointDuration'
+          type: array
+      required:
+      - name
+      - truncated
+      - values
+      - windowEnd
+      - windowStart
+      type: object
+    ServiceRequests:
+      additionalProperties: false
+      description: The request volume and server-error rate for a single service over
+        the window.
+      example:
+        pct5xx: 2.027123023002322
+        service: service
+        totalRequests: 9
+        requests5xx: 3
+      properties:
+        service:
+          description: The name of the service (application) that handled the requests.
+          nullable: true
+          type: string
+        totalRequests:
+          description: "The number of requests over the window, or null if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        requests5xx:
+          description: "The number of requests over the window that returned a 5xx\
+            \ status code, or null if not reported."
+          format: int64
+          nullable: true
+          type: integer
+        pct5xx:
+          description: "The percentage of requests that returned a 5xx status code,\
+            \ or null if not reported."
+          format: double
+          nullable: true
+          type: number
+      type: object
+    ServiceRequests24hDataSet:
+      additionalProperties: false
+      description: Request volume and server-error rate per service over a rolling
+        twenty four hour window.
+      example:
+        windowStart: 2000-01-23T04:56:07.000+00:00
+        values:
+        - pct5xx: 2.027123023002322
+          service: service
+          totalRequests: 9
+          requests5xx: 3
+        - pct5xx: 2.027123023002322
+          service: service
+          totalRequests: 9
+          requests5xx: 3
+        name: name
+        truncated: true
+        windowEnd: 2000-01-23T04:56:07.000+00:00
+      properties:
+        name:
+          description: |-
+            The name of this data set. Always `ServiceRequests24h`, matching the corresponding
+            Finbourne.Insights.WebApi.Dtos.Metrics.MetricDataSet value and Finbourne.Insights.WebApi.Dtos.Metrics.MetricsResponse property.
+          minLength: 1
+          type: string
+        windowStart:
+          description: "Inclusive start of the window the data covers, in UTC, floored\
+            \ to a whole minute."
+          format: date-time
+          type: string
+        windowEnd:
+          description: "End of the window the data covers, in UTC, floored to a whole\
+            \ minute."
+          format: date-time
+          type: string
+        truncated:
+          description: |-
+            True when the query reached the row cap, so some services are missing. False when the whole result set was
+            returned.
+          type: boolean
+        values:
+          description: "The rows, ordered by service."
+          items:
+            $ref: '#/components/schemas/ServiceRequests'
+          type: array
+      required:
+      - name
+      - truncated
+      - values
+      - windowEnd
+      - windowStart
+      type: object
+    TextComparator:
+      additionalProperties: false
+      description: |-
+        Filters a text field. Single-value operations (EqualTo, NotEqualTo, StartsWith, EndsWith) compare the field to
+        Finbourne.Insights.WebApi.Dtos.Querying.TextComparator.Value; set operations (In, NotIn) compare it to Finbourne.Insights.WebApi.Dtos.Querying.TextComparator.Values. Exactly one of
+        Finbourne.Insights.WebApi.Dtos.Querying.TextComparator.Value or Finbourne.Insights.WebApi.Dtos.Querying.TextComparator.Values is supplied, matching the chosen Finbourne.Insights.WebApi.Dtos.Querying.TextComparator.Operation.
+      example:
+        values:
+        - values
+        - values
+        operation: operation
+        value: value
+      properties:
+        operation:
+          description: |-
+            The comparison to apply between the field and the supplied value(s). One of the Finbourne.Insights.WebApi.Dtos.Querying.TextOperation
+            values (e.g. EqualTo, StartsWith, In); discoverable via the queryable-fields metadata endpoint.
+          minLength: 1
+          type: string
+        value:
+          description: |-
+            The value to compare the field against, for the single-value operations (EqualTo, NotEqualTo, StartsWith,
+            EndsWith).
+          maxLength: 2048
+          minLength: 1
+          nullable: true
+          type: string
+        values:
+          description: "The set of values to compare the field against, for the set\
+            \ operations (In, NotIn)."
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+      - operation
+      type: object
+    TimeRange:
+      additionalProperties: false
+      description: |-
+        A server-resolved time window for a query, as an alternative to supplying absolute StartAt/EndAt. Supply either
+        a Finbourne.Insights.WebApi.Dtos.Querying.TimeRange.Preset (e.g. LastWeek, CurrentMonth) or a relative range via Finbourne.Insights.WebApi.Dtos.Querying.TimeRange.From and
+        Finbourne.Insights.WebApi.Dtos.Querying.TimeRange.To. The window is resolved on the server at query time, so a saved query re-runs against a sliding
+        window. Calendar boundaries are anchored in Finbourne.Insights.WebApi.Dtos.Querying.TimeRange.TimeZone (default UTC); weeks start on Monday.
+      example:
+        timeZone: timeZone
+        from:
+          midnight: true
+          offset:
+            amount: 171976545
+            unit: unit
+          absolute: 2000-01-23T04:56:07.000+00:00
+          now: true
+        preset: preset
+        to:
+          midnight: true
+          offset:
+            amount: 171976545
+            unit: unit
+          absolute: 2000-01-23T04:56:07.000+00:00
+          now: true
+      properties:
+        preset:
+          description: |-
+            A named preset window. One of the Finbourne.Insights.WebApi.Dtos.Querying.TimeRangePreset values. Mutually exclusive with
+            Finbourne.Insights.WebApi.Dtos.Querying.TimeRange.From/Finbourne.Insights.WebApi.Dtos.Querying.TimeRange.To.
+          nullable: true
+          type: string
+        from:
+          $ref: '#/components/schemas/RelativeBoundary'
+        to:
+          $ref: '#/components/schemas/RelativeBoundary'
+        timeZone:
+          description: |-
+            Optional IANA time-zone identifier (e.g. "Europe/London") used to anchor calendar boundaries (start of
+            day/week/month/quarter/year). Defaults to UTC when not supplied.
+          maxLength: 64
+          minLength: 1
+          nullable: true
+          type: string
+      type: object
     TraceDiagramEdge:
       additionalProperties: false
       description: Represents an edge connecting two nodes within a trace diagram.
@@ -3365,6 +4974,7 @@ components:
           id: id
           type: type
           agentScope: agentScope
+        isPossiblyIncomplete: true
         edges:
         - childNodeId: childNodeId
           id: 1
@@ -3387,6 +4997,10 @@ components:
             $ref: '#/components/schemas/TraceDiagramEdge'
           nullable: true
           type: array
+        isPossiblyIncomplete:
+          description: Whether detected retrieval or diagram degradation means some
+            events may not be shown.
+          type: boolean
       type: object
     TraceEventLog:
       additionalProperties: false
@@ -3411,6 +5025,7 @@ components:
         agentScope: agentScope
         nodeId: nodeId
         content: content
+        rowId: rowId
       properties:
         traceEventId:
           description: The identifier of the trace event.
@@ -3452,6 +5067,10 @@ components:
         nodeId:
           description: The ID of the circuit's node at which the trace event occured.
           minLength: 1
+          type: string
+        rowId:
+          description: An opaque identifier for comparing complete trace event rows.
+          nullable: true
           type: string
         links:
           items:
@@ -3682,6 +5301,8 @@ x-tagGroups:
   - Application Metadata
   - Auditing
   - Candela Traces
+  - Log Metadata
+  - Metrics
   - Requests
   - Vendor Logs
 x-group-parameters: true

@@ -27,8 +27,10 @@ import java.io.IOException;
 
 import com.finbourne.insights.model.LusidProblemDetails;
 import com.finbourne.insights.model.LusidValidationProblemDetails;
+import com.finbourne.insights.model.QueryRequestLogsRequest;
 import com.finbourne.insights.model.Request;
 import com.finbourne.insights.model.RequestLog;
+import com.finbourne.insights.model.ResourceListOfQueriedRequestLog;
 import com.finbourne.insights.model.ResourceListWithHistogramOfRequestLog;
 import com.finbourne.insights.model.Response;
 
@@ -1068,5 +1070,240 @@ public class RequestsApi {
      */
     public APIlistRequestLogsRequest listRequestLogs() {
         return new APIlistRequestLogsRequest();
+    }
+    private okhttp3.Call queryRequestLogsCall(QueryRequestLogsRequest queryRequestLogsRequest, final ApiCallback _callback) throws ApiException {
+        return queryRequestLogsCall(queryRequestLogsRequest,  _callback, new ConfigurationOptions());
+    }
+
+    private okhttp3.Call queryRequestLogsCall(QueryRequestLogsRequest queryRequestLogsRequest, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = queryRequestLogsRequest;
+
+        // create path and map variables
+        String localVarPath = "/api/requests/$query";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "text/plain",
+            "application/json",
+            "text/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json-patch+json",
+            "application/json",
+            "text/json",
+            "application/*+json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "oauth2" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback, opts);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call queryRequestLogsValidateBeforeCall(QueryRequestLogsRequest queryRequestLogsRequest, final ApiCallback _callback, ConfigurationOptions opts) throws ApiException {
+        // verify the required parameter 'queryRequestLogsRequest' is set
+        if (queryRequestLogsRequest == null) {
+            throw new ApiException("Missing the required parameter 'queryRequestLogsRequest' when calling queryRequestLogs(Async)");
+        }
+
+        return queryRequestLogsCall(queryRequestLogsRequest, _callback, opts);
+
+    }
+
+
+    private ApiResponse<ResourceListOfQueriedRequestLog> queryRequestLogsWithHttpInfo(QueryRequestLogsRequest queryRequestLogsRequest) throws ApiException {
+        okhttp3.Call localVarCall = queryRequestLogsValidateBeforeCall(queryRequestLogsRequest, null, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListOfQueriedRequestLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private ApiResponse<ResourceListOfQueriedRequestLog> queryRequestLogsWithHttpInfo(QueryRequestLogsRequest queryRequestLogsRequest, ConfigurationOptions opts) throws ApiException {
+        okhttp3.Call localVarCall = queryRequestLogsValidateBeforeCall(queryRequestLogsRequest, null, opts);
+        Type localVarReturnType = new TypeToken<ResourceListOfQueriedRequestLog>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    private okhttp3.Call queryRequestLogsAsync(QueryRequestLogsRequest queryRequestLogsRequest, final ApiCallback<ResourceListOfQueriedRequestLog> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = queryRequestLogsValidateBeforeCall(queryRequestLogsRequest, _callback, new ConfigurationOptions());
+        Type localVarReturnType = new TypeToken<ResourceListOfQueriedRequestLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    private okhttp3.Call queryRequestLogsAsync(QueryRequestLogsRequest queryRequestLogsRequest, final ApiCallback<ResourceListOfQueriedRequestLog> _callback, ConfigurationOptions opts) throws ApiException {
+
+        okhttp3.Call localVarCall = queryRequestLogsValidateBeforeCall(queryRequestLogsRequest, _callback, opts);
+        Type localVarReturnType = new TypeToken<ResourceListOfQueriedRequestLog>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    public class APIqueryRequestLogsRequest {
+        private final QueryRequestLogsRequest queryRequestLogsRequest;
+
+        private APIqueryRequestLogsRequest(QueryRequestLogsRequest queryRequestLogsRequest) {
+            this.queryRequestLogsRequest = queryRequestLogsRequest;
+        }
+
+        /**
+         * Build call for queryRequestLogs
+         * @param _callback ApiCallback API callback
+         * @return Call to execute
+         * @throws ApiException If fail to serialize the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call buildCall(final ApiCallback _callback) throws ApiException {
+            return queryRequestLogsCall(queryRequestLogsRequest, _callback);
+        }
+
+        /**
+         * Execute queryRequestLogs request
+         * @return ResourceListOfQueriedRequestLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ResourceListOfQueriedRequestLog execute() throws ApiException {
+            ApiResponse<ResourceListOfQueriedRequestLog> localVarResp = queryRequestLogsWithHttpInfo(queryRequestLogsRequest);
+            return localVarResp.getData();
+        }
+
+        /**
+         * Execute queryRequestLogs request. Use any specified configuration options to override any other configuration for this request only.
+         * @return ResourceListOfQueriedRequestLog
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ResourceListOfQueriedRequestLog execute(ConfigurationOptions opts) throws ApiException {
+            ApiResponse<ResourceListOfQueriedRequestLog> localVarResp = queryRequestLogsWithHttpInfo(queryRequestLogsRequest, opts);
+            return localVarResp.getData();
+        }
+
+        /**
+         * Execute queryRequestLogs request with HTTP info returned
+         * @return ApiResponse&lt;ResourceListOfQueriedRequestLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<ResourceListOfQueriedRequestLog> executeWithHttpInfo() throws ApiException {
+            return queryRequestLogsWithHttpInfo(queryRequestLogsRequest);
+        }
+
+        /**
+         * Execute queryRequestLogs request with HTTP info returned. Use any specified configuration options to override any other configuration for this request only.
+         * @return ApiResponse&lt;ResourceListOfQueriedRequestLog&gt;
+         * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public ApiResponse<ResourceListOfQueriedRequestLog> executeWithHttpInfo(ConfigurationOptions opts) throws ApiException {
+            return queryRequestLogsWithHttpInfo(queryRequestLogsRequest, opts);
+        }
+
+        /**
+         * Execute queryRequestLogs request (asynchronously)
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<ResourceListOfQueriedRequestLog> _callback) throws ApiException {
+            return queryRequestLogsAsync(queryRequestLogsRequest, _callback);
+        }
+
+        /**
+         * Execute queryRequestLogs request (asynchronously). Use any specified configuration options to override any other configuration for this request only.
+         * @param _callback The callback to be executed when the API call finishes
+         * @return The request call
+         * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+         * @http.response.details
+         <table summary="Response Details" border="1">
+            <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+            <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+            <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+            <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+         </table>
+         */
+        public okhttp3.Call executeAsync(final ApiCallback<ResourceListOfQueriedRequestLog> _callback, ConfigurationOptions opts) throws ApiException {
+            return queryRequestLogsAsync(queryRequestLogsRequest, _callback, opts);
+        }
+    }
+
+    /**
+     * QueryRequestLogs: Query the logs for API requests, returning only the caller-specified fields in addition to the always-required fields (Timestamp, Id, Application, Operation). The server fetches only the requested columns from the underlying data source to minimise payload and query time.
+     * 
+     * @param queryRequestLogsRequest The query parameters in the request body. (required)
+     * @return APIqueryRequestLogsRequest
+     * @http.response.details
+     <table summary="Response Details" border="1">
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> The details of the input related failure </td><td>  -  </td></tr>
+        <tr><td> 0 </td><td> Error response </td><td>  -  </td></tr>
+     </table>
+     */
+    public APIqueryRequestLogsRequest queryRequestLogs(QueryRequestLogsRequest queryRequestLogsRequest) {
+        return new APIqueryRequestLogsRequest(queryRequestLogsRequest);
     }
 }

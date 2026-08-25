@@ -94,6 +94,10 @@ public class TraceEventLog {
   @SerializedName(SERIALIZED_NAME_NODE_ID)
   private String nodeId;
 
+  public static final String SERIALIZED_NAME_ROW_ID = "rowId";
+  @SerializedName(SERIALIZED_NAME_ROW_ID)
+  private String rowId;
+
   public static final String SERIALIZED_NAME_LINKS = "links";
   @SerializedName(SERIALIZED_NAME_LINKS)
   private List<Link> links;
@@ -311,6 +315,27 @@ public class TraceEventLog {
   }
 
 
+  public TraceEventLog rowId(String rowId) {
+    
+    this.rowId = rowId;
+    return this;
+  }
+
+   /**
+   * An opaque identifier for comparing complete trace event rows.
+   * @return rowId
+  **/
+  @jakarta.annotation.Nullable
+  public String getRowId() {
+    return rowId;
+  }
+
+
+  public void setRowId(String rowId) {
+    this.rowId = rowId;
+  }
+
+
   public TraceEventLog links(List<Link> links) {
     
     this.links = links;
@@ -360,6 +385,7 @@ public class TraceEventLog {
         Objects.equals(this.agentCode, traceEventLog.agentCode) &&
         Objects.equals(this.agentVersion, traceEventLog.agentVersion) &&
         Objects.equals(this.nodeId, traceEventLog.nodeId) &&
+        Objects.equals(this.rowId, traceEventLog.rowId) &&
         Objects.equals(this.links, traceEventLog.links);
   }
 
@@ -369,7 +395,7 @@ public class TraceEventLog {
 
   @Override
   public int hashCode() {
-    return Objects.hash(traceEventId, traceId, createdAt, eventType, origin, content, agentScope, agentCode, agentVersion, nodeId, links);
+    return Objects.hash(traceEventId, traceId, createdAt, eventType, origin, content, agentScope, agentCode, agentVersion, nodeId, rowId, links);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -393,6 +419,7 @@ public class TraceEventLog {
     sb.append("    agentCode: ").append(toIndentedString(agentCode)).append("\n");
     sb.append("    agentVersion: ").append(toIndentedString(agentVersion)).append("\n");
     sb.append("    nodeId: ").append(toIndentedString(nodeId)).append("\n");
+    sb.append("    rowId: ").append(toIndentedString(rowId)).append("\n");
     sb.append("    links: ").append(toIndentedString(links)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -426,6 +453,7 @@ public class TraceEventLog {
     openapiFields.add("agentCode");
     openapiFields.add("agentVersion");
     openapiFields.add("nodeId");
+    openapiFields.add("rowId");
     openapiFields.add("links");
 
     // a set of required properties/fields (JSON key names)
@@ -485,6 +513,9 @@ public class TraceEventLog {
       }
       if (!jsonObj.get("nodeId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `nodeId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("nodeId").toString()));
+      }
+      if ((jsonObj.get("rowId") != null && !jsonObj.get("rowId").isJsonNull()) && !jsonObj.get("rowId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `rowId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("rowId").toString()));
       }
       if (jsonObj.get("links") != null && !jsonObj.get("links").isJsonNull()) {
         JsonArray jsonArraylinks = jsonObj.getAsJsonArray("links");
