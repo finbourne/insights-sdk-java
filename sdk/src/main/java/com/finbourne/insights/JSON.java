@@ -94,6 +94,7 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.AccessControlledResource.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.AccessEvaluationLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ActionId.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ApiEndpoint.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.AuditData.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.AuditDataSummary.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.AuditEntry.CustomTypeAdapterFactory());
@@ -138,6 +139,7 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ResourceListWithHistogramOfVendorLog.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.Response.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ScrollableCollectionOfAuditEntry.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ServiceApiEndpoints.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ServiceEndpointDuration.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ServiceEndpointDurations24hDataSet.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.finbourne.insights.model.ServiceRequests.CustomTypeAdapterFactory());
