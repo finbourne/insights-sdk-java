@@ -11,6 +11,7 @@
 package com.finbourne.insights.model;
 
 import java.util.Objects;
+import com.finbourne.insights.model.AvailableValue;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,6 +72,10 @@ public class QueryableLogField {
   public static final String SERIALIZED_NAME_ALWAYS_RETURNED = "alwaysReturned";
   @SerializedName(SERIALIZED_NAME_ALWAYS_RETURNED)
   private Boolean alwaysReturned;
+
+  public static final String SERIALIZED_NAME_AVAILABLE_VALUES = "availableValues";
+  @SerializedName(SERIALIZED_NAME_AVAILABLE_VALUES)
+  private List<AvailableValue> availableValues;
 
   public QueryableLogField() {
   }
@@ -187,6 +193,35 @@ public class QueryableLogField {
   }
 
 
+  public QueryableLogField availableValues(List<AvailableValue> availableValues) {
+    
+    this.availableValues = availableValues;
+    return this;
+  }
+
+  public QueryableLogField addAvailableValuesItem(AvailableValue availableValuesItem) {
+    if (this.availableValues == null) {
+      this.availableValues = new ArrayList<>();
+    }
+    this.availableValues.add(availableValuesItem);
+    return this;
+  }
+
+   /**
+   * The values known to be valid for this field, which a UI can offer when filtering on it. Null when the field has no known set of values. The list is not exhaustive: other values may still be filtered on.
+   * @return availableValues
+  **/
+  @jakarta.annotation.Nullable
+  public List<AvailableValue> getAvailableValues() {
+    return availableValues;
+  }
+
+
+  public void setAvailableValues(List<AvailableValue> availableValues) {
+    this.availableValues = availableValues;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -201,12 +236,24 @@ public class QueryableLogField {
         Objects.equals(this.dataType, queryableLogField.dataType) &&
         Objects.equals(this.supportedOperations, queryableLogField.supportedOperations) &&
         Objects.equals(this.filterable, queryableLogField.filterable) &&
-        Objects.equals(this.alwaysReturned, queryableLogField.alwaysReturned);
+        Objects.equals(this.alwaysReturned, queryableLogField.alwaysReturned) &&
+        Objects.equals(this.availableValues, queryableLogField.availableValues);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, dataType, supportedOperations, filterable, alwaysReturned);
+    return Objects.hash(name, dataType, supportedOperations, filterable, alwaysReturned, availableValues);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -218,6 +265,7 @@ public class QueryableLogField {
     sb.append("    supportedOperations: ").append(toIndentedString(supportedOperations)).append("\n");
     sb.append("    filterable: ").append(toIndentedString(filterable)).append("\n");
     sb.append("    alwaysReturned: ").append(toIndentedString(alwaysReturned)).append("\n");
+    sb.append("    availableValues: ").append(toIndentedString(availableValues)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -245,6 +293,7 @@ public class QueryableLogField {
     openapiFields.add("supportedOperations");
     openapiFields.add("filterable");
     openapiFields.add("alwaysReturned");
+    openapiFields.add("availableValues");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -284,6 +333,20 @@ public class QueryableLogField {
         throw new IllegalArgumentException("Expected the field `linkedContent` to be an array in the JSON string but got `null`");
       } else if (!jsonObj.get("supportedOperations").isJsonArray()) {
         throw new IllegalArgumentException(String.format("Expected the field `supportedOperations` to be an array in the JSON string but got `%s`", jsonObj.get("supportedOperations").toString()));
+      }
+      if (jsonObj.get("availableValues") != null && !jsonObj.get("availableValues").isJsonNull()) {
+        JsonArray jsonArrayavailableValues = jsonObj.getAsJsonArray("availableValues");
+        if (jsonArrayavailableValues != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("availableValues").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `availableValues` to be an array in the JSON string but got `%s`", jsonObj.get("availableValues").toString()));
+          }
+
+          // validate the optional field `availableValues` (array)
+          for (int i = 0; i < jsonArrayavailableValues.size(); i++) {
+            AvailableValue.validateJsonElement(jsonArrayavailableValues.get(i));
+          };
+        }
       }
   }
 

@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.958
+  version: 0.0.974
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -804,8 +804,9 @@ paths:
     get:
       description: |-
         Returns, for each log type, the fields that can be selected and/or filtered, their data types, and the
-        comparator operations available for each filterable field. Intended to power a UI that advertises the
-        correct comparators for a chosen field.
+        comparator operations available for each filterable field. Where a field has a known set of values (for
+        example the applications and operations of the platform's services) those values are also returned. Intended
+        to power a UI that advertises the correct comparators and values for a chosen field.
       operationId: ListQueryableFields
       responses:
         "200":
@@ -2241,6 +2242,27 @@ components:
         summary:
           $ref: '#/components/schemas/AuditDataSummary'
       type: object
+    AvailableValue:
+      additionalProperties: false
+      description: "A value known to be valid for a queryable log field, which a UI\
+        \ can offer when filtering on that field."
+      example:
+        context: context
+        value: value
+      properties:
+        value:
+          description: The value.
+          minLength: 1
+          type: string
+        context:
+          description: |-
+            Optional context qualifying the value. For the Operation field this is the comma-separated names of the
+            applications that publish the operation.
+          nullable: true
+          type: string
+      required:
+      - value
+      type: object
     BooleanComparator:
       additionalProperties: false
       description: Filters a boolean field by comparing it to a supplied boolean value.
@@ -3022,6 +3044,11 @@ components:
         - supportedOperations
         dataType: dataType
         name: name
+        availableValues:
+        - context: context
+          value: value
+        - context: context
+          value: value
       properties:
         name:
           description: "The name of the field, as used when requesting it or filtering\
@@ -3045,6 +3072,14 @@ components:
           description: Whether the field is always returned (and therefore need not
             be requested).
           type: boolean
+        availableValues:
+          description: |-
+            The values known to be valid for this field, which a UI can offer when filtering on it. Null when the
+            field has no known set of values. The list is not exhaustive: other values may still be filtered on.
+          items:
+            $ref: '#/components/schemas/AvailableValue'
+          nullable: true
+          type: array
       required:
       - dataType
       - name
@@ -3064,6 +3099,11 @@ components:
           - supportedOperations
           dataType: dataType
           name: name
+          availableValues:
+          - context: context
+            value: value
+          - context: context
+            value: value
         - alwaysReturned: true
           filterable: true
           supportedOperations:
@@ -3071,6 +3111,11 @@ components:
           - supportedOperations
           dataType: dataType
           name: name
+          availableValues:
+          - context: context
+            value: value
+          - context: context
+            value: value
       properties:
         logType:
           description: "The log type, e.g. Requests, Vendor, Access, Trace or TraceEvent."
@@ -4101,6 +4146,11 @@ components:
             - supportedOperations
             dataType: dataType
             name: name
+            availableValues:
+            - context: context
+              value: value
+            - context: context
+              value: value
           - alwaysReturned: true
             filterable: true
             supportedOperations:
@@ -4108,6 +4158,11 @@ components:
             - supportedOperations
             dataType: dataType
             name: name
+            availableValues:
+            - context: context
+              value: value
+            - context: context
+              value: value
         - logType: logType
           fields:
           - alwaysReturned: true
@@ -4117,6 +4172,11 @@ components:
             - supportedOperations
             dataType: dataType
             name: name
+            availableValues:
+            - context: context
+              value: value
+            - context: context
+              value: value
           - alwaysReturned: true
             filterable: true
             supportedOperations:
@@ -4124,6 +4184,11 @@ components:
             - supportedOperations
             dataType: dataType
             name: name
+            availableValues:
+            - context: context
+              value: value
+            - context: context
+              value: value
         links:
         - method: method
           description: description
