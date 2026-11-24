@@ -1,6 +1,6 @@
 # LogMetadataApi
 
-All URIs are relative to *https://fbn-prd.lusid.com/insights*
+All URIs are relative to *https://fbn-ci.lusid.com/insights*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|

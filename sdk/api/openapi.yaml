@@ -26,7 +26,7 @@ info:
     | <a name="939">939</a>|Blocked by a Network Zone| |
   termsOfService: https://www.finbourne.com/legal/terms-conditions
   title: FINBOURNE Insights API
-  version: 0.0.974
+  version: 0.2.12
   x-logo:
     url: https://www.lusid.com/app/assets/logo_white.png
     backgroundColor: '#415464'
@@ -62,7 +62,7 @@ info:
     \ It enables you to quickly identify issues in failed requests, and offers a detailed\
     \ view of your system's operations."
 servers:
-- url: https://fbn-prd.lusid.com/insights
+- url: https://fbn-ci.lusid.com/insights
 security:
 - {}
 tags:
@@ -2367,6 +2367,46 @@ components:
           nullable: true
           type: array
       type: object
+    IdSelectorDefinition:
+      additionalProperties: false
+      example:
+        identifier:
+          key: identifier
+        name: name
+        description: description
+        actions:
+        - activity: activity
+          scope: scope
+          entity: entity
+        - activity: activity
+          scope: scope
+          entity: entity
+      properties:
+        identifier:
+          additionalProperties:
+            nullable: true
+            type: string
+          minLength: 1
+          type: object
+        actions:
+          items:
+            $ref: '#/components/schemas/ActionId'
+          minItems: 1
+          type: array
+        name:
+          maxLength: 100
+          minLength: 0
+          nullable: true
+          type: string
+        description:
+          maxLength: 1024
+          minLength: 0
+          nullable: true
+          type: string
+      required:
+      - actions
+      - identifier
+      type: object
     IdentifierPartSchema:
       additionalProperties: false
       example:
@@ -2518,46 +2558,6 @@ components:
           type: integer
       required:
       - name
-      type: object
-    IdSelectorDefinition:
-      additionalProperties: false
-      example:
-        identifier:
-          key: identifier
-        name: name
-        description: description
-        actions:
-        - activity: activity
-          scope: scope
-          entity: entity
-        - activity: activity
-          scope: scope
-          entity: entity
-      properties:
-        identifier:
-          additionalProperties:
-            nullable: true
-            type: string
-          minLength: 1
-          type: object
-        actions:
-          items:
-            $ref: '#/components/schemas/ActionId'
-          minItems: 1
-          type: array
-        name:
-          maxLength: 100
-          minLength: 0
-          nullable: true
-          type: string
-        description:
-          maxLength: 1024
-          minLength: 0
-          nullable: true
-          type: string
-      required:
-      - actions
-      - identifier
       type: object
     InsightsFilter:
       additionalProperties: false
@@ -3030,106 +3030,6 @@ components:
       - operation
       - timestamp
       type: object
-    QueryableLogField:
-      additionalProperties: false
-      description: |-
-        Describes a field of a log type that can be selected and (where Finbourne.Insights.WebApi.Dtos.Querying.QueryableLogField.Filterable is set) filtered when
-        querying logs, including the comparator operations available for it. Returned by the queryable-fields metadata
-        endpoint so a UI can advertise the correct comparators for each field.
-      example:
-        alwaysReturned: true
-        filterable: true
-        supportedOperations:
-        - supportedOperations
-        - supportedOperations
-        dataType: dataType
-        name: name
-        availableValues:
-        - context: context
-          value: value
-        - context: context
-          value: value
-      properties:
-        name:
-          description: "The name of the field, as used when requesting it or filtering\
-            \ on it (case-insensitive)."
-          minLength: 1
-          type: string
-        dataType:
-          description: "The data type of the field: Text, Numeric, Date or Boolean."
-          minLength: 1
-          type: string
-        supportedOperations:
-          description: The comparator operations available for this field. Empty when
-            the field is not filterable.
-          items:
-            type: string
-          type: array
-        filterable:
-          description: Whether the field can be used in a filter.
-          type: boolean
-        alwaysReturned:
-          description: Whether the field is always returned (and therefore need not
-            be requested).
-          type: boolean
-        availableValues:
-          description: |-
-            The values known to be valid for this field, which a UI can offer when filtering on it. Null when the
-            field has no known set of values. The list is not exhaustive: other values may still be filtered on.
-          items:
-            $ref: '#/components/schemas/AvailableValue'
-          nullable: true
-          type: array
-      required:
-      - dataType
-      - name
-      - supportedOperations
-      type: object
-    QueryableLogType:
-      additionalProperties: false
-      description: "The queryable fields of a single log type, returned by the queryable-fields\
-        \ metadata endpoint."
-      example:
-        logType: logType
-        fields:
-        - alwaysReturned: true
-          filterable: true
-          supportedOperations:
-          - supportedOperations
-          - supportedOperations
-          dataType: dataType
-          name: name
-          availableValues:
-          - context: context
-            value: value
-          - context: context
-            value: value
-        - alwaysReturned: true
-          filterable: true
-          supportedOperations:
-          - supportedOperations
-          - supportedOperations
-          dataType: dataType
-          name: name
-          availableValues:
-          - context: context
-            value: value
-          - context: context
-            value: value
-      properties:
-        logType:
-          description: "The log type, e.g. Requests, Vendor, Access, Trace or TraceEvent."
-          minLength: 1
-          type: string
-        fields:
-          description: The fields of this log type that can be selected and/or filtered.
-          items:
-            $ref: '#/components/schemas/QueryableLogField'
-          type: array
-      required:
-      - fields
-      - logType
-      type: object
     QueryRequestLogsRequest:
       additionalProperties: false
       description: |-
@@ -3316,6 +3216,106 @@ components:
             type: string
           nullable: true
           type: array
+      type: object
+    QueryableLogField:
+      additionalProperties: false
+      description: |-
+        Describes a field of a log type that can be selected and (where Finbourne.Insights.WebApi.Dtos.Querying.QueryableLogField.Filterable is set) filtered when
+        querying logs, including the comparator operations available for it. Returned by the queryable-fields metadata
+        endpoint so a UI can advertise the correct comparators for each field.
+      example:
+        alwaysReturned: true
+        filterable: true
+        supportedOperations:
+        - supportedOperations
+        - supportedOperations
+        dataType: dataType
+        name: name
+        availableValues:
+        - context: context
+          value: value
+        - context: context
+          value: value
+      properties:
+        name:
+          description: "The name of the field, as used when requesting it or filtering\
+            \ on it (case-insensitive)."
+          minLength: 1
+          type: string
+        dataType:
+          description: "The data type of the field: Text, Numeric, Date or Boolean."
+          minLength: 1
+          type: string
+        supportedOperations:
+          description: The comparator operations available for this field. Empty when
+            the field is not filterable.
+          items:
+            type: string
+          type: array
+        filterable:
+          description: Whether the field can be used in a filter.
+          type: boolean
+        alwaysReturned:
+          description: Whether the field is always returned (and therefore need not
+            be requested).
+          type: boolean
+        availableValues:
+          description: |-
+            The values known to be valid for this field, which a UI can offer when filtering on it. Null when the
+            field has no known set of values. The list is not exhaustive: other values may still be filtered on.
+          items:
+            $ref: '#/components/schemas/AvailableValue'
+          nullable: true
+          type: array
+      required:
+      - dataType
+      - name
+      - supportedOperations
+      type: object
+    QueryableLogType:
+      additionalProperties: false
+      description: "The queryable fields of a single log type, returned by the queryable-fields\
+        \ metadata endpoint."
+      example:
+        logType: logType
+        fields:
+        - alwaysReturned: true
+          filterable: true
+          supportedOperations:
+          - supportedOperations
+          - supportedOperations
+          dataType: dataType
+          name: name
+          availableValues:
+          - context: context
+            value: value
+          - context: context
+            value: value
+        - alwaysReturned: true
+          filterable: true
+          supportedOperations:
+          - supportedOperations
+          - supportedOperations
+          dataType: dataType
+          name: name
+          availableValues:
+          - context: context
+            value: value
+          - context: context
+            value: value
+      properties:
+        logType:
+          description: "The log type, e.g. Requests, Vendor, Access, Trace or TraceEvent."
+          minLength: 1
+          type: string
+        fields:
+          description: The fields of this log type that can be selected and/or filtered.
+          items:
+            $ref: '#/components/schemas/QueryableLogField'
+          type: array
+      required:
+      - fields
+      - logType
       type: object
     RelativeBoundary:
       additionalProperties: false
@@ -5515,7 +5515,7 @@ components:
       description: OAuth2 Implicit Grant
       flows:
         implicit:
-          authorizationUrl: https://lusid.okta.com/oauth2/default/v1/authorize
+          authorizationUrl: https://fbn-ci.identity.lusid.com/oauth2/aus8gzrg5mGP60i9K2p7/v1/authorize
           scopes: {}
       type: oauth2
 x-tagGroups:
